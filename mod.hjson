@@ -1,0 +1,10 @@
+displayName: "Yellow"
+name: "yellow"
+author: "SMOLKEYS"
+main: "yellow.Yellow"
+description: '''
+A work in progress rewrite of the ultimate shitpost.
+'''
+version: 0
+minGameVersion: 146
+java: true
