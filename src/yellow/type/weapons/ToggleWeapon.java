@@ -9,11 +9,22 @@ import yellow.entities.units.*;
 public class ToggleWeapon extends NamedWeapon{
 
     /** Whether this weapon is enabled by default. */
-    public boolean enabledDefault = false;
+    public boolean enabledDefault = true;
+    /** The original weapon this one is sourced from. {@link Mirrorer} handles this. Do NOT modify! */
+    public ToggleWeapon original;
 
     public ToggleWeapon(String name){
         super(name);
         mountType = ToggleWeaponMount::new;
+        mirror = false;
+    }
+
+    public ToggleWeapon copy(){
+        try{
+            return (ToggleWeapon) clone();
+        }catch(CloneNotSupportedException foul){
+            throw new RuntimeException("absolutely horrible", foul);
+        }
     }
 
     //stop as many methods as possible

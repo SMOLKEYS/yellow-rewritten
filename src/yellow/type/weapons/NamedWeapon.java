@@ -12,4 +12,12 @@ public class NamedWeapon extends Weapon{
         displayName = Core.bundle.get("weapon." + name + ".name");
         description = Core.bundle.get("weapon." + name + ".description");
     }
+
+    public NamedWeapon copy(){
+        try{
+            return (NamedWeapon) clone();
+        }catch(CloneNotSupportedException vile){
+            throw new RuntimeException("god", vile);
+        }
+    }
 }

@@ -2,16 +2,21 @@ package yellow.entities.units.entity;
 
 import arc.*;
 import arc.func.*;
+import arc.util.*;
 import arc.util.io.*;
 import mindustry.gen.*;
+import yellow.comp.*;
 import yellow.entities.units.*;
 import yellow.game.YellowEventType.*;
+import yellow.type.*;
 
 /** A generic implementation of a unit with multiple lives. */
 public class MultiLifeUnitEntity extends UnitEntity{
+    private static final int mappingId = EntityMapping.register("multilife-unit", MultiLifeUnitEntity::new);
 
     protected boolean inited = false;
     public int lives = 0;
+    public float invFrames = 0f;
 
     public MultiLifeUnitEntity(){
         super();
@@ -19,6 +24,7 @@ public class MultiLifeUnitEntity extends UnitEntity{
 
     protected void init(){
         if(inited) return;
+        inited = true;
         lives = type().lives;
     }
 
@@ -36,38 +42,44 @@ public class MultiLifeUnitEntity extends UnitEntity{
 
     public void removeLife(){
         health = type().health;
+        dead = false;
+        elevation = 1;
         lives--;
+        invFrames = type().invFrames;
 
-        if(type().deathStopEffect != null) type().deathStopEffect.at(this);
+        if(type().deathStopEffect != null) type().deathStopEffect.at(x, y);
 
         Cons<MultiLifeUnitEntity> m = type().perDeath.get(lives);
         if(m != null) m.get(this);
 
-        type().deathStopAbilities.each(e -> e.onDeath(this));
+        for(var a: abilities){
+            if(a instanceof DeathStopAbility d) d.onDeath(this);
+        }
 
         Events.fire(new DeathStopEvent(this));
     }
 
     @Override
-    public MultiLifeUnitType type(){
-        return (MultiLifeUnitType) super.type();
+    public void rawDamage(float amount){
+        if(invFrames <= 0) super.rawDamage(amount);
     }
 
     @Override
-    public void read(Reads read){
-        super.read(read);
+    public int classId(){
+        return mappingId;
+    }
+
+    @Override
+    public void update(){
+        super.update();
         init();
 
-        inited = read.bool();
-        lives = read.i();
+        if(invFrames > 0) invFrames -= Time.delta;
     }
 
     @Override
-    public void write(Writes write){
-        super.write(write);
-
-        write.bool(inited);
-        write.i(lives);
+    public MultiLifeUnitType type(){
+        return (MultiLifeUnitType) super.type();
     }
 
     @Override
@@ -88,5 +100,23 @@ public class MultiLifeUnitEntity extends UnitEntity{
         }
 
         super.kill();
+    }
+
+    @Override
+    public void read(Reads read){
+        super.read(read);
+
+        inited = read.bool();
+        lives = read.i();
+        Log.info("Data collected from world: @, @", inited, lives);
+    }
+
+    @Override
+    public void write(Writes write){
+        super.write(write);
+
+        write.bool(inited);
+        write.i(lives);
+        Log.info("Data passed to world: @, @", inited, lives);
     }
 }

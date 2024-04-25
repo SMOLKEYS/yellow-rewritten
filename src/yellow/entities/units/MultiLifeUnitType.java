@@ -12,6 +12,10 @@ import yellow.world.meta.*;
 public class MultiLifeUnitType extends UnitType{
     /** How many lives this unit has. */
     public int lives = 1;
+    /** Invincibility frames this unit gets when losing a life. */
+    public float invFrames = 1f;
+    /** Multiplier that makes inv-frames last longer the more lives are lost. */
+    public float invDeathMultiplier = 1f;
     /** Individual pieces of code ran when the unit's life count hits a specific number. */
     public ObjectMap<Integer, Cons<MultiLifeUnitEntity>> perDeath = new ObjectMap<>();
     /** Special abilities this unit uses after a life is consumed. */

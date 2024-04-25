@@ -2,6 +2,7 @@ package yellow.type.abilities;
 
 import arc.math.*;
 import arc.math.geom.*;
+import mindustry.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
@@ -37,11 +38,16 @@ public class TeleportAbility extends DeathStopAbility{
 
     @Override
     public void onDeath(Unit unit){
-        float x = unit.x, y = unit.y;
+        float fx = Mathf.range(minTeleportDistance, maxTeleportDistance), fy = Mathf.range(minTeleportDistance, maxTeleportDistance);;
 
-        unit.x = Mathf.random(minTeleportDistance, maxTeleportDistance);
-        unit.y = Mathf.random(minTeleportDistance, maxTeleportDistance);
+        if(unit.x + fx > Vars.world.width() * 8f || unit.x + fx < 0f || unit.y + fy > Vars.world.height() * 8f || unit.y + fy < 0f){
+            unit.x = Mathf.random(Vars.world.width() * 8);
+            unit.y = Mathf.random(Vars.world.height() * 8);
+        }else{
+            unit.x += fx;
+            unit.y += fy;
+        }
 
-        effect.at(x, y, unit.rotation, unit);
+        effect.at(unit.x, unit.y, unit.rotation, unit);
     }
 }

@@ -1,10 +1,11 @@
 package yellow.type;
 
 
+import mindustry.entities.abilities.*;
 import mindustry.gen.*;
 
-/** Generic core class used by multi-life units. */
-public abstract class DeathStopAbility{
+/** A type of {@link Ability} used by multi-life units. */
+public abstract class DeathStopAbility extends Ability{
 
     public void onDeath(Unit unit){}
 }

@@ -42,9 +42,9 @@ sourceSets {
 dependencies {
     compileOnly("com.github.Anuken.Arc:arc-core:$mindustryVersion")
     compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion")
-    implementation("com.github.Anuken.Arc:discord:$mindustryVersion")
-    implementation("com.github.SMOLKEYS:kotmindy:9787d228d6")
-    implementation("com.github.mnemotechnician:mkui:v1.3.2")
+    //implementation("com.github.Anuken.Arc:discord:$mindustryVersion")
+    //implementation("com.github.SMOLKEYS:kotmindy:9787d228d6")
+    //implementation("com.github.mnemotechnician:mkui:v1.3.2")
 
     annotationProcessor("com.github.GlennFolker.EntityAnno:downgrader:$entVersion")
 }
@@ -55,6 +55,8 @@ configurations.all {
             useVersion(mindustryVersion)
         }
     }
+
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
 }
 
 tasks.withType<KotlinCompile> {

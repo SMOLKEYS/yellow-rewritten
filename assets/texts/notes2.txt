@@ -1,0 +1,10 @@
+By downloading Yellow, you allow me to give you the information that:
+
+- This is NOT a finished project, and will stay that way for a long time.
+- This is NOT the v0.8 update from the original repository. Do not bug me about missing old content, as those will be re-added later on in development.
+- This is, currently, NOT a stable project. Crashes, even if rare, will happen. You can report these over at the repository, but {shake}GOD FORBID ME{reset} I will kill you if you did not check that the issue you have was already fixed in an update after being reported 18,000 times.
+- There is NO campaign content NOR any storyline content. Those will also not be added for a long time.
+
+That is all I have to say. Enjoy the mess!
+
+...running version [accent]-ver-[], -type- build. Move along.
