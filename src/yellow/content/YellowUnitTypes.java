@@ -32,7 +32,7 @@ public class YellowUnitTypes{
             createScorch = false;
             createWreck = false;
 
-            deathStopAbilities.addAll(new TeleportAbility(8*25, 8*45));
+            abilities.addAll(new TeleportAbility(8*25, 8*45));
 
             weapons.add(
                     YellowWeapons.durability, Mirrorer.get(YellowWeapons.durability.name),

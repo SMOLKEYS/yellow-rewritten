@@ -1,0 +1,1 @@
+A PC-exclusive extension for Yellow that enables the mod to your Discord's Rich Presence. Currently unused and in-development.

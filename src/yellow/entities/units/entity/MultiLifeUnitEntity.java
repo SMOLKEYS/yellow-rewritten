@@ -10,7 +10,6 @@ import yellow.entities.units.*;
 import yellow.game.YellowEventType.*;
 import yellow.type.*;
 
-/** A generic implementation of a unit with multiple lives. */
 public class MultiLifeUnitEntity extends UnitEntity{
     private static final int mappingId = EntityMapping.register("multilife-unit", MultiLifeUnitEntity::new);
 
@@ -22,10 +21,9 @@ public class MultiLifeUnitEntity extends UnitEntity{
         super();
     }
 
-    protected void init(){
+    private void init(){
         if(inited) return;
         inited = true;
-        lives = type().lives;
     }
 
     public int lives(){

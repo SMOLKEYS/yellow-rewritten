@@ -10,7 +10,7 @@ import yellow.content.*;
 import yellow.entities.units.*;
 import yellow.io.*;
 
-public class YellowUnitEntity extends MultiLifeUnitEntity implements Soulc{
+public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
 
     private static final int mappingId = EntityMapping.register("yellow-unit", YellowUnitEntity::new);
 
@@ -44,11 +44,6 @@ public class YellowUnitEntity extends MultiLifeUnitEntity implements Soulc{
     }
 
     @Override
-    protected void init(){
-        super.init();
-    }
-
-    @Override
     public void removeLife(){
         super.removeLife();
     }
@@ -67,7 +62,7 @@ public class YellowUnitEntity extends MultiLifeUnitEntity implements Soulc{
     public void read(Reads read){
         super.read(read);
 
-        YellowTypeIO.readToggleWeapons(mounts, read, Core.settings.getBool("yellow-toggle-read-method"));
+        YellowTypeIO.readToggleWeapons(mounts, read, Core.settings.getBool("yellow-toggle-read-method", true));
     }
 
     @Override

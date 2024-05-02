@@ -11,10 +11,10 @@ import mindustry.graphics.*;
 import mindustry.ui.*;
 import yellow.*;
 
-public class NotificationPopupFragment{
+public class NotificationFragment{
 
-    Table table;
-    Drawable persistent;
+    private Table table;
+    private Drawable persistent;
 
     public void build(Group parent){
         parent.fill(s -> {

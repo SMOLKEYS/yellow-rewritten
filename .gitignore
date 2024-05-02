@@ -160,3 +160,6 @@ android/libs/
 *.c
 dev-*
 number
+
+## Discord Extension
+/discord/build

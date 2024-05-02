@@ -1,5 +1,6 @@
 package yellow.type.abilities;
 
+import arc.util.*;
 import arc.math.*;
 import arc.math.geom.*;
 import mindustry.*;
@@ -38,6 +39,7 @@ public class TeleportAbility extends DeathStopAbility{
 
     @Override
     public void onDeath(Unit unit){
+        Log.info(this + ".onDeath() called!");
         float fx = Mathf.range(minTeleportDistance, maxTeleportDistance), fy = Mathf.range(minTeleportDistance, maxTeleportDistance);;
 
         if(unit.x + fx > Vars.world.width() * 8f || unit.x + fx < 0f || unit.y + fy > Vars.world.height() * 8f || unit.y + fy < 0f){

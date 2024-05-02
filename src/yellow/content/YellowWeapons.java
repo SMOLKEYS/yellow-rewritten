@@ -5,7 +5,6 @@ import mindustry.entities.bullet.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import mindustry.type.*;
 import yellow.type.weapons.*;
 
 public class YellowWeapons{
@@ -56,14 +55,13 @@ public class YellowWeapons{
                 damage = 95;
                 width = 12;
                 height = 12;
-                lifetime = 60*5;
+                lifetime = 60*3;
                 speed = 6;
                 sprite = "yellow-old-flare";
                 trailEffect = Fx.trailFade;
                 trailLength = 4;
                 shrinkX = shrinkY = 0;
                 weaveMag = 1.205f;
-                weaveScale = 4000;
                 pierce = true;
                 pierceBuilding = true;
                 buildingDamageMultiplier = 2.55f;

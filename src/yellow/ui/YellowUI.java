@@ -1,7 +1,6 @@
 package yellow.ui;
 
 import arc.*;
-import arc.scene.*;
 import arc.scene.event.*;
 import arc.scene.ui.layout.*;
 import yellow.ui.fragments.*;
@@ -12,11 +11,11 @@ public class YellowUI{
 
     public WidgetGroup multiGroup;
 
-    public NotificationPopupFragment notifrag;
+    public NotificationFragment notifrag;
     public FirstLoadFragment firstfrag;
 
     public void init(){
-        notifrag = new NotificationPopupFragment();
+        notifrag = new NotificationFragment();
         firstfrag = new FirstLoadFragment();
 
         multiGroup = new WidgetGroup();

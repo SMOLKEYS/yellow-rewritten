@@ -6,7 +6,7 @@ import mindustry.gen.*;
 import yellow.content.*;
 import yellow.entities.units.entity.*;
 
-public class YellowUnitType extends MultiLifeUnitType{
+public class YellowUnitType extends MagicSpecialistUnitType{
 
     /** Whether only one of this unit can exist in a map. */
     public boolean limited = true;
@@ -25,6 +25,7 @@ public class YellowUnitType extends MultiLifeUnitType{
     @Override
     public Unit create(Team team){
         if(YellowUnitEntity.occupied(this, team) && limited) return Nulls.unit;
-        return super.create(team);
+        YellowUnitEntity unit = (YellowUnitEntity) super.create(team);
+        return unit;
     }
 }

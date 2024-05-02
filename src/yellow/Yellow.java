@@ -27,6 +27,7 @@ public class Yellow extends Mod{
             Events.on(ClientLoadEvent.class, e -> Vars.ui.showInfo("@yellow.initfailed"));
             return;
         }
+
         launchFile().writeString("go away");
         YellowVars.init();
     }
@@ -48,7 +49,7 @@ public class Yellow extends Mod{
     public static boolean flameSpecial(){
         int f = Core.settings.getInt("flame-special", 0);
 
-        return !(f <= 0 || f >= 6);
+        return !(f <= 0 || f >= 6) && Core.settings.getBool("mod-flameout-enabled");
     }
 
     @Override

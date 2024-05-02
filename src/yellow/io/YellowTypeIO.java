@@ -4,6 +4,7 @@ import arc.util.io.*;
 import mindustry.entities.units.*;
 import mindustry.io.*;
 import yellow.entities.units.*;
+import yellow.type.*;
 
 public class YellowTypeIO{
 
@@ -15,12 +16,7 @@ public class YellowTypeIO{
         for(var w: mounts) if(w instanceof ToggleWeaponMount) ss++;
         write.s(ss);
 
-        for(var w: mounts){
-            if(w instanceof ToggleWeaponMount s){
-                s.write(write);
-                ss++;
-            }
-        }
+        for(var w: mounts) if(w instanceof ToggleWeaponMount s) s.write(write);
     }
 
     /** Grabs all instances of {@link ToggleWeaponMount} in the specified {@link WeaponMount} array
@@ -42,26 +38,63 @@ public class YellowTypeIO{
                 for(int i = 0; i < oldMountLength; i++){
                     read.bool();
                 }
-            }else{
-                ToggleWeaponMount[] saveMounts = new ToggleWeaponMount[currentMountLength];
-                int strayBytes = 0;
+                return;
+            }
+            ToggleWeaponMount[] saveMounts = new ToggleWeaponMount[currentMountLength];
+            int strayBytes = 0;
 
-                //list down all current mounts
-                for(var w: mounts){
-                    if(w instanceof ToggleWeaponMount s){
-                        saveMounts[strayBytes] = s;
-                        strayBytes++;
-                    }
+            //list down all current mounts
+            for(var w: mounts){
+                if(w instanceof ToggleWeaponMount s){
+                    saveMounts[strayBytes] = s;
+                    strayBytes++;
                 }
+            }
 
-                for(var w: saveMounts){
-                    w.read(read);
-                }
+            for(var w: saveMounts){
+                w.read(read);
+            }
 
-                //dump any unused bytes
-                for(int i = 0; i < currentMountLength - strayBytes; i++){
-                    read.bool();
+            //dump any unused bytes
+            for(int i = 0; i < currentMountLength - strayBytes; i++){
+                read.bool();
+            }
+        }
+    }
+
+    public static void writeSpells(SpellEntry[] spells, Writes write){
+        short ss = 0;
+        for(var s: spells) ss++;
+        write.s(ss);
+
+        for(var s: spells){
+            s.write(write);
+        }
+    }
+
+    public static void readSpells(SpellEntry[] spells, Reads read, boolean dumpIfNotEqual){
+        short oldSpellLength = read.s();
+        short currentSpellLength = (short) spells.length;
+
+        if(oldSpellLength == currentSpellLength){
+            for(var s: spells) s.read(read);
+        }else{
+            if(dumpIfNotEqual){
+                for(int i = 0; i < oldSpellLength; i++){
+                    read.f();
                 }
+                return;
+            }
+            int strayBytes = 0;
+
+            for(var s: spells){
+                s.read(read);
+                strayBytes++;
+            }
+
+            //dump any unused bytes, again
+            for(int i = 0; i < currentSpellLength - strayBytes; i++){
+                read.f();
             }
         }
     }
