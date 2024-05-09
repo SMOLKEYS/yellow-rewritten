@@ -2,8 +2,11 @@ package yellow.type;
 
 import arc.*;
 import arc.func.*;
+import arc.scene.ui.layout.*;
 import arc.struct.*;
+import mindustry.type.*;
 import yellow.entities.units.*;
+import yellow.world.meta.*;
 
 public class Spell{
 
@@ -23,4 +26,9 @@ public class Spell{
         this.description = Core.bundle.get("spell." + name + ".description");
     }
 
+
+    public void addStats(UnitType u, Table t){
+        t.add("[lightgray]" + YellowStats.name.localized() + ": [accent]" + displayName + "[]");
+        t.row();
+    }
 }

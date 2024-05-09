@@ -5,6 +5,7 @@ import arc.math.*;
 import mindustry.*;
 import mindustry.game.EventType.*;
 import yellow.comp.*;
+import yellow.core.*;
 import yellow.game.*;
 import yellow.ui.*;
 import yellow.ui.fragments.*;
@@ -25,13 +26,16 @@ public class YellowVars{
             YellowTips.load();
             YellowSettings.load();
             YellowSpecialNotifications.launchNotif();
+            YellowLogic.clientPost();
             
             if(Yellow.launchFile().exists()) Yellow.launchFile().delete();
         });
 
-        Events.on(UnitDestroyEvent.class, s -> {
-            if(s.unit instanceof Soulc ss) ss.onDeath();
-        });
+        YellowLogic.load();
+
+        if(!Core.settings.has("yellow-event-number")){
+            Core.settings.put("yellow-event-number", Mathf.random(1, 100));
+        }
     }
 
     public static String getUpdateServer(){

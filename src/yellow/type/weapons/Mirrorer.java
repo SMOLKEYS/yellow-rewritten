@@ -4,6 +4,7 @@ import arc.func.*;
 import arc.struct.*;
 import mindustry.type.*;
 
+/** Utility class for handling special mirror properties. */
 public class Mirrorer{
     private static final ObjectMap<String, ToggleWeapon> mirrors = new ObjectMap<>();
 

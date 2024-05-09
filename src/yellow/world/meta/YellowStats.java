@@ -4,5 +4,7 @@ import mindustry.world.meta.*;
 
 public class YellowStats{
 
-    public static Stat lives = new Stat("lives");
+    public static Stat lives = new Stat("lives"),
+    spells = new Stat("spells"),
+    name = new Stat("name");
 }

@@ -57,18 +57,4 @@ public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
     public void kill(){
         super.destroy();
     }
-
-    @Override
-    public void read(Reads read){
-        super.read(read);
-
-        YellowTypeIO.readToggleWeapons(mounts, read, Core.settings.getBool("yellow-toggle-read-method", true));
-    }
-
-    @Override
-    public void write(Writes write){
-        super.write(write);
-
-        YellowTypeIO.writeToggleWeapons(mounts, write);
-    }
 }

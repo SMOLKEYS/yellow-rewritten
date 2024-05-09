@@ -24,6 +24,11 @@ public class MagicSpecialistEntity extends MultiLifeUnitEntity implements Magicc
     }
 
     @Override
+    public int classId(){
+        return mappingId;
+    }
+
+    @Override
     public float mana(){
         return mana;
     }

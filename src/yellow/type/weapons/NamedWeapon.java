@@ -1,7 +1,9 @@
 package yellow.type.weapons;
 
 import arc.*;
+import arc.scene.ui.layout.*;
 import mindustry.type.*;
+import yellow.world.meta.*;
 
 /** A weapon with a display name and description. */
 public class NamedWeapon extends Weapon{
@@ -11,6 +13,13 @@ public class NamedWeapon extends Weapon{
         super(name);
         displayName = Core.bundle.get("weapon." + name + ".name");
         description = Core.bundle.get("weapon." + name + ".description");
+    }
+
+    @Override
+    public void addStats(UnitType u, Table t){
+        t.row();
+        t.add("[lightgray]" + YellowStats.name.localized() + ": [accent]" + displayName + "[]");
+        super.addStats(u, t);
     }
 
     public NamedWeapon copy(){

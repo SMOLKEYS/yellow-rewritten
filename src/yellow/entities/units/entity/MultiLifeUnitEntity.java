@@ -10,7 +10,7 @@ import yellow.entities.units.*;
 import yellow.game.YellowEventType.*;
 import yellow.type.*;
 
-public class MultiLifeUnitEntity extends UnitEntity{
+public class MultiLifeUnitEntity extends WeaponSpecialistEntity{
     private static final int mappingId = EntityMapping.register("multilife-unit", MultiLifeUnitEntity::new);
 
     protected boolean inited = false;

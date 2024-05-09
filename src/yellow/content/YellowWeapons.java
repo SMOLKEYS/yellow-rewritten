@@ -80,7 +80,7 @@ public class YellowWeapons{
 
             bullet = new BasicBulletType(){{
                 speed = 3f;
-                damage = 500f;
+                damage = 350f;
                 lifetime = 280f;
                 width = height = 16;
                 shrinkX = shrinkY = 0;
@@ -92,11 +92,11 @@ public class YellowWeapons{
                 trailEffect = Fx.trailFade;
                 trailLength = 20;
 
-                splashDamage = 350f;
+                splashDamage = 150f;
                 splashDamageRadius = 8*3;
 
                 hitSound = Sounds.explosion;
-                hitEffect = despawnEffect = Fx.explosion;
+                hitEffect = despawnEffect = Fx.blastExplosion;
 
                 sprite = "yellow-old-flare";
             }};

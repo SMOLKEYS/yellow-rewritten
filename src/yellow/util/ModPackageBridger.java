@@ -2,9 +2,10 @@ package yellow.util;
 
 import arc.struct.*;
 import mindustry.*;
+import mindustry.mod.*;
 import rhino.*;
 
-/** Basic utility class that allows easily importing a package from a mod into Rhino. */
+/** Basic utility class that allows easily importing classes/packages from the Mindustry {@link Mods#mainLoader() mod class loader}, which all mods use, into Rhino. */
 public class ModPackageBridger{
     static boolean loaded = false;
     static ImporterTopLevel scope = null;

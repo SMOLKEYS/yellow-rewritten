@@ -13,11 +13,13 @@ import mindustry.graphics.*;
 import mindustry.mod.*;
 import mindustry.ui.*;
 import yellow.*;
+import yellow.ui.*;
 
-public class FirstLoadFragment{
+public class FirstLoadFragment implements CommonFragment{
 
     boolean cur = false;
 
+    @Override
     public void build(Group parent){
         cur = false;
         boolean b = Core.settings.getBoolOnce("yellow-first-load");

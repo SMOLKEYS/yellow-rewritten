@@ -4,8 +4,10 @@ import arc.struct.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.type.*;
+import mindustry.world.meta.*;
 import yellow.entities.units.entity.*;
 import yellow.type.*;
+import yellow.world.meta.*;
 
 public class MagicSpecialistUnitType extends MultiLifeUnitType{
 
@@ -25,5 +27,13 @@ public class MagicSpecialistUnitType extends MultiLifeUnitType{
         }
         unit.spells = entries;
         return unit;
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+        if(spells.any()){
+            stats.add(YellowStats.spells, YellowStatValues.spells(this, spells));
+        }
     }
 }
