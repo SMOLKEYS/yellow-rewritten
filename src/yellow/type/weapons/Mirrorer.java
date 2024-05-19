@@ -2,14 +2,13 @@ package yellow.type.weapons;
 
 import arc.func.*;
 import arc.struct.*;
-import mindustry.type.*;
 
 /** Utility class for handling special mirror properties. */
 public class Mirrorer{
     private static final ObjectMap<String, ToggleWeapon> mirrors = new ObjectMap<>();
 
-    public static void reflect(ToggleWeapon source, ReflectProperty... properties){
-        if(mirrors.containsKey(source.name)) return;
+    public static ToggleWeapon reflect(ToggleWeapon source, ReflectProperty... properties){
+        if(mirrors.containsKey(source.name)) return mirrors.get(source.name);
         var t = source.copy();
         t.name = source.name + "-mirror";
         t.displayName = source.displayName + " (Mirror)";
@@ -22,6 +21,7 @@ public class Mirrorer{
         }
 
         mirrors.put(source.name, t);
+        return t;
     }
 
     public static ToggleWeapon get(ToggleWeapon original){

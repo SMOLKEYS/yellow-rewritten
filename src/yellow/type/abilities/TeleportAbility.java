@@ -1,8 +1,8 @@
 package yellow.type.abilities;
 
-import arc.util.*;
 import arc.math.*;
 import arc.math.geom.*;
+import arc.util.*;
 import mindustry.*;
 import mindustry.content.*;
 import mindustry.entities.*;

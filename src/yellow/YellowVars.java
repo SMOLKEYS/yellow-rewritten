@@ -2,13 +2,11 @@ package yellow;
 
 import arc.*;
 import arc.math.*;
-import mindustry.*;
 import mindustry.game.EventType.*;
-import yellow.comp.*;
 import yellow.core.*;
+import yellow.debug.*;
 import yellow.game.*;
 import yellow.ui.*;
-import yellow.ui.fragments.*;
 import yellow.util.*;
 
 public class YellowVars{
@@ -21,13 +19,14 @@ public class YellowVars{
         Events.on(ClientLoadEvent.class, a -> {
             ui.init();
 
-            ModPackageBridger.importPackage("yellow", "yellow.util", "yellow.ui");
+            ModPackageBridger.importPackage("yellow", "yellow.util", "yellow.ui", "yellow.math", "yellow.content", "yellow.cutscene", "yellow.dialogue", "yellow.debug");
             Autoupdater.load();
             YellowTips.load();
             YellowSettings.load();
             YellowSpecialNotifications.launchNotif();
             YellowLogic.clientPost();
-            
+            if(Yellow.debug) UpdateTester.load();
+
             if(Yellow.launchFile().exists()) Yellow.launchFile().delete();
         });
 
@@ -47,7 +46,11 @@ public class YellowVars{
     }
 
     public static float getNotificationTime(){
-        return (float)Core.settings.getInt("yellow-notification-time", 5);
+        try{
+            return (float) Core.settings.getInt("yellow-notification-time", 5);
+        }catch(Exception e){
+            return 5;
+        }
     }
 
     public static void setNotificationTime(int time){
@@ -55,7 +58,11 @@ public class YellowVars{
     }
 
     public static float getTipTime(){
-        return (float)Core.settings.getInt("yellow-tip-time", 60*60*5);
+        try{
+            return (float) Core.settings.getInt("yellow-tip-time", 60 * 60 * 5);
+        }catch(Exception e){
+            return 60*60*5;
+        }
     }
 
     public static void setTipTime(int time){

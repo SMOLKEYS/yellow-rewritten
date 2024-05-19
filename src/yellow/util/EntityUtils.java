@@ -1,14 +1,9 @@
 package yellow.util;
 
-import arc.math.geom.*;
 import arc.util.*;
-import arc.util.io.*;
-import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
-import mindustry.type.*;
 import yellow.entities.units.*;
-import yellow.entities.units.entity.*;
 
 public class EntityUtils{
 

@@ -8,7 +8,6 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import yellow.entities.units.entity.*;
-import yellow.type.*;
 import yellow.world.meta.*;
 
 public class MultiLifeUnitType extends UnitType{

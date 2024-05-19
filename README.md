@@ -1,8 +1,10 @@
+# Yellow
+
 Starting all over again. Time to see if this can work in my favor.
 
 Head over to [here](https://discord.gg/uAddT46bFx) for updates.
 
----
+# Q&A
 
 > Will old content be here?
 
@@ -28,5 +30,4 @@ In short, VERY bad.
 
 I don't know. Probably the hundreds of stories I've read sparked something within me.
 
----
 

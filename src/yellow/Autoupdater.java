@@ -2,12 +2,8 @@ package yellow;
 
 import arc.*;
 import arc.util.*;
-import arc.util.serialization.*;
-import mindustry.*;
 import mindustry.mod.*;
 import yellow.util.*;
-
-import java.util.*;
 
 public class Autoupdater{
 
@@ -15,35 +11,36 @@ public class Autoupdater{
         if(!Core.settings.getBool("yellow-check-for-updates", true)) return;
 
         Mods.ModMeta meta = Yellow.meta();
-        ReleaseType type = meta.version.endsWith("S") ? ReleaseType.stable : ReleaseType.beta;
 
         YellowNetworking.repoReleases(YellowVars.getUpdateServer(), root -> {
             String[] versions = new String[root.size];
             for(int i = 0; i < root.size; i++) versions[i] = root.get(i).getString("name", "0S").split(" ")[0];
 
-            String stable = null, beta = null;
+            String stable = null, beta = null, releaseCandidate = null;
 
             for(var s: versions){
-                if(s.endsWith("S") && stable == null){
-                    stable = s;
-                }else if(s.endsWith("B") && beta == null){
-                    beta = s;
+                switch(s.substring(1)){
+                    case "S" -> {
+                        stable = s;
+                    }
+                    case "B" -> {
+                        beta = s;
+                    }
+                    case "RC" -> {
+                        releaseCandidate = s;
+                    }
                 }
             }
 
-            if(type == ReleaseType.stable && stable != null){
-                if(!Objects.equals(meta.version, stable)){
-                    YellowVars.ui.notifrag.showNotification(Core.bundle.format("yellow.newver", meta.version, stable));
-                }
-            }else if(beta != null){
-                if(!Objects.equals(meta.version, beta)){
-                    YellowVars.ui.notifrag.showNotification(Core.bundle.format("yellow.newver", meta.version, beta));
-                }
-            }
+            process(meta, new String[]{stable, beta, releaseCandidate});
         });
     }
 
-    enum ReleaseType{
-        stable, beta
+    private static void process(Mods.ModMeta meta, String[] input){
+        for(String inp : input){
+            if(inp != null && Strings.parseInt(meta.version.substring(0, 1)) < Strings.parseInt(inp.substring(0, 1))){
+                YellowVars.ui.notifrag.showNotification(Core.bundle.format("yellow.newver", meta.version, inp));
+            }
+        }
     }
 }

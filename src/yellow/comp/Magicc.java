@@ -1,8 +1,9 @@
 package yellow.comp;
 
+import arc.math.geom.*;
 import yellow.entities.units.*;
 
-public interface Magicc{
+public interface Magicc extends Position{
 
     float mana();
 

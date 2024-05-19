@@ -8,7 +8,6 @@ import arc.scene.ui.*;
 import arc.util.*;
 import mindustry.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
 import mindustry.ui.dialogs.*;
 import yellow.*;
 
@@ -140,7 +139,7 @@ public class YellowSettings{
                     t.row();
                 }
             }).growX().padTop(10f).row();
-            table.image().color(Pal.accent).height(5f).padTop(5f).padBottom(8f).growX().row();
+            table.image().color(Color.gray).height(5f).padTop(5f).padBottom(8f).growX().row();
         }
     }
 

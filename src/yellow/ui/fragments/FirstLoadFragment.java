@@ -2,11 +2,11 @@ package yellow.ui.fragments;
 
 import arc.*;
 import arc.flabel.*;
-import arc.scene.*;
-import arc.scene.event.*;
-import arc.scene.actions.*;
-import arc.scene.ui.*;
 import arc.graphics.*;
+import arc.scene.*;
+import arc.scene.actions.*;
+import arc.scene.event.*;
+import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import mindustry.*;
 import mindustry.graphics.*;
@@ -65,7 +65,7 @@ public class FirstLoadFragment implements CommonFragment{
                                         .replace("-ver-", meta.version)
                                         .replace(
                                                 "-type-",
-                                                (meta.version.endsWith("S") ? "[accent]Stable[]" : meta.version.endsWith("B") ? "[cyan]Beta[]" : "[gray]Dev[]")
+                                                processMeta(meta)
                                         )
                                 );
                             }
@@ -75,5 +75,23 @@ public class FirstLoadFragment implements CommonFragment{
                 });
             }).growX();
         });
+    }
+
+    private String processMeta(Mods.ModMeta meta){
+        String ver = meta.version.substring(1);
+
+        switch(ver){
+            case "S" -> {
+                return "[accent]Stable[]";
+            }
+            case "B" -> {
+                return "[cyan]Beta[]";
+            }
+            case "RC" -> {
+                return "[yellow]Release Candidate[]";
+            }
+        }
+
+        return "[gray]Unknown[]";
     }
 }

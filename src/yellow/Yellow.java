@@ -1,19 +1,16 @@
 package yellow;
 
 import arc.*;
-import arc.math.*;
 import arc.files.*;
 import arc.util.*;
 import mindustry.*;
-import mindustry.mod.*;
 import mindustry.game.EventType.*;
+import mindustry.mod.*;
 import yellow.content.*;
-import yellow.game.*;
-import yellow.util.*;
 
 public class Yellow extends Mod{
 
-    boolean debug = false, crashed = false;
+    static boolean debug = false, crashed = false;
 
     public Yellow(){
         if(flameSpecial()){
@@ -56,6 +53,7 @@ public class Yellow extends Mod{
     public void loadContent(){
         if(crashed || flameSpecial()) return;
         YellowWeapons.load();
+        YellowSpells.load();
         YellowUnitTypes.load();
     }
 }

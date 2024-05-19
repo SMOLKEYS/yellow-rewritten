@@ -10,20 +10,22 @@ import static mindustry.Vars.*;
 
 public class YellowUI{
 
-    public WeaponManagerDialog weaponManager;
+    public ManagerDialog manager;
 
     public WidgetGroup multiGroup;
 
     public NotificationFragment notifrag;
     public FirstLoadFragment firstfrag;
     public BlankFragment blankfrag;
+    public DialogueFragment dialfrag;
 
     public void init(){
-        weaponManager = new WeaponManagerDialog();
+        manager = new ManagerDialog();
 
         notifrag = new NotificationFragment();
         firstfrag = new FirstLoadFragment();
         blankfrag = new BlankFragment();
+        dialfrag = new DialogueFragment();
 
         multiGroup = new WidgetGroup();
 
@@ -36,5 +38,6 @@ public class YellowUI{
         notifrag.build(multiGroup);
         firstfrag.build(ui.menuGroup);
         blankfrag.build(multiGroup);
+        dialfrag.build(multiGroup);
     }
 }

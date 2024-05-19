@@ -1,9 +1,7 @@
 package yellow.entities.units;
 
-import arc.math.geom.*;
 import mindustry.game.*;
 import mindustry.gen.*;
-import yellow.content.*;
 import yellow.entities.units.entity.*;
 
 public class YellowUnitType extends MagicSpecialistUnitType{

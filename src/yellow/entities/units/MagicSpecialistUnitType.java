@@ -3,8 +3,6 @@ package yellow.entities.units;
 import arc.struct.*;
 import mindustry.game.*;
 import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.meta.*;
 import yellow.entities.units.entity.*;
 import yellow.type.*;
 import yellow.world.meta.*;

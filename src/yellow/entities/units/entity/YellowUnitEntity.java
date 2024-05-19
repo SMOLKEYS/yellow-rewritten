@@ -1,14 +1,10 @@
 package yellow.entities.units.entity;
 
-import arc.*;
-import arc.util.io.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import yellow.comp.*;
-import yellow.content.*;
 import yellow.entities.units.*;
-import yellow.io.*;
 
 public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
 

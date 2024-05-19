@@ -5,6 +5,6 @@ main: "yellow.Yellow"
 description: '''
 A work in progress rewrite of the ultimate shitpost.
 '''
-version: 1B
+version: 2B
 minGameVersion: 146
 java: true

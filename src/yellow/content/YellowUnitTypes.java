@@ -2,7 +2,6 @@ package yellow.content;
 
 import mindustry.type.*;
 import yellow.entities.units.*;
-import yellow.entities.units.entity.*;
 import yellow.type.abilities.*;
 import yellow.type.weapons.*;
 
@@ -35,10 +34,12 @@ public class YellowUnitTypes{
             abilities.addAll(new TeleportAbility(8*25, 8*45));
 
             weapons.add(
-                    YellowWeapons.durability, Mirrorer.get(YellowWeapons.durability.name),
+                    YellowWeapons.durability, Mirrorer.reflect(YellowWeapons.durability),
                     YellowWeapons.endurance,
                     YellowWeapons.fist
             );
+
+            spells.add(YellowSpells.missileInverter);
         }};
     }
 }

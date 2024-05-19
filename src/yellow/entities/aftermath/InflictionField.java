@@ -1,6 +1,6 @@
 package yellow.entities.aftermath;
 
-import arc.math.geom.Position;
+import arc.math.geom.*;
 
 public interface InflictionField extends Position{
 

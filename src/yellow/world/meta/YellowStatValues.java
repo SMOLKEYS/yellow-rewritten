@@ -1,14 +1,10 @@
 package yellow.world.meta;
 
-import arc.*;
-import arc.graphics.g2d.*;
 import arc.struct.*;
-import arc.util.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
 import yellow.type.*;
-import yellow.type.weapons.*;
 
 public class YellowStatValues{
 

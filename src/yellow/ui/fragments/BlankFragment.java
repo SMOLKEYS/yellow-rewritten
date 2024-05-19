@@ -27,4 +27,8 @@ public class BlankFragment implements CommonFragment{
     public void hide(){
         table.visible = false;
     }
+
+    public boolean isShown(){
+        return table.visible;
+    }
 }

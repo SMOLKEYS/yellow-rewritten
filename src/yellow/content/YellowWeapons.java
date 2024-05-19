@@ -16,16 +16,18 @@ public class YellowWeapons{
         durability = new ToggleWeapon("durability"){{
             x = 8*14;
             y = 0;
-            reload = 60*4.5f;
+            reload = 60*4f;
             rotate = true;
 
             shootSound = Sounds.shootBig;
 
-            shoot = new ShootSpread(10, 5);
+            shoot = new ShootSpread(10, 5){{
+                shotDelay = 10;
+            }};
 
-            bullet = new ContinuousLaserBulletType(78){{
+            bullet = new ContinuousLaserBulletType(70){{
                 length = 200f;
-                lifetime = 60*1.8f;
+                lifetime = 60f;
                 hitEffect = Fx.hitMeltdown;
                 hitColor = Pal.meltdownHit;
                 status = StatusEffects.melting;
@@ -37,7 +39,6 @@ public class YellowWeapons{
                 ammoMultiplier = 1f;
             }};
         }};
-        Mirrorer.reflect(durability);
 
         endurance = new ToggleWeapon("endurance"){{
             x = y = 0f;
