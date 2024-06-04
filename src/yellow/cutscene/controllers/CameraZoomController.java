@@ -1,10 +1,12 @@
-package yellow.cutscene;
+package yellow.cutscene.controllers;
 
 import arc.func.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.*;
 import mindustry.core.*;
+import mindustry.gen.*;
+import yellow.cutscene.*;
 
 /** A controller for changing the camera zoom. */
 public class CameraZoomController extends CutsceneController<CameraZoomController>{
@@ -32,7 +34,7 @@ public class CameraZoomController extends CutsceneController<CameraZoomControlle
     @Override
     public void init(){
         curZoom = Vars.renderer.getScale();
-        finalZoom = clamp(zoom);
+        finalZoom = zoom != -1 ? clamp(zoom) : curZoom;
     }
 
     @Override
@@ -45,10 +47,6 @@ public class CameraZoomController extends CutsceneController<CameraZoomControlle
     public void update(){
         curTime += Time.delta;
         Vars.renderer.setScale(Mathf.lerp(curZoom, clamp(finalZoom), progress(interp)));
-    }
-
-    @Override
-    public void onFinish(){
     }
 
     @Override

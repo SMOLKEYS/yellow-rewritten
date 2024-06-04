@@ -14,10 +14,6 @@ public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
         super();
     }
 
-    public static boolean occupied(UnitType type, Team team){
-        return Groups.unit.find(e -> e.type() == type && e.team == team) != null;
-    }
-
     @Override
     public int classId(){
         return mappingId;

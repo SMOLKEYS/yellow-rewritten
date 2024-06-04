@@ -4,13 +4,14 @@ import mindustry.type.*;
 import yellow.entities.units.*;
 import yellow.type.abilities.*;
 import yellow.type.weapons.*;
+import yellow.world.meta.*;
 
 public class YellowUnitTypes{
 
     public static UnitType yellow;
 
     public static void load(){
-        yellow = new YellowUnitType("yellow"){{
+        yellow = new YellowUnitType(new GameCharacter("nihara"), "yellow"){{
             health = 23000;
             lives = 5;
             flying = true;

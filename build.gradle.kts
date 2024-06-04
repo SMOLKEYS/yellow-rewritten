@@ -262,8 +262,8 @@ subprojects {
 
         from(*configurations.runtimeClasspath.get().files.map { if (it.isDirectory) it else zipTree(it) }.toTypedArray())
 
-        from(rootDir) {
-            include("ymod.hjson")
+        from("$rootDir/${project.name}") {
+            include("ext.hjson")
         }
     }
 

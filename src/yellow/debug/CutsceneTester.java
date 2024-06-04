@@ -6,10 +6,10 @@ import mindustry.*;
 import mindustry.game.*;
 import yellow.cutscene.*;
 
-public class UpdateTester{
+public class CutsceneTester{
 
     public static Queue<CutsceneController<?>> queue = new Queue<>();
-    public static CutsceneController<?> active;
+    public static CutsceneController<?> prev, active;
     public static boolean lock = false;
 
     public static void update(){
@@ -19,17 +19,19 @@ public class UpdateTester{
             active.update();
             if(active.isFinished()){
                 active.onFinish();
-                if(active.getPool() != null) active.getPool().free(active);
+                if(prev != null && prev.getPool() != null) prev.getPool().free(prev);
+                prev = active;
                 active = null;
             }
         }else if(!queue.isEmpty()){
             active = queue.removeFirst();
             active.init();
+            active.provide(prev);
         }
     }
 
     public static void load(){
-        Events.run(EventType.Trigger.update, UpdateTester::update);
+        Events.run(EventType.Trigger.update, CutsceneTester::update);
         Vars.control.input.addLock(() -> lock);
     }
 

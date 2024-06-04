@@ -13,7 +13,6 @@ import arc.util.*;
 import mindustry.*;
 import mindustry.game.*;
 import mindustry.ui.*;
-import yellow.dialogue.*;
 import yellow.ui.*;
 import yellow.world.meta.*;
 
@@ -21,7 +20,6 @@ public class DialogueFragment implements CommonFragment{
 
 
     private GameCharacter currentCharacter;
-    private final Queue<Dialogue> queue = new Queue<>();
     private Label nameLabel;
     private FLabel textLabel;
     private float curHeight;
@@ -117,7 +115,7 @@ public class DialogueFragment implements CommonFragment{
     }
 
     /** Toggles the cutscene curtains.
-     * @return true if the operation succeeded (curtains aren't currently entering/exiting the scene). false otherwise. */
+     * @return {@code true} if the operation succeeded (curtains aren't currently entering/exiting the scene). {@code false} otherwise. */
     public boolean toggleCurtains(){
         if(curtop.hasActions() || curbottom.hasActions() || curqueue) return false;
 
@@ -141,5 +139,4 @@ public class DialogueFragment implements CommonFragment{
 
         return true;
     }
-
 }

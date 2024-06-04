@@ -2,31 +2,60 @@ package yellow;
 
 import arc.*;
 import arc.math.*;
+import mindustry.*;
 import mindustry.game.EventType.*;
 import yellow.core.*;
 import yellow.debug.*;
 import yellow.game.*;
+import yellow.mods.*;
 import yellow.ui.*;
 import yellow.util.*;
+import yellow.world.meta.*;
+
+import java.util.concurrent.atomic.*;
+
+import static yellow.game.YellowEventType.*;
 
 public class YellowVars{
 
     public static YellowUI ui;
 
     public static void init(){
+        Events.fire(new YellowFirstStageInitializationEvent());
         ui = new YellowUI();
 
-        Events.on(ClientLoadEvent.class, a -> {
+        Events.run(ClientLoadEvent.class, () -> {
             ui.init();
 
             ModPackageBridger.importPackage("yellow", "yellow.util", "yellow.ui", "yellow.math", "yellow.content", "yellow.cutscene", "yellow.dialogue", "yellow.debug");
-            Autoupdater.load();
+            Autoupdater.checkForUpdates();
             YellowTips.load();
             YellowSettings.load();
             YellowSpecialNotifications.launchNotif();
-            YellowLogic.clientPost();
-            if(Yellow.debug) UpdateTester.load();
 
+            if(Core.settings.getBool("yellow-autoassign-save-ids", true) && !Vars.control.saves.getSaveSlots().isEmpty()){
+                SaveIDAssigner.begin();
+                ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.save-id-results", SaveIDAssigner.overallSaves, SaveIDAssigner.successfulSaves, SaveIDAssigner.skippedSaves, SaveIDAssigner.failedSaves));
+            }
+
+            if(!Yellow.erroredExtensionList.isEmpty()){
+                StringBuilder b = new StringBuilder();
+                Yellow.erroredExtensionList.each(e -> {
+                    b.append(e.file.name()).append(": ").append(e.exception.getClass().getSimpleName()).append("\n");
+                });
+                ui.notifrag.showErrorNotification(Core.bundle.format("yellow.extensions-failed", b.toString()));
+            }
+
+            if(ExtensionCore.extensions.find(e -> e.meta.enabled()) != null) ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.extensions-loaded", ExtensionCore.extensions.select(p -> p.meta.enabled()).size));
+
+            YellowLogic.clientPost();
+            if(Yellow.debug) CutsceneTester.load();
+
+            ExtensionCore.extensions.each(s -> {
+                if(s.meta.enabled()) s.main.clientLoad();
+            });
+
+            Events.fire(new YellowFinalStageInitializationEvent());
             if(Yellow.launchFile().exists()) Yellow.launchFile().delete();
         });
 
@@ -35,6 +64,8 @@ public class YellowVars{
         if(!Core.settings.has("yellow-event-number")){
             Core.settings.put("yellow-event-number", Mathf.random(1, 100));
         }
+
+        Events.fire(new YellowSecondStageInitializationEvent());
     }
 
     public static String getUpdateServer(){

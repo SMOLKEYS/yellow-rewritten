@@ -32,6 +32,10 @@ public class YellowSettings{
 
             t.checkPref("yellow-spell-read-method", true);
 
+            seperatorPref(t, "yellow-startup-section", Icon.wrench, Icon.save);
+
+            t.checkPref("yellow-autoassign-save-ids", true);
+
             seperatorPref(t, "yellow-updating-section");
 
             t.checkPref("yellow-check-for-updates", true);

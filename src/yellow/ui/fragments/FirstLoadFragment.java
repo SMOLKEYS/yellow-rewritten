@@ -22,7 +22,7 @@ public class FirstLoadFragment implements CommonFragment{
     @Override
     public void build(Group parent){
         cur = false;
-        boolean b = Core.settings.getBoolOnce("yellow-first-load");
+        boolean b = Core.settings.getBoolOnce("yellow-first-checkForUpdates");
         if(b) return;
 
         parent.fill(s -> {
@@ -77,7 +77,7 @@ public class FirstLoadFragment implements CommonFragment{
         });
     }
 
-    private String processMeta(Mods.ModMeta meta){
+    public static String processMeta(Mods.ModMeta meta){
         String ver = meta.version.substring(1);
 
         switch(ver){

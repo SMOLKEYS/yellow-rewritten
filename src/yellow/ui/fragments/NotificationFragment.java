@@ -9,6 +9,7 @@ import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import mindustry.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
@@ -18,7 +19,7 @@ import yellow.ui.*;
 public class NotificationFragment implements CommonFragment{
 
     private Table table;
-    private Drawable persistent;
+    private Drawable persistent, error;
     private Label.LabelStyle lstyle;
 
     @Override
@@ -31,6 +32,7 @@ public class NotificationFragment implements CommonFragment{
             s.y = -100;
         });
         persistent = ((TextureRegionDrawable) Tex.whiteui).tint(Pal.accent.cpy().a(0.5f));
+        error = ((TextureRegionDrawable) Tex.whiteui).tint(Pal.remove.cpy().a(0.5f));
         lstyle = new Label.LabelStyle(Fonts.outline, Color.white);
     }
 
@@ -201,6 +203,72 @@ public class NotificationFragment implements CommonFragment{
                     Actions.translateBy(width, 0, 1, Interp.pow3In),
                     Actions.run(() -> {
                         table.getCells().remove(t);
+                    }),
+                    Actions.remove()
+            ));
+        });
+        tr.setTranslation(width, 0);
+        tr.actions(Actions.translateBy(-width, 0, 1, Interp.pow3Out));
+        t.row();
+    }
+
+    // --- NEAR-EXACT COPY OF ABOVE METHODS ---
+
+    public void showErrorNotification(String message){
+        showErrorNotification(Icon.warning, message);
+    }
+
+    public void showErrorNotification(String message, Throwable throwable){
+        showErrorNotification(Icon.warning, throwable, message);
+    }
+
+    public void showErrorNotification(String message, Runnable clicked){
+        showErrorNotification(Icon.warning, message, clicked);
+    }
+
+    public void showErrorNotification(String message, Throwable throwable, Runnable clicked){
+        showErrorNotification(Icon.warning, message, () -> {
+            Vars.ui.showException(message, throwable);
+            clicked.run();
+        });
+    }
+
+    public void showErrorNotification(Drawable icon, String message){
+        showErrorNotification(icon, message, () -> {});
+    }
+
+    public void showErrorNotification(Drawable icon, Throwable throwable, String message){
+        showErrorNotification(icon, message, () -> Vars.ui.showException(message, throwable));
+    }
+
+    public void showErrorNotification(Drawable icon, String message, Runnable clicked){
+        showErrorNotification(icon, message, 150, 70, clicked);
+    }
+
+    public void showErrorNotification(Drawable icon, Throwable throwable, String message, Runnable clicked){
+        showErrorNotification(icon, message, 150, 70, () -> {
+            Vars.ui.showException(message, throwable);
+            clicked.run();
+        });
+    }
+
+    public void showErrorNotification(Drawable icon, String message, float minWidth, float minHeight, Runnable clicked){
+        Cell<Table> t = table.table(error).minHeight(minHeight).minWidth(minWidth);
+        Table tr = t.get();
+        t.right();
+        tr.right();
+        tr.image(icon).size(32).scaling(Scaling.fit).pad(15).padLeft(20);
+        tr.add(message).style(lstyle).grow().pad(10).padRight(8);
+        float width = Math.max(tr.getMinWidth(), minWidth);
+        tr.clicked(() -> {
+            tr.hovered(() -> {});
+            tr.exited(() -> {});
+            tr.clicked(() -> {});
+            tr.actions(Actions.sequence(
+                    Actions.translateBy(width, 0, 1, Interp.pow3In),
+                    Actions.run(() -> {
+                        table.getCells().remove(t);
+                        clicked.run();
                     }),
                     Actions.remove()
             ));

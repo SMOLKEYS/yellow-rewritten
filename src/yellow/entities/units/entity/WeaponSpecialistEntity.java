@@ -5,7 +5,7 @@ import arc.util.io.*;
 import mindustry.gen.*;
 import yellow.io.*;
 
-public class WeaponSpecialistEntity extends UnitEntity{
+public class WeaponSpecialistEntity extends CharacterEntity{
 
     private static final int mappingId = EntityMapping.register("weapon-specialist-unit", WeaponSpecialistEntity::new);
 

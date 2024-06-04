@@ -4,6 +4,8 @@ import arc.func.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.util.pooling.*;
+import mindustry.gen.*;
+import yellow.cutscene.controllers.*;
 
 public class Controllers{
 
@@ -53,6 +55,18 @@ public class Controllers{
         camera.time = time;
         camera.interp = interp;
         return camera;
+    }
+
+    /** @return A controller that transfers the player to the specified unit that was focused on by the last controller. */
+    public static TransferPlayerController playerTransfer(){
+        return controller(TransferPlayerController.class, TransferPlayerController::new);
+    }
+
+    /** @return A controller that transfers the player to the specified unit. */
+    public static TransferPlayerController playerTransfer(Unit target){
+        TransferPlayerController transfer = controller(TransferPlayerController.class, TransferPlayerController::new);
+        transfer.target = target;
+        return transfer;
     }
 
     public static ParallelController parallel(CutsceneController<?>... controllers){

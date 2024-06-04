@@ -10,7 +10,7 @@ import mindustry.type.*;
 import yellow.entities.units.entity.*;
 import yellow.world.meta.*;
 
-public class MultiLifeUnitType extends UnitType{
+public class MultiLifeUnitType extends CharacterUnitType{
     /** How many lives this unit has. */
     public int lives = 1;
     /** Invincibility frames this unit gets when losing a life. */
@@ -22,8 +22,8 @@ public class MultiLifeUnitType extends UnitType{
     /** Visual effect used when a life is consumed. */
     public Effect deathStopEffect = Fx.none;
 
-    public MultiLifeUnitType(String name){
-        super(name);
+    public MultiLifeUnitType(GameCharacter character, String name){
+        super(character, name);
         constructor = MultiLifeUnitEntity::new;
     }
 

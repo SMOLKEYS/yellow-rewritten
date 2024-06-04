@@ -2,6 +2,7 @@ package yellow.core;
 
 import arc.*;
 import yellow.comp.*;
+import yellow.world.meta.*;
 
 import static mindustry.game.EventType.*;
 
@@ -25,12 +26,6 @@ public class YellowLogic{
     }
 
     public static void clientPost(){
-        /*
-        Events.run(Trigger.update, () -> {
-            if(Core.input.keyTap(KeyCode.comma) && Vars.player.unit() instanceof WeaponSpecialistEntity w && !YellowVars.ui.weaponManager.isShown()){
-                YellowVars.ui.weaponManager.show(w);
-            }
-        });
-         */
+        Events.run(Trigger.update, SaveIDAssigner::update);
     }
 }

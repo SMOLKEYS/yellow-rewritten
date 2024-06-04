@@ -7,7 +7,7 @@ import yellow.util.*;
 
 public class Autoupdater{
 
-    public static void load(){
+    public static void checkForUpdates(){
         if(!Core.settings.getBool("yellow-check-for-updates", true)) return;
 
         Mods.ModMeta meta = Yellow.meta();

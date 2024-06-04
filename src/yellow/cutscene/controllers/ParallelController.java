@@ -1,7 +1,8 @@
-package yellow.cutscene;
+package yellow.cutscene.controllers;
 
 import arc.func.*;
 import arc.struct.*;
+import yellow.cutscene.*;
 
 /** Allows execution of multiple controllers at once.
  * May yield unruly results if two controllers of the same type are used. */
@@ -43,18 +44,13 @@ public class ParallelController extends CutsceneController<ParallelController>{
     }
 
     @Override
-    public void onFinish(){
-
+    public void provide(CutsceneController<?> provider){
+        for(int i = 0; i < controllers.size; i++) controllers.get(i).provide(provider);
     }
 
     @Override
     public boolean isFinished(){
         return controllers.isEmpty();
-    }
-
-    @Override
-    public float progress(){
-        return 0;
     }
 
     @Override

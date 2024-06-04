@@ -11,8 +11,8 @@ public class MagicSpecialistUnitType extends MultiLifeUnitType{
 
     public Seq<Spell> spells = new Seq<>();
 
-    public MagicSpecialistUnitType(String name){
-        super(name);
+    public MagicSpecialistUnitType(GameCharacter character, String name){
+        super(character, name);
         constructor = MagicSpecialistEntity::new;
     }
 

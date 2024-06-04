@@ -1,10 +1,12 @@
-package yellow.cutscene;
+package yellow.cutscene.controllers;
 
 import arc.*;
 import arc.func.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
+import mindustry.gen.*;
+import yellow.cutscene.*;
 
 /** A controller for moving the camera. */
 @SuppressWarnings("unused")
@@ -67,10 +69,6 @@ public class CameraMoveController extends CutsceneController<CameraMoveControlle
     }
 
     @Override
-    public void onFinish(){
-    }
-
-    @Override
     public boolean isFinished(){
         return Core.camera.position.within(finalX, finalY, 3f);
     }
@@ -81,6 +79,11 @@ public class CameraMoveController extends CutsceneController<CameraMoveControlle
     }
 
     @Override
+    public Object data(){
+        return target;
+    }
+
+    @Override
     public void reset(){
         super.reset();
         target = null;
@@ -88,7 +91,7 @@ public class CameraMoveController extends CutsceneController<CameraMoveControlle
         time = 0f;
         interp = Interp.linear;
         moveMode = MoveMode.to;
-        finalX = finalY = 0f;
+        initX = initY = finalX = finalY = 0f;
         curTime = 0f;
         pool = null;
     }
