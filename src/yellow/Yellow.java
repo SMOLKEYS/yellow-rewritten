@@ -35,7 +35,7 @@ public class Yellow extends Mod{
             return;
         }
 
-        launchFile().writeString("go away");
+        if(!Vars.clientLoaded) launchFile().writeString("go away");
 
         Fi extdir = configDir().child("extensions");
         extdir.mkdirs();

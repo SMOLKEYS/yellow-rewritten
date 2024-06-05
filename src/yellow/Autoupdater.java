@@ -68,7 +68,7 @@ public class Autoupdater{
                 }
 
 
-                if(Strings.parseFloat(metav.substring(d2, d2 + 1)) < Strings.parseFloat(inp.substring(d, d + 1))) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", meta.version, inp));
+                if(Strings.parseFloat(metav.substring(d2 - 1, d2)) < Strings.parseFloat(inp.substring(d - 1, d))) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", meta.version, inp));
             }
         }
     }

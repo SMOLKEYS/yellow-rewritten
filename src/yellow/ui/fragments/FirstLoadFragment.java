@@ -78,7 +78,15 @@ public class FirstLoadFragment implements CommonFragment{
     }
 
     public static String processMeta(Mods.ModMeta meta){
-        String ver = meta.version.substring(1);
+        int d = 0;
+
+        for(int i = 0; i < meta.version.length(); i++){
+            char ch = meta.version.charAt(i);
+            //support floating point
+            if(Character.isDigit(i) || ch == '.') d++;
+        }
+
+        String ver = meta.version.substring(d - 1);
 
         switch(ver){
             case "S" -> {
