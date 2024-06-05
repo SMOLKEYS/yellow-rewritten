@@ -51,10 +51,6 @@ public class YellowVars{
             YellowLogic.clientPost();
             if(Yellow.debug) CutsceneTester.load();
 
-            ExtensionCore.extensions.each(s -> {
-                if(s.meta.enabled()) s.main.clientLoad();
-            });
-
             Events.fire(new YellowFinalStageInitializationEvent());
             if(Yellow.launchFile().exists()) Yellow.launchFile().delete();
         });

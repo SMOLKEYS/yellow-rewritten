@@ -99,7 +99,11 @@ public class Yellow extends Mod{
         YellowSpells.load();
         YellowUnitTypes.load();
         extensions.each(s -> {
-            if(s.meta.enabled()) s.main.loadContent();
+            try{
+                if(s.meta.enabled()) s.main.loadContent();
+            }catch(Exception e){
+                throw new RuntimeException("Extension " + s.name + " contains content that failed to load.", e);
+            }
         });
         Events.fire(new YellowContentInitEvent());
     }

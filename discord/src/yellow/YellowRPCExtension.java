@@ -7,8 +7,11 @@ import arc.struct.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import yellow.game.*;
 import yellow.mods.*;
 import yellow.ui.fragments.*;
+
+import static yellow.game.YellowEventType.*;
 
 //TODO untested nor finished
 public class YellowRPCExtension extends YellowExtension{
@@ -24,22 +27,20 @@ public class YellowRPCExtension extends YellowExtension{
     };
 
     public YellowRPCExtension(){
-    }
+        Events.run(YellowFinalStageInitializationEvent.class, () -> {
+            try{
+                DiscordRPC.close();
+                Log.info("Vanilla RPC closed.");
+                DiscordRPC.connect(1204425960037027900L);
+                Log.info("Yellow RPC initialized.");
+                send();
+                YellowVars.ui.notifrag.showNotification("Yellow RPC backend initialized.");
+            }catch(Exception e){
+                YellowVars.ui.notifrag.showErrorNotification("Yellow RPC backend failed to initialize.", e);
+            }
 
-    @Override
-    public void clientLoad(){
-        try{
-            DiscordRPC.close();
-            Log.info("Vanilla RPC closed.");
-            DiscordRPC.connect(1204425960037027900L);
-            Log.info("Yellow RPC initialized.");
-            send();
-            YellowVars.ui.notifrag.showNotification("Yellow RPC backend initialized.");
-        }catch(Exception e){
-            YellowVars.ui.notifrag.showErrorNotification("Yellow RPC backend failed to initialize.", e);
-        }
-
-        Timer.schedule(YellowRPCExtension::send, 15, 15);
+            Timer.schedule(YellowRPCExtension::send, 15, 15);
+        });
     }
 
     public static void send(){

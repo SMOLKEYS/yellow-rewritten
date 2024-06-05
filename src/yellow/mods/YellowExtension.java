@@ -4,16 +4,11 @@ import yellow.*;
 
 public abstract class YellowExtension{
 
-
-    public void init(){
-
-    }
-
-    public void clientLoad(){
-
-    }
-
+    /** Note that content that suffers errors during the extension content loading phase will be pinpointed back to Yellow. */
     public void loadContent(){
 
+    }
+
+    public void init(){
     }
 }

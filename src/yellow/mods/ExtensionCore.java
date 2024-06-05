@@ -36,7 +36,8 @@ public class ExtensionCore{
         return m;
     }
 
-    /** Similar to {@link mindustry.mod.Mods.LoadedMod LoadedMod}, see for reference and documentation. ALWAYS a jar. */
+    /** Similar to {@link mindustry.mod.Mods.LoadedMod LoadedMod}, see for reference and documentation. ALWAYS a jar.
+     * Note that an extension being loaded does not necessarily mean it is enabled. */
     public static class LoadedExtension{
         public final String name;
         public final Fi file;
@@ -55,7 +56,7 @@ public class ExtensionCore{
     }
 
     public static class ExtensionMeta{
-        public String name, main;
+        public String name, main, modVersion;
         public @Nullable String displayName, author, description, version, repo;
 
         public boolean enabled(){
