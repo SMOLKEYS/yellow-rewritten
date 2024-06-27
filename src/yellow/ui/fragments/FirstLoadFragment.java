@@ -22,7 +22,7 @@ public class FirstLoadFragment implements CommonFragment{
     @Override
     public void build(Group parent){
         cur = false;
-        boolean b = Core.settings.getBoolOnce("yellow-first-checkForUpdates");
+        boolean b = Core.settings.getBoolOnce("yellow-first-load");
         if(b) return;
 
         parent.fill(s -> {
@@ -82,11 +82,10 @@ public class FirstLoadFragment implements CommonFragment{
 
         for(int i = 0; i < meta.version.length(); i++){
             char ch = meta.version.charAt(i);
-            //support floating point
-            if(Character.isDigit(i) || ch == '.') d++;
+            if(Character.isDigit(ch) || ch == '.') d++;
         }
 
-        String ver = meta.version.substring(d - 1);
+        String ver = meta.version.substring(d);
 
         switch(ver){
             case "S" -> {
@@ -95,8 +94,8 @@ public class FirstLoadFragment implements CommonFragment{
             case "B" -> {
                 return "[cyan]Beta[]";
             }
-            case "RC" -> {
-                return "[yellow]Release Candidate[]";
+            case "D" -> {
+            	return "[purple]Developer Build[]";
             }
         }
 

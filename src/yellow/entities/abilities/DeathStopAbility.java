@@ -1,4 +1,4 @@
-package yellow.type;
+package yellow.entities.abilities;
 
 
 import mindustry.entities.abilities.*;

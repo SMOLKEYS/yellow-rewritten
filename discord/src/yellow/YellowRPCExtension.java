@@ -5,15 +5,16 @@ import arc.discord.*;
 import arc.util.*;
 import arc.struct.*;
 import mindustry.game.*;
+import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import yellow.game.*;
 import yellow.mods.*;
+import yellow.ui.*;
 import yellow.ui.fragments.*;
 
 import static yellow.game.YellowEventType.*;
 
-//TODO untested nor finished
 public class YellowRPCExtension extends YellowExtension{
 
     public static DiscordRPC.RichPresence presence = new DiscordRPC.RichPresence();
@@ -27,20 +28,23 @@ public class YellowRPCExtension extends YellowExtension{
     };
 
     public YellowRPCExtension(){
-        Events.run(YellowFinalStageInitializationEvent.class, () -> {
-            try{
-                DiscordRPC.close();
-                Log.info("Vanilla RPC closed.");
-                DiscordRPC.connect(1204425960037027900L);
-                Log.info("Yellow RPC initialized.");
-                send();
-                YellowVars.ui.notifrag.showNotification("Yellow RPC backend initialized.");
-            }catch(Exception e){
-                YellowVars.ui.notifrag.showErrorNotification("Yellow RPC backend failed to initialize.", e);
-            }
 
-            Timer.schedule(YellowRPCExtension::send, 15, 15);
-        });
+    }
+
+    @Override
+    public void clientLoad(){
+        try{
+            DiscordRPC.close();
+            Log.info("Vanilla RPC closed.");
+            DiscordRPC.connect(1204425960037027900L);
+            Log.info("Yellow RPC initialized.");
+            send();
+            YellowVars.ui.notifrag.showNotification("Yellow RPC backend initialized.");
+        }catch(Exception e){
+             YellowVars.ui.notifrag.showErrorNotification("Yellow RPC backend failed to initialize.", e);
+        }
+
+    	Timer.schedule(YellowRPCExtension::send, 15, 15);
     }
 
     public static void send(){
@@ -53,6 +57,7 @@ public class YellowRPCExtension extends YellowExtension{
 
             DiscordRPC.send(presence);
         }catch(Exception e){
+            Log.err(e);
             //YellowVars.ui.notifrag.showErrorNotification("Yellow RPC presence properties failed to set, for some reason.", e);
         }
     }

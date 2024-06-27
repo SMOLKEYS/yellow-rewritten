@@ -3,8 +3,8 @@ name: "yellow"
 author: "SMOLKEYS"
 main: "yellow.Yellow"
 description: '''
-A work in progress rewrite of the ultimate shitpost.
+When passion collides with the shitposter's mind.
 '''
-version: 5.1B
+version: 1S
 minGameVersion: 146
 java: true

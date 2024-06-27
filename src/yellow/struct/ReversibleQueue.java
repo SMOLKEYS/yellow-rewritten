@@ -5,7 +5,6 @@ import arc.struct.*;
 /** A {@link Queue} that allows temporarily storing objects removed through {@link #removeFirst()} or {@link #clear()} in a backing queue. */
 public class ReversibleQueue<T> extends Queue<T>{
     public Queue<T> removedValues;
-    private boolean persist = false;
 
     public ReversibleQueue(){
         super();
@@ -24,7 +23,6 @@ public class ReversibleQueue<T> extends Queue<T>{
 
     @Override
     public T removeFirst(){
-        if(!persist) return super.removeFirst();
         T elem = super.removeFirst();
         removedValues.add(elem);
         return elem;
@@ -32,11 +30,6 @@ public class ReversibleQueue<T> extends Queue<T>{
 
     @Override
     public void clear(){
-        if(!persist){
-            super.clear();
-            return;
-        }
-
         while(size > 0){
             removeFirst();
         }
@@ -56,16 +49,16 @@ public class ReversibleQueue<T> extends Queue<T>{
         while(!removedValues.isEmpty()) revert();
     }
 
-    /** Configures object persistence. */
-    public void setPersistence(boolean persist){
-        this.persist = persist;
-    }
-
     /** Flushes the removed objects from the backing queue, shrinks it to free memory, then resizes it to accommodate all the current items in this queue. */
-    public void flush(){
+    public void flushBackingQueue(){
         if(removedValues.isEmpty()) return;
         removedValues.clear();
         removedValues.shrink();
         removedValues.ensureCapacity(size);
+    }
+
+    public void clearAll(){
+        if(!isEmpty()) super.clear();
+        if(!removedValues.isEmpty()) removedValues.clear();
     }
 }

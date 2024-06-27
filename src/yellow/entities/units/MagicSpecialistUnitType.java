@@ -9,6 +9,12 @@ import yellow.world.meta.*;
 
 public class MagicSpecialistUnitType extends MultiLifeUnitType{
 
+
+    /** Maximum mana this unit can hold. */
+    public float mana;
+    /** Mana recovery speed per tick. */
+    public float manaRecovery = 1f;
+
     public Seq<Spell> spells = new Seq<>();
 
     public MagicSpecialistUnitType(GameCharacter character, String name){

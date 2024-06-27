@@ -10,10 +10,12 @@ public class Mirrorer{
     public static ToggleWeapon reflect(ToggleWeapon source, ReflectProperty... properties){
         if(mirrors.containsKey(source.name)) return mirrors.get(source.name);
         var t = source.copy();
+
         t.name = source.name + "-mirror";
         t.displayName = source.displayName + " (Mirror)";
         t.x = -source.x;
 
+        source.mirrored = t;
         t.original = source;
 
         for(var s: properties){

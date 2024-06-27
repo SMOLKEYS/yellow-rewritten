@@ -5,7 +5,6 @@ import arc.math.*;
 import arc.util.*;
 import mindustry.*;
 import mindustry.core.*;
-import mindustry.gen.*;
 import yellow.cutscene.*;
 
 /** A controller for changing the camera zoom. */

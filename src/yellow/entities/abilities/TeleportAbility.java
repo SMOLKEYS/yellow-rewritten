@@ -1,13 +1,14 @@
-package yellow.type.abilities;
+package yellow.entities.abilities;
 
 import arc.math.*;
 import arc.math.geom.*;
+import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
-import yellow.type.*;
+import yellow.world.meta.*;
 
 public class TeleportAbility extends DeathStopAbility{
 
@@ -38,8 +39,15 @@ public class TeleportAbility extends DeathStopAbility{
     }
 
     @Override
+    public void addStats(Table t){
+        t.add("[lightgray]" + YellowStats.minDst.localized() + ": [white]" + Strings.fixed(minTeleportDistance/8, 1) + " blocks");
+        t.row();
+        t.add("[lightgray]" + YellowStats.maxDst.localized() + ": [white]" + Strings.fixed(maxTeleportDistance/8, 1) + " blocks");
+        t.row();
+    }
+
+    @Override
     public void onDeath(Unit unit){
-        Log.info(this + ".onDeath() called!");
         float fx = Mathf.range(minTeleportDistance, maxTeleportDistance), fy = Mathf.range(minTeleportDistance, maxTeleportDistance);;
 
         if(unit.x + fx > Vars.world.width() * 8f || unit.x + fx < 0f || unit.y + fy > Vars.world.height() * 8f || unit.y + fy < 0f){

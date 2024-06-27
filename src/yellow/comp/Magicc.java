@@ -5,6 +5,8 @@ import yellow.entities.units.*;
 
 public interface Magicc extends Position{
 
+    float manaf();
+
     float mana();
 
     void mana(float mana);

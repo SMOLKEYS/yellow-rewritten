@@ -1,12 +1,11 @@
 package yellow.entities.units.entity;
 
 import mindustry.gen.*;
-import mindustry.type.*;
 import yellow.entities.units.*;
 
 public class CharacterEntity extends UnitEntity{
 
-    private static final int mappingId = EntityMapping.register("character-entity", CharacterEntity::new);
+    private static final int mappingId = EntityMapping.register("character-unit", CharacterEntity::new);
 
     public CharacterEntity(){
         super();

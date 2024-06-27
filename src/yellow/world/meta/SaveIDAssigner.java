@@ -2,57 +2,72 @@ package yellow.world.meta;
 
 import arc.math.*;
 import arc.struct.*;
-import arc.util.*;
 import mindustry.*;
 import mindustry.game.*;
 import mindustry.type.*;
+import yellow.util.*;
 
 import java.util.*;
 
 public class SaveIDAssigner{
 
-    public static int skippedSaves, failedSaves, successfulSaves, overallSaves;
     static String collection = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-";
     static Rand r = new Rand();
 
-    public static String generate(){
-        StringBuilder c16 = new StringBuilder();
-        for(int i = 0; i < 17; i++) c16.append(collection.charAt(r.random(0, collection.length() - 1)));
-        return c16.toString();
+    public static String generate(int amount){
+        StringBuilder c = new StringBuilder(amount);
+        for(int i = 0; i < amount; i++) c.append(Stringf.random(collection, r));
+        return c.toString();
     }
 
-    /** Iterates over ALL saves and assigns a special ID to them. */
-    public static void begin(){
-        Vars.control.saves.getSaveSlots().each(s -> {
-            overallSaves++;
+    /**
+     * Assigns a randomly generated 16 character string to the save. May freeze the game momentarily.
+     * Sectors are given an extended ID. ({@code "planet-sectorid-baseid"})
+     * @return {@code true} if the operation succeeds or if the save already has an ID. {@code false} otherwise.
+     */
+    public static boolean assignId(Saves.SaveSlot save){
+        if(save.meta.rules.tags.containsKey("yellow-save-id")) return true;
 
-            if(s.meta.rules.tags.containsKey("yellow-save-id")){
-                skippedSaves++;
-                return;
-            }
+        Saves.SaveSlot cur = Vars.control.saves.getCurrent();
+        Rules crules = Vars.state.rules;
 
-            //ids are generated in the following way:
-            //planet(nullable)-sectorid(nullable)-<random 16 character sequence, a-z, A-Z, 0-9, underscore, dash>
+        if(save != cur){
             try{
                 StringBuilder builder = new StringBuilder();
-                Sector sector = s.getSector();
+                Sector sector = save.meta.rules.sector;
                 Planet planet = sector != null ? sector.planet : null;
 
                 if(planet != null) builder.append(planet.name).append("-");
                 if(sector != null) builder.append(sector.id).append("-");
-                builder.append(generate());
+                builder.append(generate(16));
 
-                s.load();
-                s.meta.rules.tags.put("yellow-save-id", builder.toString());
-                Vars.state.rules = s.meta.rules;
-                s.save();
+                save.load();
+                Vars.state.rules = save.meta.rules;
+                save.meta.rules.tags.put("yellow-save-id", builder.toString());
+                save.save();
+                Vars.state.rules = crules;
 
-                successfulSaves++;
+                return true;
             }catch(Exception e){
-                Log.err(e);
-                failedSaves++;
+                return false;
             }
-        });
+        }else{
+            try{
+                StringBuilder builder = new StringBuilder();
+                Sector sector = Vars.state.rules.sector;
+                Planet planet = sector != null ? sector.planet : null;
+
+                if(planet != null) builder.append(planet.name).append("-");
+                if(sector != null) builder.append(sector.id).append("-");
+                builder.append(generate(16));
+
+                Vars.state.rules.tags.put("yellow-save-id", builder.toString());
+
+                return true;
+            }catch(Exception e){
+                return false;
+            }
+        }
     }
 
     public static void update(){
@@ -66,7 +81,7 @@ public class SaveIDAssigner{
 
                 if(planet != null) builder.append(planet.name).append("-");
                 if(sector != null) builder.append(sector.id).append("-");
-                builder.append(generate());
+                builder.append(generate(16));
 
                 map.put("yellow-save-id", builder.toString());
             }

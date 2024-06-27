@@ -1,19 +1,22 @@
 package yellow.game;
 
 import arc.*;
-import arc.flabel.*;
+import arc.func.*;
 import arc.scene.style.*;
 import arc.struct.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import mindustry.ui.dialogs.*;
 import yellow.*;
+
 
 @SuppressWarnings("ALL")
 public class YellowSpecialNotifications{
 
     public static Seq<Trio> nots = Seq.with(
             Trio.with(Icon.download.tint(Pal.accent), Core.bundle.get("yellow.specnof-fos-notif"), () -> {
+                /*
+                TODO to be redone
+
                 BaseDialog d = new BaseDialog("@yellow.specnof-fos-title");
                 d.addCloseButton();
 
@@ -25,33 +28,39 @@ public class YellowSpecialNotifications{
                 d.cont.add("@yellow.specnof-fos-tryout").row();
                 d.cont.button("@yellow.specnof-fos-repo", () -> Core.app.openURI("https://github.com/TeamOct/fictional-octo-system")).wrapLabel(false).row();
 
-
-
                 d.show();
-            })
+                 */
+            }, () -> !Core.settings.getBool("mod-fos-enabled", false))
     );
 
     public static void launchNotif(){
         if(!Core.settings.getBool("yellow-enable-special-notifications", true)) return;
         Trio t = nots.random();
 
-        YellowVars.ui.notifrag.showPersistentNotification(t.a, t.b, t.c);
+        if(t.conditions.get()) YellowVars.ui.notifrag.showPersistentNotification(t.icon, t.text, t.clicked);
     }
 
 
     public static class Trio{
-        public Drawable a;
-        public String b;
-        public Runnable c;
+        public Drawable icon;
+        public String text;
+        public Runnable clicked;
+        public Boolp conditions = () -> true;
 
-        public Trio(Drawable a, String b, Runnable c){
-            this.a = a;
-            this.b = b;
-            this.c = c;
+        public Trio(Drawable icon, String text, Runnable clicked){
+            this.icon = icon;
+            this.text = text;
+            this.clicked = clicked;
         }
 
         public static Trio with(Drawable a, String b, Runnable c){
             return new Trio(a, b, c);
+        }
+
+        public static Trio with(Drawable a, String b, Runnable c, Boolp d){
+            Trio t = new Trio(a, b, c);
+            t.conditions = d;
+            return t;
         }
     }
 }

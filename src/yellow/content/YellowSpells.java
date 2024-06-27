@@ -9,8 +9,8 @@ public class YellowSpells{
 
     public static void load(){
         missileInverter = new Spell("missile-inverter"){{
-            cooldown = 60*10;
-            manaCost = 250;
+            cooldown = 60*3.5f;
+            manaCost = 550;
 
             aftermath.add(new MissileInverter());
         }};

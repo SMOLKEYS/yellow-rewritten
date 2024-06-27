@@ -1,75 +1,121 @@
 package yellow;
 
 import arc.*;
+import arc.struct.*;
 import arc.util.*;
 import mindustry.mod.*;
 import yellow.util.*;
 
-import java.util.*;
-
 public class Autoupdater{
 
-    public static void checkForUpdates(){
-        if(!Core.settings.getBool("yellow-check-for-updates", true)) return;
+    static Seq<StableBundle> bundles = new Seq<>();
+    static boolean hasStable = false;
+
+    public static void checkForUpdates(boolean manual){
+        if(!Core.settings.getBool("yellow-check-for-updates", true) && !manual) return;
 
         Mods.ModMeta meta = Yellow.meta();
 
+        if(!meta.version.endsWith("S") && !meta.version.endsWith("B")){
+            YellowVars.ui.notifrag.showNotification("@yellow.ignorever");
+            return;
+        }
+
         YellowNetworking.repoReleases(YellowVars.getUpdateServer(), root -> {
+            if(root == null){
+            	Log.warn("Autoupdater errored out during checking; cancelling.");
+            	return;
+            }
             String[] versions = new String[root.size];
             //insert version strings from right to left, with the oldest release as the first entry and the newest as the last
             for(int i = 0; i < root.size; i++) versions[root.size - 1 - i] = root.get(i).getString("name", "0S").split(" ")[0];
 
-            String stable = null, beta = null, releaseCandidate = null;
+            StableBundle sb = new StableBundle();
 
-            for(var s: versions){
-                int d = 0;
+            for(int i = 0; i < versions.length; i++){
+                String cv = versions[i];
 
-                for(int i = 0; i < s.length(); i++){
-                    char ch = s.charAt(i);
-                    //support floating point
-                    if(Character.isDigit(i) || ch == '.') d++;
-                }
-
-                switch(s.substring(d)){
-                    case "S" -> {
-                        stable = s;
-                    }
-                    case "B" -> {
-                        beta = s;
-                    }
-                    case "RC" -> {
-                        releaseCandidate = s;
+                if(cv.endsWith("S") && sb.st == null){
+                    sb.st = cv;
+                }else if(sb.st != null && cv.endsWith("S")){
+                    sb.from = Stringf.handleNumber(versions[Structs.indexOf(versions, sb.st) + 1]);
+                    sb.until = Stringf.handleNumber(versions[i - 1]);
+                    bundles.add(sb);
+                    sb = new StableBundle();
+                    sb.st = cv;
+                    if(Stringf.handleNumber(sb.st) == 1){
+                        sb.from = Stringf.handleNumber(versions[Structs.indexOf(versions, sb.st) + 1]);
+                        sb.until = Stringf.handleNumber(versions[versions.length - 1]);
+                        bundles.add(sb);
                     }
                 }
             }
 
-            process(meta, new String[]{stable, beta, releaseCandidate});
-        });
+            process(meta, versions);
+        }, e -> Core.app.post(() -> {
+            Log.err(e);
+            YellowVars.ui.notifrag.showErrorNotification("@yellow.failver", e);
+        }));
     }
 
     private static void process(Mods.ModMeta meta, String[] input){
-        for(String inp : input){
-            if(inp != null){
-                int d = 0;
-                int d2 = 0;
+        String curVer = meta.version;
 
-                for(int i = 0; i < inp.length(); i++){
-                    char ch = inp.charAt(i);
-                    //support floating point
-                    if(Character.isDigit(i) || ch == '.') d++;
-                }
+        if(!curVer.endsWith("S") && !curVer.endsWith("B")){
+            YellowVars.ui.notifrag.showPersistentNotification("@yellow.ignorever");
+            return;
+        }
 
-                String metav = meta.version;
+        String[] stables = Structs.filter(String.class, input, s -> s.endsWith("S"));
+        String[] betas = Structs.filter(String.class, input, s -> s.endsWith("B"));
+        float curVerF = Stringf.handleNumber(curVer);
 
-                for(int i = 0; i < metav.length(); i++){
-                    char ch = metav.charAt(i);
-                    //support floating point
-                    if(Character.isDigit(i) || ch == '.') d2++;
-                }
-
-
-                if(Strings.parseFloat(metav.substring(d2 - 1, d2)) < Strings.parseFloat(inp.substring(d - 1, d))) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", meta.version, inp));
+        bundles.each(e -> {
+            if(e.inRange(curVerF)){
+                YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newstver", curVer, e.st));
+                hasStable = true;
             }
+
+            if(!hasStable){
+                String ss = null;
+
+                try{
+                    ss = betas[Structs.indexOf(betas, curVer) + 1];
+                }catch(Exception ex){
+                    //ignore
+                }
+
+                if(ss != null) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", curVer, ss));
+            }else{
+                String ss = null;
+
+                try{
+                    ss = stables[Structs.indexOf(stables, curVer) + 1];
+                }catch(Exception ex){
+                    //ignore, again
+                }
+
+                if(ss != null) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", curVer, ss));
+            }
+        });
+    }
+
+    static class StableBundle{
+        public String st;
+        public float from, until;
+
+        public StableBundle(String st, float from, float until){
+            this.st = st;
+            this.from = from;
+            this.until = until;
+        }
+
+        public StableBundle(){
+
+        }
+
+        public boolean inRange(float input){
+            return input <= from && input >= until;
         }
     }
 }

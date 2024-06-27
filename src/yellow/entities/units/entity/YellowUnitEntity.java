@@ -1,14 +1,14 @@
 package yellow.entities.units.entity;
 
-import mindustry.game.*;
 import mindustry.gen.*;
-import mindustry.type.*;
 import yellow.comp.*;
 import yellow.entities.units.*;
 
 public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
 
     private static final int mappingId = EntityMapping.register("yellow-unit", YellowUnitEntity::new);
+
+    public AbilityEntry[] abilityEntries;
 
     public YellowUnitEntity(){
         super();
@@ -46,7 +46,14 @@ public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
     }
 
     @Override
+    public void remove(){
+        if(hasLives()) return;
+        super.remove();
+    }
+
+    @Override
     public void kill(){
         super.destroy();
     }
+
 }

@@ -3,8 +3,6 @@ package yellow.game;
 import yellow.*;
 import yellow.entities.units.entity.*;
 
-import static mindustry.game.EventType.*;
-
 @SuppressWarnings("ClassCanBeRecord")
 public class YellowEventType{
 

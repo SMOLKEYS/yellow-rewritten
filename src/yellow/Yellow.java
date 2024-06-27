@@ -8,7 +8,6 @@ import mindustry.*;
 import mindustry.game.EventType.*;
 import mindustry.mod.*;
 import yellow.content.*;
-import yellow.game.*;
 import yellow.mods.*;
 
 import static yellow.game.YellowEventType.*;
@@ -22,10 +21,6 @@ public class Yellow extends Mod{
     static Seq<ErroneousExtension> erroredExtensionList = new Seq<>();
 
     public Yellow(){
-        if(flameSpecial()){
-            Log.info("yellow load canceled");
-            return;
-        }
         Events.fire(new YellowPreInitializationEvent());
 
         if(launchFile().exists() && Core.settings.getBool("yellow-enable-failsafe", true)){
@@ -37,28 +32,17 @@ public class Yellow extends Mod{
 
         if(!Vars.clientLoaded) launchFile().writeString("go away");
 
-        Fi extdir = configDir().child("extensions");
-        extdir.mkdirs();
-
-        extdir.walk(f -> {
+        YellowVars.extensionDir.mkdirs();
+        YellowVars.extensionDir.walk(f -> {
             foundExtensions++;
+
             try{
                 ExtensionCore.load(f);
                 loadedExtensions++;
             }catch(Exception e){
                 Log.err(e);
-                erroredExtensionList.add(new ErroneousExtension(e, f));
+                erroredExtensionList.add(new ErroneousExtension(f, e));
                 erroredExtensions++;
-            }
-        });
-
-        extensions.each(ext -> {
-            if(ext.meta.enabled()){
-                try{
-                    ext.main = (YellowExtension) ext.loader.loadClass(ext.meta.main).getConstructor().newInstance();
-                }catch(Exception e){
-                    Log.err(e);
-                }
             }
         });
 
@@ -79,12 +63,6 @@ public class Yellow extends Mod{
         return f;
     }
 
-    public static boolean flameSpecial(){
-        int f = Core.settings.getInt("flame-special", 0);
-
-        return !(f <= 0 || f >= 6) && Core.settings.getBool("mod-flameout-enabled");
-    }
-
     @Override
     public void init(){
         extensions.each(s -> {
@@ -94,10 +72,12 @@ public class Yellow extends Mod{
 
     @Override
     public void loadContent(){
-        if(crashed || flameSpecial()) return;
+        if(crashed) return;
         YellowWeapons.load();
         YellowSpells.load();
+        YellowCharacters.load();
         YellowUnitTypes.load();
+        YellowWeapons.afterLoad();
         extensions.each(s -> {
             try{
                 if(s.meta.enabled()) s.main.loadContent();

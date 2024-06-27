@@ -6,7 +6,11 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
 import mindustry.*;
+import mindustry.ctype.*;
 
+import java.util.*;
+
+//TODO subject for rework
 public class ExtensionCore{
 
     public static Seq<LoadedExtension> extensions = new Seq<>();
@@ -24,6 +28,10 @@ public class ExtensionCore{
         extensions.add(ext);
     }
 
+    public static LoadedExtension getExtension(String name){
+        return extensions.find(e -> Objects.equals(e.name, name));
+    }
+
     private static ExtensionMeta metaBuild(JsonValue root){
         ExtensionMeta m = new ExtensionMeta();
         m.name = root.getString("name");
@@ -32,7 +40,6 @@ public class ExtensionCore{
         m.description = root.getString("description", null);
         m.version = root.getString("version", null);
         m.main = root.getString("main");
-        m.repo = root.getString("repo", null);
         return m;
     }
 
@@ -56,11 +63,16 @@ public class ExtensionCore{
     }
 
     public static class ExtensionMeta{
-        public String name, main, modVersion;
-        public @Nullable String displayName, author, description, version, repo;
+        public String name, main;
+        public @Nullable String displayName, author, description, version;
+        public @Nullable Content brokenContent;
 
         public boolean enabled(){
             return Core.settings.getBool("extension-" + name + "-enabled", true);
+        }
+
+        public void enabled(boolean enabled){
+            Core.settings.put("extension-" + name + "-enabled", enabled);
         }
     }
 
@@ -68,7 +80,7 @@ public class ExtensionCore{
         public Exception exception;
         public Fi file;
 
-        public ErroneousExtension(Exception exception, Fi file){
+        public ErroneousExtension(Fi file, Exception exception){
             this.exception = exception;
             this.file = file;
         }

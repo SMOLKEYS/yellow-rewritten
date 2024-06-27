@@ -29,6 +29,20 @@ public class MagicSpecialistEntity extends MultiLifeUnitEntity implements Magicc
     }
 
     @Override
+    public void update(){
+        super.update();
+
+        if(mana < type().mana) mana += type().manaRecovery;
+
+        for(SpellEntry e: spells) e.update();
+    }
+
+    @Override
+    public float manaf(){
+        return mana / type().mana;
+    }
+
+    @Override
     public float mana(){
         return mana;
     }

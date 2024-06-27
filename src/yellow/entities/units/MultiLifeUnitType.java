@@ -6,7 +6,6 @@ import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.game.*;
 import mindustry.gen.*;
-import mindustry.type.*;
 import yellow.entities.units.entity.*;
 import yellow.world.meta.*;
 
@@ -15,7 +14,7 @@ public class MultiLifeUnitType extends CharacterUnitType{
     public int lives = 1;
     /** Invincibility frames this unit gets when losing a life. */
     public float invFrames = 1f;
-    /** Multiplier that makes inv-frames last longer the more lives are lost. */
+    /** Multiplier that makes inv-frames last longer the more lives are lost. TODO unused! */
     public float invDeathMultiplier = 1f;
     /** Individual pieces of code ran when the unit's life count hits a specific number. */
     public ObjectMap<Integer, Cons<MultiLifeUnitEntity>> perDeath = new ObjectMap<>();

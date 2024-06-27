@@ -24,7 +24,7 @@ public class CharacterUnitType extends UnitType{
     public Unit spawn(Team team, float x, float y){
         if(!locationMatch() || exists()){
             if(!character.locationLock() && !exists()){
-                character.location(Vars.state.rules.tags.get("yellow-save-id", "<none>"));
+                character.setLocation(Vars.state.rules.tags.get("yellow-save-id", "<none>"));
                 return super.spawn(team, x, y);
             }
             return Nulls.unit;
@@ -36,7 +36,7 @@ public class CharacterUnitType extends UnitType{
     public Unit create(Team team){
         if(!locationMatch() || exists()){
             if(!character.locationLock() && !exists()){
-                character.location(Vars.state.rules.tags.get("yellow-save-id", "<none>"));
+                character.setLocation(Vars.state.rules.tags.get("yellow-save-id", "<none>"));
                 return super.create(team);
             }
             return Nulls.unit;

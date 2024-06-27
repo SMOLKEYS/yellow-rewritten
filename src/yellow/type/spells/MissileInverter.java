@@ -22,15 +22,11 @@ public class MissileInverter implements Aftermath{
         if(caster instanceof Unit u){
             Units.nearbyEnemies(u.team(), u.x, u.y, radius, un -> {
                 //get all enemy missiles, change team, flip rotation and change owner
-                if(un instanceof TimedKillUnit tk && tk.team() != u.team()){
+                if(un instanceof TimedKillUnit tk){
                     tk.team(u.team());
                     tk.vel().inv();
                     tk.rotation(tk.rotation() + 180);
-                    try{
-                        ((MissileAI) tk.controller()).shooter = u;
-                    }catch(Exception e){
-                        //cuh
-                    }
+                    if(tk.controller() instanceof MissileAI ai) ai.shooter = u;
                 }
             });
         }

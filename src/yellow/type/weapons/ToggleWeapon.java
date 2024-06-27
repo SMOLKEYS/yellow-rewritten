@@ -12,6 +12,8 @@ public class ToggleWeapon extends NamedWeapon{
     public boolean enabledDefault = true;
     /** The original weapon this one is sourced from. Null for root weapons. {@link Mirrorer} handles this. Do NOT modify! */
     public ToggleWeapon original;
+    /** The mirror variant of this weapon. {@link Mirrorer} handles this. Do NOT modify! */
+    public ToggleWeapon mirrored;
 
     public ToggleWeapon(String name){
         super(name);
