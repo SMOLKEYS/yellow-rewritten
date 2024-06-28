@@ -22,6 +22,11 @@ public class YellowLogic{
         Core.input.addProcessor(new GestureDetector(new GestureDetector.GestureListener(){
 
             @Override
+            public boolean touchDown(float x, float y, int pointer, KeyCode button){
+                return false; //android can go eat my entire ass WHY IS THIS NEEDED
+            }
+
+            @Override
             public boolean tap(float x, float y, int count, KeyCode button){
                 if(Vars.mobile) return false; //do not register for mobile
 
