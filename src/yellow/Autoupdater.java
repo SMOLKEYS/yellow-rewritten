@@ -68,35 +68,30 @@ public class Autoupdater{
 
         String[] stables = Structs.filter(String.class, input, s -> s.endsWith("S"));
         String[] betas = Structs.filter(String.class, input, s -> s.endsWith("B"));
-        float curVerF = Stringf.handleNumber(curVer);
 
         bundles.each(e -> {
-            if(e.inRange(curVerF)){
-                YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newstver", curVer, e.st));
-                hasStable = true;
-            }
-
+            String ss = null;
             if(!hasStable){
-                String ss = null;
 
                 try{
                     ss = betas[Structs.indexOf(betas, curVer) + 1];
+                    Log.info("cur @ new @", curVer, ss);
                 }catch(Exception ex){
                     //ignore
                 }
 
-                if(ss != null) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", curVer, ss));
             }else{
-                String ss = null;
 
                 try{
                     ss = stables[Structs.indexOf(stables, curVer) + 1];
+                    Log.info("stable @ new @", curVer, ss);
                 }catch(Exception ex){
                     //ignore, again
                 }
 
-                if(ss != null) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", curVer, ss));
             }
+
+            if(ss != null) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", curVer, ss));
         });
     }
 
