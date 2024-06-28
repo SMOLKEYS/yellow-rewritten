@@ -23,7 +23,32 @@ public class YellowLogic{
 
             @Override
             public boolean touchDown(float x, float y, int pointer, KeyCode button){
-                return false; //android can go eat my entire ass WHY IS THIS NEEDED
+                return false; //why
+            }
+
+            @Override
+            public boolean fling(float velocityX, float velocityY, KeyCode button){
+                return false; //whY
+            }
+
+            @Override
+            public boolean pan(float x, float y, float deltaX, float deltaY){
+                return false; //wHY
+            }
+
+            @Override
+            public boolean panStop(float x, float y, int pointer, KeyCode button){
+                return false; //WHY
+            }
+
+            @Override
+            public boolean pinch(Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2){
+            	return false; //WHY IS THIS NEEDED
+            }
+
+            @Override
+            public void pinchStop(){
+            	//ARE YOU SERIOUS
             }
 
             @Override
