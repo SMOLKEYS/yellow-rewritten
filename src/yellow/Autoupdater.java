@@ -9,12 +9,15 @@ import yellow.util.*;
 public class Autoupdater{
 
     static Seq<StableBundle> bundles = new Seq<>();
-    static boolean hasStable = false;
+    static boolean hasStable = false, checked = false;
 
     public static void checkForUpdates(boolean manual){
         if(!Core.settings.getBool("yellow-check-for-updates", true) && !manual) return;
 
         Mods.ModMeta meta = Yellow.meta();
+        bundles.clear();
+        checked = false;
+        hasStable = false;
 
         if(!meta.version.endsWith("S") && !meta.version.endsWith("B")){
             YellowVars.ui.notifrag.showNotification("@yellow.ignorever");
@@ -70,12 +73,13 @@ public class Autoupdater{
         String[] betas = Structs.filter(String.class, input, s -> s.endsWith("B"));
 
         bundles.each(e -> {
+            if(checked) return;
+            
             String ss = null;
             if(!hasStable){
 
                 try{
-                    ss = betas[Structs.indexOf(betas, curVer) + 1];
-                    Log.info("cur @ new @", curVer, ss);
+                    ss = betas[Structs.indexOf(betas, curVer) - 1];
                 }catch(Exception ex){
                     //ignore
                 }
@@ -83,15 +87,17 @@ public class Autoupdater{
             }else{
 
                 try{
-                    ss = stables[Structs.indexOf(stables, curVer) + 1];
-                    Log.info("stable @ new @", curVer, ss);
+                    ss = stables[Structs.indexOf(stables, curVer) - 1];
                 }catch(Exception ex){
                     //ignore, again
                 }
 
             }
 
-            if(ss != null) YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", curVer, ss));
+            if(ss != null){
+                checked = true;
+                YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", curVer, ss));
+            }
         });
     }
 
