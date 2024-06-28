@@ -42,6 +42,11 @@ public class YellowLogic{
             }
 
             @Override
+            public boolean zoom(float initialDistance, float distance){
+                return false; //ARE YOU FUCKING WITH ME RIGHT NOW
+            }
+
+            @Override
             public boolean pinch(Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2){
             	return false; //WHY IS THIS NEEDED
             }
