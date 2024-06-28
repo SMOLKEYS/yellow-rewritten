@@ -12,7 +12,7 @@ public class Autoupdater{
     static boolean hasStable = false, checked = false;
 
     public static void checkForUpdates(boolean manual){
-        if(!Core.settings.getBool("yellow-check-for-updates", true) && !manual) return;
+        if(!Core.settings.getBool("yellow-check-for-updates", true) && !manual || true) return;
 
         Mods.ModMeta meta = Yellow.meta();
         bundles.clear();
@@ -79,17 +79,19 @@ public class Autoupdater{
             if(!hasStable){
 
                 try{
-                    ss = betas[Structs.indexOf(betas, curVer) - 1];
+                    ss = betas[Structs.indexOf(betas, curVer) + 1];
+                    Log.info(ss);
                 }catch(Exception ex){
-                    //ignore
+                    Log.warn("yellow: not using beta ver, ignore pls");
                 }
 
             }else{
 
                 try{
-                    ss = stables[Structs.indexOf(stables, curVer) - 1];
+                    ss = stables[Structs.indexOf(stables, curVer) + 1];
+                    Log.info(ss);
                 }catch(Exception ex){
-                    //ignore, again
+                    Log.warn("yellow: not using stable ver, ignore pls");
                 }
 
             }
