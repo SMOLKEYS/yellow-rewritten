@@ -8,7 +8,6 @@ import mindustry.ui.*;
 import mindustry.ui.dialogs.*;
 import yellow.comp.*;
 import yellow.entities.units.*;
-import yellow.type.*;
 
 public class SpellManagerDialog extends BaseDialog{
 
@@ -29,6 +28,7 @@ public class SpellManagerDialog extends BaseDialog{
             return super.show();
         }
 
+        cont.clear();
         cache = spells;
 
         cont.add(new Bar(
@@ -40,7 +40,7 @@ public class SpellManagerDialog extends BaseDialog{
         cont.table(mainManager -> {
             for(SpellEntry s: spells){
                 mainManager.button(s.spell.displayName, () -> {
-                    s.get(user);
+                    user.useSpell(s);
                 }).growX().uniformX().touchable(() -> s.ready(user) ? Touchable.enabled : Touchable.disabled);
                 mainManager.add(new Bar(
                         () -> s.spell.displayName,

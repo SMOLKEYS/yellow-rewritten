@@ -20,6 +20,8 @@ public class MultiLifeUnitType extends CharacterUnitType{
     public ObjectMap<Integer, Cons<MultiLifeUnitEntity>> perDeath = new ObjectMap<>();
     /** Visual effect used when a life is consumed. */
     public Effect deathStopEffect = Fx.none;
+    /** If true, this unit will only die if it has no lives and no health remaining. Auto-revived otherwise. */
+    public boolean dieIfTrulyDead = false;
 
     public MultiLifeUnitType(GameCharacter character, String name){
         super(character, name);

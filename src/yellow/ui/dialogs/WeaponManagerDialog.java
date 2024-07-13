@@ -1,20 +1,11 @@
 package yellow.ui.dialogs;
 
-import arc.*;
-import arc.flabel.*;
 import arc.scene.ui.*;
-import arc.struct.*;
 import arc.util.*;
 import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.ui.*;
 import mindustry.ui.dialogs.*;
 import yellow.entities.units.*;
-import yellow.entities.units.entity.*;
 import yellow.type.weapons.*;
-import yellow.util.*;
-
-import java.util.*;
 
 public class WeaponManagerDialog extends BaseDialog{
 

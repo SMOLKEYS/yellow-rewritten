@@ -40,9 +40,9 @@ public class TeleportAbility extends DeathStopAbility{
 
     @Override
     public void addStats(Table t){
-        t.add("[lightgray]" + YellowStats.minDst.localized() + ": [white]" + Strings.fixed(minTeleportDistance/8, 1) + " blocks");
+        t.add("[lightgray]" + YellowStats.minDst.localized() + ": [white]" + Strings.autoFixed(minTeleportDistance/8, 1) + " blocks");
         t.row();
-        t.add("[lightgray]" + YellowStats.maxDst.localized() + ": [white]" + Strings.fixed(maxTeleportDistance/8, 1) + " blocks");
+        t.add("[lightgray]" + YellowStats.maxDst.localized() + ": [white]" + Strings.autoFixed(maxTeleportDistance/8, 1) + " blocks");
         t.row();
     }
 

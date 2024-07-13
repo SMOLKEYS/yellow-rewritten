@@ -1,9 +1,14 @@
 package yellow.util;
 
+import arc.graphics.*;
 import arc.math.*;
 import arc.util.*;
+import mindustry.world.meta.*;
 
-public class Stringf{
+public class Stringy{
+
+    static String collection = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-";
+    static Rand r = new Rand();
 
     /** Accepts a list of strings and returns the first non-null one. Returns null if the entire list is all nulls. */
     public static String alternative(String... inputs){
@@ -37,5 +42,19 @@ public class Stringf{
         }
 
         return Strings.parseFloat(s.toString());
+    }
+
+    public static String formatStat(Stat stat, Object text, @Nullable Color wrapColor){
+        if(wrapColor != null){
+            return "[lightgray]" + stat.localized() + ":[] [#" + wrapColor + "]" + text + "[]";
+        }else{
+            return "[lightgray]" + stat.localized() + ":[] " + text;
+        }
+    }
+
+    public static String generateId(int amount){
+        StringBuilder c = new StringBuilder(amount);
+        for(int i = 0; i < amount; i++) c.append(random(collection, r));
+        return c.toString();
     }
 }

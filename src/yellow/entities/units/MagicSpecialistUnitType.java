@@ -37,7 +37,7 @@ public class MagicSpecialistUnitType extends MultiLifeUnitType{
     public void setStats(){
         super.setStats();
         if(spells.any()){
-            stats.add(YellowStats.spells, YellowStatValues.spells(this, spells));
+            stats.add(YellowStats.spells, YellowStatValues.spells(spells));
         }
     }
 }

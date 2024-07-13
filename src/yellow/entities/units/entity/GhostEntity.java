@@ -1,5 +1,7 @@
 package yellow.entities.units.entity;
 
+import arc.graphics.*;
+import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import arc.util.io.*;
@@ -19,7 +21,7 @@ public class GhostEntity extends UnitEntity{
     private void init(){
         if(inited) return;
         inited = true;
-        lifetime = type().lifetime;
+        lifetime = type().lifetime + Mathf.random(type().lifetimeRnd);
     }
 
     public float lifetimef(){
@@ -64,6 +66,13 @@ public class GhostEntity extends UnitEntity{
             super.remove();
             type().despawnEffect.at(x + type().despawnEffectOffset.x, y + type().despawnEffectOffset.y);
         }
+    }
+
+    @Override
+    public void draw(){
+        super.draw();
+
+        Fill.light(x, y, 10, Mathf.lerp(hitSize * 1.9f, hitSize * 0.9f, lifetimef()), Color.white, Color.clear);
     }
 
     @Override

@@ -20,6 +20,8 @@ import yellow.entities.units.entity.*;
 public class GhostUnitType extends UnitType{
     /** Unit lifetime in ticks. */
     public float lifetime = 900f;
+    /** Lifetime randomization in ticks. */
+    public float lifetimeRnd;
     /** Despawn effect. */
     public Effect despawnEffect = YellowFx.ghostDespawnMulti;
     /** Despawn effect offset. */
@@ -29,6 +31,7 @@ public class GhostUnitType extends UnitType{
         super(name);
         constructor = GhostEntity::new;
         bounded = false;
+        isEnemy = false;
     }
 
     @Override

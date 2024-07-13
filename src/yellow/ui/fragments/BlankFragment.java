@@ -6,6 +6,7 @@ import arc.scene.ui.layout.*;
 import mindustry.ui.*;
 import yellow.ui.*;
 
+/** A fragment which covers the entire screen in black. */
 public class BlankFragment implements CommonFragment{
 
     public Table table;

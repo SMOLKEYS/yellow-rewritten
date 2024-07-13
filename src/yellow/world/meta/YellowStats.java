@@ -9,5 +9,11 @@ public class YellowStats{
     name = new Stat("name"),
     minDst = new Stat("minDst"),
     maxDst = new Stat("maxDst"),
-    advAbilities = new Stat("advAbilities");
+    manaCost = new Stat("manaCost", StatCat.general),
+    cooldown = new Stat("cooldown", StatCat.general),
+    chance = new Stat("chance"),
+    angleRand = new Stat("angleRand"),
+    rangeGeneral = new Stat("range", StatCat.general),
+    strafeSpeed = new Stat("strafeSpeed"),
+    strafeAngle = new Stat("strafeAngle");
 }

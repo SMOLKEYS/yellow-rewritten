@@ -2,6 +2,7 @@ package yellow.game;
 
 import arc.*;
 import arc.func.*;
+import arc.graphics.*;
 import arc.scene.style.*;
 import arc.struct.*;
 import mindustry.gen.*;
@@ -37,7 +38,7 @@ public class YellowSpecialNotifications{
         if(!Core.settings.getBool("yellow-enable-special-notifications", true)) return;
         Trio t = nots.random();
 
-        if(t.conditions.get()) YellowVars.ui.notifrag.showPersistentNotification(t.icon, t.text, t.clicked);
+        if(t.conditions.get()) YellowVars.ui.notifrag.showTintedNotification(((TextureRegionDrawable)Tex.whiteui).tint(new Color().rand().a(0.5f)),t.icon, t.text, 70, true, t.clicked);
     }
 
 

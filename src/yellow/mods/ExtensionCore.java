@@ -5,10 +5,10 @@ import arc.files.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
+import java.util.*;
 import mindustry.*;
 import mindustry.ctype.*;
-
-import java.util.*;
+import mindustry.mod.*;
 
 //TODO subject for rework
 public class ExtensionCore{
@@ -17,6 +17,9 @@ public class ExtensionCore{
     public static JsonReader reader = new JsonReader();
 
     public static void load(Fi extension) throws Exception{
+        //android 14
+        if(!extension.file().setReadOnly()) Log.warn("Could not make @ read-only.", extension.name());
+
         ZipFi f = new ZipFi(extension);
         if(!f.child("ext.hjson").exists()) throw new ExtensionMetaMissingException("Extension file " + extension.nameWithoutExtension() + " has no ext.hjson metadata file.");
         //manually add a bracket ("{}") wrapper (if it doesnt have one) because errors
@@ -24,6 +27,7 @@ public class ExtensionCore{
         if(!s.startsWith("{")) s = "{\n" + s + "\n}";
         ExtensionMeta meta = metaBuild(reader.parse(s));
         ClassLoader cl = Vars.platform.loadJar(extension, Vars.mods.mainLoader());
+        ((ModClassLoader) Vars.mods.mainLoader()).addChild(cl);
         LoadedExtension ext = new LoadedExtension(meta.name, extension, cl, meta.enabled() ? (YellowExtension) cl.loadClass(meta.main).getConstructor().newInstance() : null, meta);
         extensions.add(ext);
     }

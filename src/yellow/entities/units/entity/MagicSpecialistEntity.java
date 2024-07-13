@@ -1,6 +1,7 @@
 package yellow.entities.units.entity;
 
 import arc.*;
+import arc.util.*;
 import arc.util.io.*;
 import mindustry.gen.*;
 import yellow.comp.*;
@@ -68,21 +69,33 @@ public class MagicSpecialistEntity extends MultiLifeUnitEntity implements Magicc
     }
 
     @Override
+    public void useSpell(SpellEntry spell){
+        if(spell.ready(this) && Structs.contains(spells, spell)){
+            spell.spell.use(this, spell);
+            spell.spell.castEffect.at(this);
+            spell.cooldown = spell.spell.cooldown;
+            mana -= spell.spell.manaCost;
+        }
+    }
+
+    @Override
     public void read(Reads read){
         super.read(read);
 
+         mana = read.f();
          spells = new SpellEntry[type().spells.size];
          for(int i = 0; i < type().spells.size; i++){
              spells[i] = type().spells.get(i).spellType.get(type().spells.get(i)); 
          }
 
-        if(spells.length > 0) YellowTypeIO.readSpells(spells, read, Core.settings.getBool("yellow-spell-read-method", true));
+        YellowTypeIO.readSpells(spells, read, Core.settings.getBool("yellow-spell-read-method", true));
     }
 
     @Override
     public void write(Writes write){
         super.write(write);
 
-        if(spells.length > 0) YellowTypeIO.writeSpells(spells, write);
+        write.f(mana);
+        YellowTypeIO.writeSpells(spells, write);
     }
 }

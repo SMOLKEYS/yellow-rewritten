@@ -1,6 +1,7 @@
 package yellow.content;
 
 import mindustry.entities.abilities.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
 import yellow.ai.*;
 import yellow.entities.abilities.*;
@@ -19,7 +20,7 @@ public class YellowUnitTypes{
         yellow = new YellowUnitType(YellowCharacters.nihara, "yellow"){{
             health = 23000;
             mana = 5500;
-            manaRecovery = 5;
+            manaRecovery = 5f;
             lives = 5;
             flying = true;
             hideDetails = false;
@@ -27,8 +28,8 @@ public class YellowUnitTypes{
             speed = 3f;
             accel = 0.08f;
             drag = 0.03f;
-            range = 8*30f;
-            maxRange = 8*30f;
+            range = 8*70f;
+            maxRange = 8*90f;
             mineSpeed = 500f;
             mineTier = 500;
             itemCapacity = 850;
@@ -43,26 +44,28 @@ public class YellowUnitTypes{
             abilities.addAll(
                     new TeleportAbility(8 * 25f, 8 * 45f),
                     new RegenAbility(){{
-                        amount = 3f;
+                        amount = 2f;
                     }},
-                    new ForceFieldAbility(8*3f, 0.25f, 1150f, 60 * 15f)
+                    new ForceFieldAbility(8*3f, 0.55f, 1150f, 60 * 15f)
             );
 
-            weapons.addAll(
-                    YellowWeapons.laserBarrage, Mirrorer.reflect(YellowWeapons.laserBarrage),
+            Mirrorer.apply(weapons,
+                    YellowWeapons.laserBarrage,
                     YellowWeapons.bulletStorm,
                     YellowWeapons.homingFlares,
-                    YellowWeapons.antiMothSpray, Mirrorer.reflect(YellowWeapons.antiMothSpray),
-                    YellowWeapons.decimation, Mirrorer.reflect(YellowWeapons.decimation),
+                    YellowWeapons.antiMothSpray,
+                    YellowWeapons.decimation,
                     YellowWeapons.disruptor,
-                    YellowWeapons.ghostCall, Mirrorer.reflect(YellowWeapons.ghostCall),
-                    YellowWeapons.ghostRain, Mirrorer.reflect(YellowWeapons.ghostRain),
-                    YellowWeapons.igneous, Mirrorer.reflect(YellowWeapons.igneous),
+                    YellowWeapons.ghostCall,
+                    YellowWeapons.ghostRain,
+                    YellowWeapons.igneous,
                     YellowWeapons.traversal,
-                    YellowWeapons.octa
+                    YellowWeapons.octa,
+                    YellowWeapons.energySpheres,
+                    YellowWeapons.spearCall
             );
 
-            spells.add(YellowSpells.missileInverter);
+            spells.add(YellowSpells.missileInverter, YellowSpells.leftStrafe);
         }};
 
         ghostFlare = new GhostUnitType("ghost-flare"){{
@@ -73,8 +76,11 @@ public class YellowUnitTypes{
             accel = 0.08f;
             drag = 0.01f;
             lifetime = 960f;
+            lifetimeRnd = 60*10f;
+            engineLayer = Layer.effect;
+            deathExplosionEffect = YellowFx.ghostDespawn3;
 
-            controller = u -> new OrbiterAI(target -> target.type() == yellow); //target yellow by default
+            controller = u -> new SwarmOrbiterAI(target -> target.type() == yellow); //target yellow by default
         }};
     }
 }

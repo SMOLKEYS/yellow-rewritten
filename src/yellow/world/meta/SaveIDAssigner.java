@@ -1,24 +1,13 @@
 package yellow.world.meta;
 
-import arc.math.*;
 import arc.struct.*;
+import java.util.*;
 import mindustry.*;
 import mindustry.game.*;
 import mindustry.type.*;
 import yellow.util.*;
 
-import java.util.*;
-
 public class SaveIDAssigner{
-
-    static String collection = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-";
-    static Rand r = new Rand();
-
-    public static String generate(int amount){
-        StringBuilder c = new StringBuilder(amount);
-        for(int i = 0; i < amount; i++) c.append(Stringf.random(collection, r));
-        return c.toString();
-    }
 
     /**
      * Assigns a randomly generated 16 character string to the save. May freeze the game momentarily.
@@ -39,7 +28,7 @@ public class SaveIDAssigner{
 
                 if(planet != null) builder.append(planet.name).append("-");
                 if(sector != null) builder.append(sector.id).append("-");
-                builder.append(generate(16));
+                builder.append(Stringy.generateId(16));
 
                 save.load();
                 Vars.state.rules = save.meta.rules;
@@ -59,7 +48,7 @@ public class SaveIDAssigner{
 
                 if(planet != null) builder.append(planet.name).append("-");
                 if(sector != null) builder.append(sector.id).append("-");
-                builder.append(generate(16));
+                builder.append(Stringy.generateId(16));
 
                 Vars.state.rules.tags.put("yellow-save-id", builder.toString());
 
@@ -81,7 +70,7 @@ public class SaveIDAssigner{
 
                 if(planet != null) builder.append(planet.name).append("-");
                 if(sector != null) builder.append(sector.id).append("-");
-                builder.append(generate(16));
+                builder.append(Stringy.generateId(16));
 
                 map.put("yellow-save-id", builder.toString());
             }

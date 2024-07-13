@@ -20,6 +20,7 @@ public class Yellow extends Mod{
     static int foundExtensions, loadedExtensions, erroredExtensions;
     static Seq<ErroneousExtension> erroredExtensionList = new Seq<>();
 
+
     public Yellow(){
         Events.fire(new YellowPreInitializationEvent());
 
@@ -30,7 +31,12 @@ public class Yellow extends Mod{
             return;
         }
 
-        if(!Vars.clientLoaded) launchFile().writeString("go away");
+        if(!Vars.clientLoaded){
+            launchFile().writeString("go away");
+        }else{
+            YellowVars.onImport();
+            Time.run(30f, YellowVars::onLaterImport);
+        }
 
         YellowVars.extensionDir.mkdirs();
         YellowVars.extensionDir.walk(f -> {

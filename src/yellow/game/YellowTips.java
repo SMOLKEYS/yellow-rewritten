@@ -3,10 +3,9 @@ package yellow.game;
 import arc.*;
 import arc.struct.*;
 import arc.util.*;
+import java.util.*;
 import mindustry.game.*;
 import yellow.*;
-
-import java.util.*;
 
 public class YellowTips{
 

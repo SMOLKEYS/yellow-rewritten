@@ -4,6 +4,8 @@ import arc.*;
 import arc.files.*;
 import arc.math.*;
 import arc.struct.*;
+import arc.util.*;
+import java.util.*;
 import mindustry.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
@@ -20,6 +22,7 @@ import static yellow.game.YellowEventType.*;
 public class YellowVars{
 
     static Seq<Saves.SaveSlot> foundSlots = new Seq<>(), brokenSlots = new Seq<>();
+    static Date date;
 
     public static YellowUI ui;
     public static Fi extensionDir = Yellow.configDir().child("extensions");
@@ -31,8 +34,17 @@ public class YellowVars{
         Events.run(ClientLoadEvent.class, () -> {
             ui.init();
 
-            ModPackageBridger.importPackage("yellow", "yellow.util", "yellow.ui", "yellow.math", "yellow.content", "yellow.cutscene", "yellow.dialogue", "yellow.debug");
+            ModPackageBridger.importPackage(
+                    "yellow", "yellow.util", "yellow.ui",
+                    "yellow.math", "yellow.content", "yellow.cutscene",
+                    "yellow.dialogue", "yellow.debug", "yellow.scene.ui.layout",
+                    "yellow.ai", "yellow.graphics", "yellow.equality",
+                    "yellow.entities.units.entity", "yellow.entities.units", "yellow.entities",
+                    "yellow.mods"
+            );
+
             Autoupdater.checkForUpdates(false);
+
             YellowTips.load();
             YellowSettings.load();
             YellowSpecialNotifications.launchNotif();
@@ -86,6 +98,25 @@ public class YellowVars{
         Events.fire(new YellowSecondStageInitializationEvent());
     }
 
+    /** Load anything BUT UI here. */
+    public static void onImport(){
+        if(!Core.settings.has("yellow-install-date")) Core.settings.put("yellow-install-date", System.currentTimeMillis());
+    }
+
+    /** Load UI and mod files here. */
+    public static void onLaterImport(){
+        YellowInitials.begin();
+    }
+
+    public static Date installTimeAsDate(){
+        if(date == null) return date = new Date(installTime());
+        return date;
+    }
+
+    public static long installTime(){
+        return SafeSettings.getLong("yellow-install-date", 0, 0);
+    }
+
     public static String getUpdateServer(){
         return SafeSettings.getString("yellow-update-server", "SMOLKEYS/yellow-rewritten", "SMOLKEYS/yellow-rewritten");
     }
@@ -108,5 +139,22 @@ public class YellowVars{
 
     public static void setTipTime(float time){
         Core.settings.put("yellow-tip-time", time);
+    }
+
+    public static void wipeSettings(boolean disable){
+        Seq<String> settings = new Seq<>();
+
+        for(String s: Core.settings.keys()){
+            if(s.startsWith("yellow-")) settings.add(s);
+        }
+
+        settings.each(s -> {
+            Core.settings.remove(s);
+            Log.info("Erased setting @. Adios!", s);
+        });
+
+        if(disable) Core.settings.put("mod-yellow-enabled", false);
+
+        Core.app.exit();
     }
 }

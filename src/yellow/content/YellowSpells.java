@@ -5,14 +5,21 @@ import yellow.type.spells.*;
 
 public class YellowSpells{
 
-    public static Spell missileInverter;
+    public static Spell missileInverter, leftStrafe;
 
     public static void load(){
-        missileInverter = new Spell("missile-inverter"){{
+        missileInverter = new MissileReflectSpell("missile-inverter"){{
             cooldown = 60*3.5f;
-            manaCost = 550;
+            manaCost = 1260;
+            radius = 8*20f;
+        }};
 
-            aftermath.add(new MissileInverter());
+        leftStrafe = new StrafeSpell("left-strafe"){{
+            cooldown = 45f;
+            manaCost = 100;
+            strafeAngle = -90f;
+            strafeSpeed = 3f;
+            angleRnd = 7f;
         }};
     }
 }

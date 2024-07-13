@@ -8,6 +8,9 @@ import mindustry.entities.*;
 import yellow.*;
 import yellow.comp.*;
 import yellow.entities.units.entity.*;
+import yellow.input.*;
+import yellow.util.*;
+import yellow.watchdog.*;
 import yellow.world.meta.*;
 
 import static mindustry.game.EventType.*;
@@ -19,42 +22,7 @@ public class YellowLogic{
             if(s.unit instanceof Soulc ss) ss.onDeath();
         });
 
-        Core.input.addProcessor(new GestureDetector(new GestureDetector.GestureListener(){
-
-            @Override
-            public boolean touchDown(float x, float y, int pointer, KeyCode button){
-                return false; //why
-            }
-
-            @Override
-            public boolean fling(float velocityX, float velocityY, KeyCode button){
-                return false; //whY
-            }
-
-            @Override
-            public boolean pan(float x, float y, float deltaX, float deltaY){
-                return false; //wHY
-            }
-
-            @Override
-            public boolean panStop(float x, float y, int pointer, KeyCode button){
-                return false; //WHY
-            }
-
-            @Override
-            public boolean zoom(float initialDistance, float distance){
-                return false; //ARE YOU FUCKING WITH ME RIGHT NOW
-            }
-
-            @Override
-            public boolean pinch(Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2){
-            	return false; //WHY IS THIS NEEDED
-            }
-
-            @Override
-            public void pinchStop(){
-            	//ARE YOU SERIOUS
-            }
+        Core.input.addProcessor(new GestureDetector(new UnabstractedGestureListener(){
 
             @Override
             public boolean tap(float x, float y, int count, KeyCode button){
@@ -81,11 +49,13 @@ public class YellowLogic{
                 return false;
             }
 
-
         }));
     }
 
     public static void clientPost(){
         Events.run(Trigger.update, SaveIDAssigner::update);
+
+        //check for potentially broken spear bullets every 10 seconds and fix them if possible
+        Timey.runLoop(Validation::validateSpearBullets, 10f);
     }
 }

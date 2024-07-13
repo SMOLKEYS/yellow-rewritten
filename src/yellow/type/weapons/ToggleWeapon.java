@@ -14,6 +14,10 @@ public class ToggleWeapon extends NamedWeapon{
     public ToggleWeapon original;
     /** The mirror variant of this weapon. {@link Mirrorer} handles this. Do NOT modify! */
     public ToggleWeapon mirrored;
+    /** If true, {@link Mirrorer} will create a copy of this weapon. */
+    public boolean willMirror = false;
+    /** Special properties used if this weapon will be mirrored. */
+    public Mirrorer.ReflectProperty[] properties = {};
 
     public ToggleWeapon(String name){
         super(name);

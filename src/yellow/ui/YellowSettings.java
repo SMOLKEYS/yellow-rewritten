@@ -25,6 +25,8 @@ public class YellowSettings{
 
             t.sliderPref("yellow-notification-time", 5, 3, 60, 1, s -> Core.bundle.format("setting.yellow-notification-time.text", s));
 
+            t.sliderPref("yellow-notification-length", 25, 25, 100, 1, s -> s + "%");
+
             t.sliderPref("yellow-tip-time", 60*60*5, 60*60, 60*60*30, 60*60, s -> Core.bundle.format("setting.yellow-tip-time.text", s/60/60, s == 60*60 ? "minute" : "minutes"));
 
             t.checkPref("yellow-enable-failsafe", true);
@@ -45,12 +47,14 @@ public class YellowSettings{
 
             seperatorPref(t, "yellow-updating-section", Icon.up, Icon.down);
 
+            //labelPref(t, "yellow-update-wip", false, e -> "[gray]< UNAVAILABLE >[]");
+
             t.checkPref("yellow-check-for-updates", true);
 
             buttonPref(t, "yellow-check-for-updates-now", () -> {
                 Autoupdater.checkForUpdates(true);
                 updateBlock = true;
-                Timer.schedule(() -> updateBlock = false, 60f);
+                Timer.schedule(() -> updateBlock = false, 15f);
             }, b -> b.update(() -> {
                 b.touchable = updateBlock ? Touchable.disabled : Touchable.enabled;
                 b.setText("[" + (updateBlock ? "gray" : "white") + "]" + Core.bundle.get("setting.yellow-check-for-updates-now.name") + (updateBlock ? "\n" + Core.bundle.get("setting.yellow-check-for-updates-now.halt") : "") + "[]");
@@ -62,6 +66,7 @@ public class YellowSettings{
                         b.setText(Core.bundle.format("setting.yellow-change-update-server.serv", YellowVars.getUpdateServer()));
                     })
             );
+
 
             seperatorPref(t, "yellow-extensions-section", Icon.file, Icon.file);
 
@@ -158,7 +163,11 @@ public class YellowSettings{
             l.update(() -> {
                 l.setText(supplier.get(this));
             });
-            table.add(l).growX().row();
+
+            table.table(tb -> {
+                tb.center();
+                tb.add(l).center();
+            }).growX().row();
         }
     }
 

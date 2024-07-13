@@ -14,7 +14,6 @@ public class ToggleWeaponMount extends WeaponMount implements Savec{
         if(weapon instanceof ToggleWeapon w) enabled = w.enabledDefault;
     }
 
-    //these will not do anything by their own
     @Override
     public void read(Reads read){
         enabled = read.bool();

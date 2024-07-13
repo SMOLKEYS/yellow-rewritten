@@ -1,23 +1,25 @@
 package yellow;
 
 import arc.*;
-import arc.struct.*;
+import arc.scene.style.*;
 import arc.util.*;
+import java.util.*;
+import mindustry.*;
+import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.mod.*;
 import yellow.util.*;
 
+//TODO absolutely broken, needs multiple revisions
 public class Autoupdater{
 
-    static Seq<StableBundle> bundles = new Seq<>();
-    static boolean hasStable = false, checked = false;
+    static boolean checked = false;
 
     public static void checkForUpdates(boolean manual){
-        if(!Core.settings.getBool("yellow-check-for-updates", true) && !manual || true) return;
+        if(!Core.settings.getBool("yellow-check-for-updates", true) && !manual) return;
 
         Mods.ModMeta meta = Yellow.meta();
-        bundles.clear();
         checked = false;
-        hasStable = false;
 
         if(!meta.version.endsWith("S") && !meta.version.endsWith("B")){
             YellowVars.ui.notifrag.showNotification("@yellow.ignorever");
@@ -25,100 +27,50 @@ public class Autoupdater{
         }
 
         YellowNetworking.repoReleases(YellowVars.getUpdateServer(), root -> {
-            if(root == null){
-            	Log.warn("Autoupdater errored out during checking; cancelling.");
-            	return;
-            }
             String[] versions = new String[root.size];
-            //insert version strings from right to left, with the oldest release as the first entry and the newest as the last
-            for(int i = 0; i < root.size; i++) versions[root.size - 1 - i] = root.get(i).getString("name", "0S").split(" ")[0];
+            //tag_name cannot possibly be blank/null, as it is literally not allowed, but sometimes the edge cases matter
+            for(int i = 0; i < root.size; i++) versions[i] = root.get(i).getString("tag_name", "0N");
 
-            StableBundle sb = new StableBundle();
-
-            for(int i = 0; i < versions.length; i++){
-                String cv = versions[i];
-
-                if(cv.endsWith("S") && sb.st == null){
-                    sb.st = cv;
-                }else if(sb.st != null && cv.endsWith("S")){
-                    sb.from = Stringf.handleNumber(versions[Structs.indexOf(versions, sb.st) + 1]);
-                    sb.until = Stringf.handleNumber(versions[i - 1]);
-                    bundles.add(sb);
-                    sb = new StableBundle();
-                    sb.st = cv;
-                    if(Stringf.handleNumber(sb.st) == 1){
-                        sb.from = Stringf.handleNumber(versions[Structs.indexOf(versions, sb.st) + 1]);
-                        sb.until = Stringf.handleNumber(versions[versions.length - 1]);
-                        bundles.add(sb);
-                    }
+            Structsy.eachIndexed((s, i) -> {
+                if(s == null){
+                    Log.warn("Autoupdater version collection found a null entry! Correcting...");
+                    versions[i] = "0N";
                 }
-            }
+            }, versions);
 
-            process(meta, versions);
+            String lastEntry = versions[versions.length - 1];
+            int distance = Structsy.distance(versions, meta.version, lastEntry);
+            int currentVerIndex = Structs.indexOf(versions, meta.version);
+
+            if(!Structs.contains(versions, meta.version)){
+                checked = true;
+                YellowVars.ui.notifrag.showTintedNotification(((TextureRegionDrawable)Tex.whiteui).tint(Pal.gray.cpy().a(0.5f)), Icon.cancel, "@yellow.unknownver", 70, true, () -> {});
+            }else if(!Objects.equals(versions[currentVerIndex], lastEntry)){
+                checked = true;
+                YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", distance), () -> {
+                    String[][] availableVersions = new String[distance][1];
+                    for(int i = 0; i < distance; i++){
+                        availableVersions[i][0] = versions[currentVerIndex + i];
+                    }
+
+                    Vars.ui.showMenu(
+                            "@yellow.newver-update",
+                            "@yellow.newver-dialog",
+                            availableVersions,
+                            r -> {
+                                if(r == -1) return;
+
+                                String ver = availableVersions[r][0];
+
+                                Http.get(root.get(Structs.indexOf(versions, ver)).get("assets").get(0).getString("browser_download_url"), res -> {
+                                    Core.settings.getDataDirectory().child("yellow-" + ver + ".jar").writeBytes(res.getResult());
+                                });
+                            });
+                });
+            }
         }, e -> Core.app.post(() -> {
             Log.err(e);
             YellowVars.ui.notifrag.showErrorNotification("@yellow.failver", e);
         }));
-    }
-
-    private static void process(Mods.ModMeta meta, String[] input){
-        String curVer = meta.version;
-
-        if(!curVer.endsWith("S") && !curVer.endsWith("B")){
-            YellowVars.ui.notifrag.showPersistentNotification("@yellow.ignorever");
-            return;
-        }
-
-        String[] stables = Structs.filter(String.class, input, s -> s.endsWith("S"));
-        String[] betas = Structs.filter(String.class, input, s -> s.endsWith("B"));
-
-        bundles.each(e -> {
-            if(checked) return;
-            
-            String ss = null;
-            if(!hasStable){
-
-                try{
-                    ss = betas[Structs.indexOf(betas, curVer) + 1];
-                    Log.info(ss);
-                }catch(Exception ex){
-                    Log.warn("yellow: not using beta ver, ignore pls");
-                }
-
-            }else{
-
-                try{
-                    ss = stables[Structs.indexOf(stables, curVer) + 1];
-                    Log.info(ss);
-                }catch(Exception ex){
-                    Log.warn("yellow: not using stable ver, ignore pls");
-                }
-
-            }
-
-            if(ss != null){
-                checked = true;
-                YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", curVer, ss));
-            }
-        });
-    }
-
-    static class StableBundle{
-        public String st;
-        public float from, until;
-
-        public StableBundle(String st, float from, float until){
-            this.st = st;
-            this.from = from;
-            this.until = until;
-        }
-
-        public StableBundle(){
-
-        }
-
-        public boolean inRange(float input){
-            return input <= from && input >= until;
-        }
     }
 }

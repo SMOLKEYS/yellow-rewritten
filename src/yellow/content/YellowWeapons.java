@@ -2,13 +2,13 @@ package yellow.content;
 
 import arc.*;
 import arc.graphics.*;
+import arc.math.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.part.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import mindustry.type.*;
 import yellow.entities.bullet.*;
 import yellow.equality.*;
 import yellow.type.weapons.*;
@@ -18,7 +18,7 @@ public class YellowWeapons{
     public static ToggleWeapon
 
             laserBarrage, bulletStorm, homingFlares, antiMothSpray, decimation, disruptor, ghostCall, ghostRain, igneous,
-            traversal, octa;
+            traversal, octa, energySpheres, spearCall;
 
     public static void load(){
         laserBarrage = new ToggleWeapon("laser-barrage"){{
@@ -26,6 +26,7 @@ public class YellowWeapons{
             y = 0;
             reload = 60*5f;
             rotate = true;
+            willMirror = true;
             inaccuracy = 10f;
             velocityRnd = 0.9f;
 
@@ -54,6 +55,8 @@ public class YellowWeapons{
         bulletStorm = new ToggleWeapon("bulletstorm"){{
             x = y = 0f;
             reload = 60*15;
+            predictTarget = false;
+            ignoreRotation = true;
 
             shootSound = Sounds.none;
 
@@ -86,6 +89,8 @@ public class YellowWeapons{
             x = y = 0f;
             reload = 90f;
             rotate = true;
+            predictTarget = false;
+            ignoreRotation = true;
 
             shootSound = Sounds.missileLaunch;
 
@@ -118,7 +123,7 @@ public class YellowWeapons{
         antiMothSpray = new ToggleWeapon("anti-moth-spray"){{
             reload = 2f;
             x = 3f;
-            mirror = false;
+            willMirror = true;
             shoot.shots = 25;
             inaccuracy = 15f;
 
@@ -127,6 +132,7 @@ public class YellowWeapons{
             bullet = new BasicEqualityBulletType(){{
                 damage = 20f;
                 lifetime = 60f;
+                velocityRnd = 0.6f;
                 speed = 4f;
                 width = 8f;
                 height = 8f;
@@ -139,20 +145,25 @@ public class YellowWeapons{
             x = 48f;
             shoot.shots = 8;
             inaccuracy = 35f;
+            willMirror = true;
 
             shootSound = Sounds.artillery;
 
             bullet = new BasicEqualityBulletType(){{
-                damage = 1100f;
-                splashDamage = 990f;
+                damage = 2400f;
+                splashDamage = 1540f;
                 splashDamageRadius = 192f;
                 lifetime = 420f;
+                velocityRnd = 0.5f;
                 speed = 3f;
                 width = 16f;
                 height = 16f;
-                hitEffect = YellowFx.yellowExplosionOut;
-                despawnEffect = YellowFx.yellowExplosionOut;
+                hitEffect = YellowFx.decimatorPortalExplosion;
+                despawnEffect = YellowFx.decimatorPortalExplosion;
                 pierceArmor = true;
+
+                trailEffect = Fx.coreBurn;
+                trailChance = 0.5f;
 
                 parts.add(
                         new ShapePart(){{
@@ -172,19 +183,7 @@ public class YellowWeapons{
                             color = colorTo = Color.yellow;
                         }}
                 );
-            }
-                @Override
-                public void draw(Bullet b){
-                    super.draw(b);
-                    /*
-                    Draw.z(Layer.effect);
-                    Draw.color(Color.yellow);
-                    Lines.square(b.x, b.y, 15, Time.time * 2);
-                    Lines.square(b.x, b.y, 15, -Time.time * 2);
-                    Fill.circle(b.x, b.y, Mathf.sin(Time.time * 0.1f) * 1 + 4);
-                    */
-                }
-            };
+            }};
         }};
 
         disruptor = new ToggleWeapon("disruptor"){{
@@ -192,6 +191,8 @@ public class YellowWeapons{
             x = 0f;
             y = 0f;
             inaccuracy = 360f;
+            predictTarget = false;
+            ignoreRotation = true;
 
             shoot.shots = 350;
 
@@ -217,6 +218,9 @@ public class YellowWeapons{
             reload = 240f;
             x = 24f;
             y = 0f;
+            willMirror = true;
+            predictTarget = false;
+            ignoreRotation = true;
 
             shoot.shots = 35;
         }};
@@ -225,6 +229,8 @@ public class YellowWeapons{
             reload = 30f;
             x = 80f;
             y = 0f;
+            willMirror = true;
+            ignoreRotation = true;
 
             inaccuracy = 360f;
 
@@ -253,6 +259,7 @@ public class YellowWeapons{
             reload = 60f;
             x = 40f;
             y = 0f;
+            willMirror = true;
 
             shootSound = Sounds.bolt;
 
@@ -292,6 +299,8 @@ public class YellowWeapons{
             shootCone = 360f;
             x = y = 0f;
             alwaysContinuous = true;
+            ignoreRotation = true;
+            predictTarget = false;
 
             shootSound = Sounds.pulse;
 
@@ -306,7 +315,6 @@ public class YellowWeapons{
         }};
 
         octa = new ToggleWeapon("octa"){{
-            enabledDefault = true;
             reload = 60*8f;
             x = y = 0f;
 
@@ -327,6 +335,82 @@ public class YellowWeapons{
                 incendChance = 0.4f;
                 incendSpread = 5f;
                 incendAmount = 1;
+            }};
+        }};
+
+        energySpheres = new ToggleWeapon("energy-spheres"){{
+            reload = 60*2f;
+            x = 8*20f;
+            y = 0f;
+            willMirror = true;
+
+            shoot = new ShootSpread(5, 5f);
+
+            shootSound = Sounds.bolt;
+
+            bullet = new EqualityBulletType(5f, 240f){{
+                lifetime = 60*5f;
+                drag = -0.007f;
+                hitSize = 12f;
+                hitEffect = YellowFx.energySphereExplosion;
+                status = StatusEffects.shocked;
+                pierceArmor = true;
+
+                lightning = 5;
+                lightningLength = 5;
+                lightningDamage = 120f;
+                lightningColor = Pal.lancerLaser;
+                lightningType = new LightningBulletType();
+
+                trailEffect = Fx.trailFade;
+                trailColor = Pal.lancerLaser;
+                trailLength = 20;
+                trailWidth = 5f;
+                lightOpacity = 1f;
+                lightColor = Pal.lancerLaser;
+                homingRange = 8*50f;
+                homingPower = 0.01f;
+
+                splashDamage = 200f;
+                splashDamageRadius = 8*8f;
+
+                parts.add(new ShapePart(){{
+                    circle = true;
+                    radius = 15f;
+                    color = Pal.lancerLaser;
+                }});
+            }};
+        }};
+
+        spearCall = new ToggleWeapon("spear-call"){{
+            reload = 3.5f;
+            x = 0f;
+            y = 8*10f;
+            xRand = 8*120f;
+            willMirror = true;
+            ignoreRotation = true;
+            predictTarget = false;
+
+            properties = new Mirrorer.ReflectProperty[]{
+                    Mirrorer.ReflectProperty.flipY
+            };
+
+            shootSound = Sounds.pulseBlast;
+
+            bullet = new SpinSpearBulletType(){{
+                damage = 80f;
+                speed = 0.5f;
+                drag = -0.03f;
+                lifetime = 60*4f;
+                launchTime = 60f;
+                spinInterp = Interp.pow3Out;
+                height = 75f;
+                pierce = true;
+                pierceCap = 3;
+                pierceArmor = true;
+                keepVelocity = false;
+
+                sprite = "flare";
             }};
         }};
     }

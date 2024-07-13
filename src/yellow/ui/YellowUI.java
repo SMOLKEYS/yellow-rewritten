@@ -19,8 +19,14 @@ public class YellowUI{
     public NotificationFragment notifrag;
     public FirstLoadFragment firstfrag;
     public BlankFragment blankfrag;
-    public DialogueFragment dialfrag;
     public ManagerFragment managefrag;
+
+    //interactions
+    public BackgroundFragment backfrag;
+    public CharacterDisplayFragment chdispfrag;
+    public CutsceneCurtainFragment curtfrag;
+    public DialogueBoxFragment boxfrag;
+    public InteractionBoxFragment iboxfrag;
 
     public void init(){
         weaponManager = new WeaponManagerDialog();
@@ -30,8 +36,13 @@ public class YellowUI{
         notifrag = new NotificationFragment();
         firstfrag = new FirstLoadFragment();
         blankfrag = new BlankFragment();
-        dialfrag = new DialogueFragment();
         managefrag = new ManagerFragment();
+
+        backfrag = new BackgroundFragment();
+        chdispfrag = new CharacterDisplayFragment();
+        curtfrag = new CutsceneCurtainFragment();
+        boxfrag = new DialogueBoxFragment();
+        iboxfrag = new InteractionBoxFragment();
 
         multiGroup = new WidgetGroup();
 
@@ -44,7 +55,6 @@ public class YellowUI{
         notifrag.build(multiGroup);
         firstfrag.build(ui.menuGroup);
         blankfrag.build(multiGroup);
-        dialfrag.build(multiGroup);
         managefrag.build(ui.hudGroup);
     }
 }

@@ -8,8 +8,6 @@ public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
 
     private static final int mappingId = EntityMapping.register("yellow-unit", YellowUnitEntity::new);
 
-    public AbilityEntry[] abilityEntries;
-
     public YellowUnitEntity(){
         super();
     }
@@ -55,5 +53,4 @@ public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
     public void kill(){
         super.destroy();
     }
-
 }

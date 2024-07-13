@@ -8,5 +8,4 @@ uniform float u_time;
 // what the fuck do i do lmao
 void main(){
 
-
 }

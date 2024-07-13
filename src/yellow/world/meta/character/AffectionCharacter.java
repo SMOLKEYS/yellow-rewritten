@@ -1,9 +1,8 @@
 package yellow.world.meta.character;
 
 import arc.struct.*;
-import yellow.world.meta.*;
-
 import java.util.*;
+import yellow.world.meta.*;
 
 /** A character with special data related to affection. */
 public class AffectionCharacter extends GameCharacter{

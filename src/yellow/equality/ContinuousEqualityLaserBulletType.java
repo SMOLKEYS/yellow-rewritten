@@ -1,10 +1,8 @@
 package yellow.equality;
 
-import arc.util.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
-import yellow.util.*;
 
 public class ContinuousEqualityLaserBulletType extends ContinuousLaserBulletType{
 
@@ -18,25 +16,23 @@ public class ContinuousEqualityLaserBulletType extends ContinuousLaserBulletType
 
     @Override
     public void hitEntity(Bullet b, Hitboxc entity, float health){
-        super.hitEntity(b, entity, health);
-
-        if(entity instanceof Healthc h && SafeSettings.getBool("yellow-equal-treatment", false, false)){
-            Structs.each(v -> {
-                if(EqualityEntries.hasEntry(h, v)) SafeReflect.set(h, v, h.health() - b.damage);
-            }, EqualityEntries.ent);
+        if(!Equality.isEnabled()){
+            super.hitEntity(b, entity, health);
+            return;
         }
+
+        if(entity instanceof Unit u && Equality.isEnabled()) Equality.handle(u, b, health);
     }
 
     @Override
     public void createSplashDamage(Bullet b, float x, float y){
-        super.createSplashDamage(b, x, y);
+        if(!Equality.isEnabled()){
+            super.createSplashDamage(b, x, y);
+            return;
+        }
 
-        if(splashDamageRadius > 0 && !b.absorbed){
-            Units.nearbyEnemies(b.team, x, y, splashDamageRadius, en -> {
-                Structs.each(v -> {
-                    if(EqualityEntries.hasEntry(en, v)) SafeReflect.set(en, v, en.health() - b.damage);
-                }, EqualityEntries.ent);
-            });
+        if(splashDamageRadius > 0 && !b.absorbed && Equality.isEnabled()){
+            Units.nearbyEnemies(b.team, x, y, splashDamageRadius, en -> Equality.handle(en, b, en.health));
         }
     }
 }

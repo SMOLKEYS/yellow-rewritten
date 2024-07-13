@@ -2,7 +2,6 @@ package yellow.ui.fragments;
 
 import arc.*;
 import arc.func.*;
-import arc.graphics.*;
 import arc.math.*;
 import arc.scene.*;
 import arc.scene.actions.*;
@@ -16,13 +15,13 @@ import mindustry.graphics.*;
 import mindustry.ui.*;
 import yellow.*;
 import yellow.ui.*;
+import yellow.util.*;
 
 public class NotificationFragment implements CommonFragment{
 
     private Table table;
     private Drawable persistent, error;
     private Label.LabelStyle lstyle;
-    private float notifWidth = Core.graphics.getWidth() / 3f;
 
     @Override
     public void build(Group parent){
@@ -55,46 +54,7 @@ public class NotificationFragment implements CommonFragment{
     }
 
     public void showNotification(Drawable icon, String message, float minHeight, Runnable clicked){
-        Cell<Table> t = table.table(Styles.black5).minHeight(minHeight).width(notifWidth);
-        Table tr = t.get();
-        t.right();
-        tr.right();
-        tr.image(icon).size(32).scaling(Scaling.fit).pad(15).padLeft(20);
-        tr.labelWrap(message).style(lstyle).grow().pad(10).padRight(8);
-        float width = Math.max(tr.getMinWidth(), notifWidth);
-        tr.clicked(() -> {
-            tr.hovered(() -> {});
-            tr.exited(() -> {});
-            tr.clicked(() -> {});
-            tr.actions(Actions.sequence(
-                    Actions.translateBy(width, 0, 1, Interp.pow3In),
-                    Actions.run(() -> {
-                        table.getCells().remove(t);
-                        clicked.run();
-                    }),
-                    Actions.remove()
-            ));
-        });
-        tr.hovered(() -> {
-            if(tr.getActions().peek() instanceof SequenceAction s && s.getActions().peek() instanceof DelayAction) tr.getActions().clear();
-        });
-        tr.exited(() -> {
-            if(tr.getActions().isEmpty()) tr.actions(Actions.sequence(
-                    Actions.delay(YellowVars.getNotificationTime()),
-                    Actions.translateBy(width, 0, 1, Interp.pow3In),
-                    Actions.run(() -> table.getCells().remove(t)),
-                    Actions.remove()
-            ));
-        });
-        tr.setTranslation(width, 0);
-        tr.actions(Actions.sequence(
-                Actions.translateBy(-width, 0, 1, Interp.pow3Out),
-                Actions.delay(YellowVars.getNotificationTime()),
-                Actions.translateBy(width, 0, 1, Interp.pow3In),
-                Actions.run(() -> table.getCells().remove(t)),
-                Actions.remove()
-        ));
-        t.row();
+        showTintedNotification(null, icon, message, minHeight, false, clicked);
     }
 
     public void showPersistentNotification(String message){
@@ -114,107 +74,8 @@ public class NotificationFragment implements CommonFragment{
     }
 
     public void showPersistentNotification(Drawable icon, String message, float minHeight, Runnable clicked){
-        Cell<Table> t = table.table(persistent).minHeight(minHeight).width(notifWidth);
-        Table tr = t.get();
-        t.right();
-        tr.right();
-        tr.image(icon).size(32).scaling(Scaling.fit).pad(15).padLeft(20);
-        tr.labelWrap(message).style(lstyle).grow().pad(10).padRight(8);
-        float width = Math.max(tr.getMinWidth(), notifWidth);
-        tr.clicked(() -> {
-            tr.hovered(() -> {});
-            tr.exited(() -> {});
-            tr.clicked(() -> {});
-            tr.actions(Actions.sequence(
-                    Actions.translateBy(width, 0, 1, Interp.pow3In),
-                    Actions.run(() -> {
-                        table.getCells().remove(t);
-                        clicked.run();
-                    }),
-                    Actions.remove()
-            ));
-        });
-        tr.setTranslation(width, 0);
-        tr.actions(Actions.translateBy(-width, 0, 1, Interp.pow3Out));
-        t.row();
+        showTintedNotification(persistent, icon, message, minHeight, true, clicked);
     }
-
-    public void showCustomNotification(Cons<Table> cons){
-        Cell<Table> t = table.table(Styles.black5).minHeight(70).minWidth(notifWidth);
-        Table tr = t.get();
-        t.right();
-        try{
-            cons.get(tr);
-        }catch(Exception e){
-            //man
-        }
-        float width = Math.max(tr.getMinWidth(), notifWidth);
-        tr.clicked(() -> {
-            tr.hovered(() -> {});
-            tr.exited(() -> {});
-            tr.clicked(() -> {});
-            tr.actions(Actions.sequence(
-                    Actions.translateBy(width, 0, 1, Interp.pow3In),
-                    Actions.run(() -> {
-                        table.getCells().remove(t);
-                    }),
-                    Actions.remove()
-            ));
-        });
-        tr.hovered(() -> {
-            if(tr.getActions().peek() instanceof SequenceAction s && s.getActions().peek() instanceof DelayAction) tr.getActions().clear();
-        });
-        tr.exited(() -> {
-            if(tr.getActions().isEmpty()) tr.actions(Actions.sequence(
-                    Actions.delay(YellowVars.getNotificationTime()),
-                    Actions.translateBy(width, 0, 1, Interp.pow3In),
-                    Actions.run(() -> table.getCells().remove(t)),
-                    Actions.remove()
-            ));
-        });
-        tr.setTranslation(width, 0);
-        tr.actions(Actions.sequence(
-                Actions.translateBy(-width, 0, 1, Interp.pow3Out),
-                Actions.delay(YellowVars.getNotificationTime()),
-                Actions.translateBy(width, 0, 1, Interp.pow3In),
-                Actions.run(() -> table.getCells().remove(t)),
-                Actions.remove()
-        ));
-        t.row();
-    }
-
-    public void showCustomPersistentNotification(Cons<Table> cons){
-        Cell<Table> t = table.table(persistent).minHeight(70).width(Core.graphics.getWidth() / 4f);
-        Table tr = t.get();
-        t.right();
-        try{
-            cons.get(tr);
-        }catch(Exception e){
-            //man...
-        }
-        if(!tr.hasChildren()) tr.image(Icon.trash).size(32).scaling(Scaling.fit);
-        float width = Math.max(tr.getMinWidth(), 150);
-        tr.clicked(() -> {
-            tr.hovered(() -> {
-            });
-            tr.exited(() -> {
-            });
-            tr.clicked(() -> {
-            });
-            tr.actions(Actions.sequence(
-                    Actions.translateBy(width, 0, 1, Interp.pow3In),
-                    Actions.run(() -> {
-                        table.getCells().remove(t);
-                    }),
-                    Actions.remove()
-            ));
-        });
-        tr.setTranslation(width, 0);
-        tr.actions(Actions.translateBy(-width, 0, 1, Interp.pow3Out));
-        t.row();
-    }
-
-    // --- NEAR-EXACT COPY OF ABOVE METHODS ---
 
     public void showErrorNotification(String message){
         showErrorNotification(Icon.warning, message);
@@ -255,13 +116,19 @@ public class NotificationFragment implements CommonFragment{
     }
 
     public void showErrorNotification(Drawable icon, String message, float minHeight, Runnable clicked){
-        Cell<Table> t = table.table(error).minHeight(minHeight).width(notifWidth);
+        showTintedNotification(error, icon, message, minHeight, true, clicked);
+    }
+
+    public void showTintedNotification(@Nullable Drawable bg, Drawable icon, String message, float minHeight, boolean persist, Runnable clicked){
+        Cell<Table> t = table.table(bg != null ? bg : Styles.black5).minHeight(minHeight).width((Core.graphics.getWidth() * (SafeSettings.getInt("yellow-notification-length", 20, 20) / 100f)) / Scl.scl());
         Table tr = t.get();
         t.right();
         tr.right();
         tr.image(icon).size(32).scaling(Scaling.fit).pad(15).padLeft(20);
         tr.labelWrap(message).style(lstyle).grow().pad(10).padRight(8);
-        float width = Math.max(tr.getMinWidth(), notifWidth);
+        float width = Math.max(tr.getMinWidth(), (Core.graphics.getWidth() * (SafeSettings.getInt("yellow-notification-length", 20, 20) / 100f)) / Scl.scl());
+        tr.setTranslation(width, 0);
+
         tr.clicked(() -> {
             tr.hovered(() -> {});
             tr.exited(() -> {});
@@ -275,8 +142,79 @@ public class NotificationFragment implements CommonFragment{
                     Actions.remove()
             ));
         });
-        tr.setTranslation(width, 0);
-        tr.actions(Actions.translateBy(-width, 0, 1, Interp.pow3Out));
+
+        if(persist){
+            tr.actions(Actions.translateBy(-width, 0, 1, Interp.pow3Out));
+        }else{
+            tr.hovered(() -> {
+                if(tr.getActions().peek() instanceof SequenceAction s && s.getActions().peek() instanceof DelayAction) tr.getActions().clear();
+            });
+            tr.exited(() -> {
+                if(tr.getActions().isEmpty()) tr.actions(Actions.sequence(
+                        Actions.delay(YellowVars.getNotificationTime()),
+                        Actions.translateBy(width, 0, 1, Interp.pow3In),
+                        Actions.run(() -> table.getCells().remove(t)),
+                        Actions.remove()
+                ));
+            });
+            tr.actions(Actions.sequence(
+                    Actions.translateBy(-width, 0, 1, Interp.pow3Out),
+                    Actions.delay(YellowVars.getNotificationTime()),
+                    Actions.translateBy(width, 0, 1, Interp.pow3In),
+                    Actions.run(() -> table.getCells().remove(t)),
+                    Actions.remove()
+            ));
+        }
+
+        t.row();
+    }
+
+    public void showCustomNotification(boolean persist, Cons<Table> cons){
+        Cell<Table> t = table.table(Styles.black5).minHeight(70).minWidth((Core.graphics.getWidth() * (SafeSettings.getInt("yellow-notification-length", 20, 20) / 100f)) / Scl.scl());
+        Table tr = t.get();
+        t.right();
+        try{
+            cons.get(tr);
+        }catch(Exception e){
+            //man
+        }
+        float width = Math.max(tr.getMinWidth(), (Core.graphics.getWidth() * (SafeSettings.getInt("yellow-notification-length", 20, 20) / 100f)) / Scl.scl());
+        tr.clicked(() -> {
+            tr.hovered(() -> {});
+            tr.exited(() -> {});
+            tr.clicked(() -> {});
+            tr.actions(Actions.sequence(
+                    Actions.translateBy(width, 0, 1, Interp.pow3In),
+                    Actions.run(() -> {
+                        table.getCells().remove(t);
+                    }),
+                    Actions.remove()
+            ));
+        });
+
+        if(persist){
+            tr.actions(Actions.translateBy(-width, 0, 1, Interp.pow3Out));
+        }else{
+            tr.hovered(() -> {
+                if(tr.getActions().peek() instanceof SequenceAction s && s.getActions().peek() instanceof DelayAction) tr.getActions().clear();
+            });
+            tr.exited(() -> {
+                if(tr.getActions().isEmpty()) tr.actions(Actions.sequence(
+                        Actions.delay(YellowVars.getNotificationTime()),
+                        Actions.translateBy(width, 0, 1, Interp.pow3In),
+                        Actions.run(() -> table.getCells().remove(t)),
+                        Actions.remove()
+                ));
+            });
+            tr.actions(Actions.sequence(
+                    Actions.translateBy(-width, 0, 1, Interp.pow3Out),
+                    Actions.delay(YellowVars.getNotificationTime()),
+                    Actions.translateBy(width, 0, 1, Interp.pow3In),
+                    Actions.run(() -> table.getCells().remove(t)),
+                    Actions.remove()
+            ));
+        }
+
         t.row();
     }
 }

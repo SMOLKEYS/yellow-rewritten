@@ -24,10 +24,10 @@ public class ExtensionsDialog extends BaseDialog{
                 item.defaults().pad(10);
                 item.table(labeld -> {
                     labeld.labelWrap(Core.bundle.format("yellow.extension-info",
-                            Stringf.alternative(meta.displayName, meta.name),
-                            Stringf.alternative(meta.description, Core.bundle.get("yellow.extension-nodesc")),
-                            Stringf.alternative(meta.author, Core.bundle.get("yellow.extension-noauth")),
-                            Stringf.alternative(meta.version, Core.bundle.get("yellow.extension-nover"))
+                            Stringy.alternative(meta.displayName, meta.name),
+                            Stringy.alternative(meta.description, Core.bundle.get("yellow.extension-nodesc")),
+                            Stringy.alternative(meta.author, Core.bundle.get("yellow.extension-noauth")),
+                            Stringy.alternative(meta.version, Core.bundle.get("yellow.extension-nover"))
                     )).left();
                 }).growX().uniformX();
                 item.table(controld -> {

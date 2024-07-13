@@ -8,6 +8,8 @@ import arc.scene.actions.*;
 import arc.scene.event.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import arc.struct.*;
+import arc.util.*;
 import mindustry.*;
 import mindustry.graphics.*;
 import mindustry.mod.*;
@@ -18,6 +20,7 @@ import yellow.ui.*;
 public class FirstLoadFragment implements CommonFragment{
 
     boolean cur = false;
+    Seq<Runnable> queue = new Seq<>();
 
     @Override
     public void build(Group parent){
@@ -32,12 +35,16 @@ public class FirstLoadFragment implements CommonFragment{
             s.background(Styles.black);
             s.center();
 
+            s.update(s::toFront);
+
             Mods.ModMeta meta = Yellow.meta();
 
             s.table(v -> {
                 v.touchable = Touchable.childrenOnly;
 
-                Cell<FLabel> fcell = v.add(new FLabel(Vars.tree.get("texts/notes.txt").readString())).grow().left().pad(70);
+                Cell<FLabel> fcell = v.add(new FLabel(
+                        Vars.tree.get("texts/notes.txt").readString().replace("-name-", Strings.stripColors(Vars.player.name != null ? Vars.player.name : Vars.steamPlayerName != null ? Vars.steamPlayerName : "Yeah, you") + "!")
+                )).grow().left().pad(70);
                 FLabel f = fcell.get();
 
                 f.setWrap(true);
@@ -53,6 +60,7 @@ public class FirstLoadFragment implements CommonFragment{
                                         Actions.run(() -> {
                                             s.clearChildren();
                                             s.add(new FLabel("Good luck out there!"));
+                                            queue.each(e -> Core.app.post(e));
                                         }),
                                         Actions.delay(1),
                                         Actions.fadeOut(3),
@@ -75,6 +83,10 @@ public class FirstLoadFragment implements CommonFragment{
                 });
             }).growX();
         });
+    }
+
+    public void query(Runnable entry){
+        queue.add(entry);
     }
 
     public static String processMeta(Mods.ModMeta meta){

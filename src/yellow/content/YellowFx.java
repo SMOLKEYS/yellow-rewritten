@@ -7,68 +7,66 @@ import arc.util.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.graphics.*;
-import mindustry.ui.*;
 import yellow.entities.effect.*;
+import yellow.graphics.*;
+import yellow.math.*;
 
 
 public class YellowFx{
     
     public static final Effect
 
-    ghostDespawn = new Effect(10f, e -> {
-        Draw.z(Layer.effect);
-        Draw.alpha(e.fout() * 3);
-        
+    ghostDespawn = new Effect(25f, e -> {
         Lines.stroke(e.fout() * 7);
         Lines.circle(e.x, e.y, e.fin() * 10);
     }),
 
-    ghostDespawn2 = new Effect(15f, e -> {
-        Draw.z(Layer.effect);
-        Draw.alpha(e.fout() * 3);
-
+    ghostDespawn2 = new Effect(29f, e -> {
         Lines.stroke(e.fout() * 7);
         Lines.circle(e.x, e.y, e.fin() * 17);
     }),
 
-    ghostDespawn3 = new Effect(15f, e -> {
-        Draw.z(Layer.effect);
-        Draw.alpha(e.fout() * 3);
-
-        Lines.stroke(e.fout() * 7);
+    ghostDespawn3 = new Effect(38f, e -> {
+        Lines.stroke(e.fout() * 3);
         Lines.circle(e.x, e.y, e.fin() * 23);
+        Angles.randLenVectors(e.id, 5, e.fin() * 25f, (rx, ry) -> {
+            Lines.line(e.x, e.y, e.x + rx, e.y + ry);
+            Fill.circle(e.x + rx, e.y + ry, e.fout() * 5);
+        });
     }),
 
-    ghostDespawnMulti = new RandomEffect(ghostDespawn, ghostDespawn2, ghostDespawn3),
-
-    yellowExplosionOut = new Effect(120f, e -> {
-        Draw.color(Color.yellow);
-
-        float h = e.fin(Interp.smooth);
-        
-        Lines.stroke(e.foutpow() * 15);
-        Lines.circle(e.x, e.y, h * 25);
-        Lines.square(e.x, e.y, h * 50, Time.time * 9);
-        Lines.circle(e.x, e.y, h * 50);
-        Lines.square(e.x, e.y, h * 100, Time.time * 9);
-        Lines.circle(e.x, e.y, h * 25);
-        Lines.square(e.x, e.y, h * 50, -Time.time * 9);
-        Lines.circle(e.x, e.y, h * 50);
-        Lines.square(e.x, e.y, h * 100, -Time.time * 9);
+    ghostDespawn4 = new Effect(45f, e -> {
+        Lines.stroke(e.fout() * 5);
+        Lines.circle(e.x, e.y, e.fin() * 15);
+        Angles.randLenVectors(e.id, 5, e.fin() * 33f, (rx, ry) -> {
+            Lines.line(e.x, e.y, e.x + rx, e.y + ry);
+            Fill.circle(e.x + rx, e.y + ry, e.fout() * 6);
+        });
     }),
 
-    yellowExplosionIn = new Effect(120f, e -> {
+    ghostDespawnMulti = new RandomEffect(ghostDespawn, ghostDespawn2, ghostDespawn3, ghostDespawn4),
+
+    decimatorPortalExplosion = new Effect(180f, e -> {
+        float sz = e.fin(InterpStack.pow10OutSlope);
+
+        Lines.stroke(sz * 15);
         Draw.color(Color.yellow);
-        
-        Lines.stroke(e.finpow() * 15);
-        Lines.circle(e.x, e.y, e.foutpow() * 25);
-        Lines.square(e.x, e.y, e.foutpow() * 50, Time.time * 9);
-        Lines.circle(e.x, e.y, e.foutpow() * 50);
-        Lines.square(e.x, e.y, e.foutpow() * 100, Time.time * 9);
-        Lines.circle(e.x, e.y, e.foutpow() * 25);
-        Lines.square(e.x, e.y, e.foutpow() * 50, -Time.time * 9);
-        Lines.circle(e.x, e.y, e.foutpow() * 50);
-        Lines.square(e.x, e.y, e.foutpow() * 100, -Time.time * 9);
+
+        Angles.randLenVectors(e.id, 25, e.finpow() * 240, (x, y) -> Fill.circle(e.x + x, e.y + y, e.fout(Interp.pow3Out) * 15));
+
+        Drawy.portalRing(e.x, e.y, sz * 90, sz * 1.3f, 12, 1f);
+
+        Mathf.rand.setSeed(e.id);
+
+        Angles.randLenVectors(e.id, 20, sz * 70, -Time.time * 2.3f, 360f, (rx, ry) -> {
+            Draw.z(Layer.effect - 0.001f);
+            Draw.color(Tmp.c1.set(Color.purple).lerp(Color.violet, Mathf.random()));
+            Fill.circle(e.x + rx, e.y + ry, sz * Mathf.random(24, 37));
+        });
+
+        Draw.z(Layer.effect - 0.002f);
+        Draw.color(Tmp.c1.set(Color.purple).lerp(Color.violet, Mathf.random()));
+        Fill.circle(e.x, e.y, sz * 85);
     }),
 
     yellowDeathEffect = new Effect(210f, e -> {
@@ -90,7 +88,7 @@ public class YellowFx{
         Draw.alpha(e.fout() * 4);
         Draw.rect("yellow-yellow", e.x, e.y, e.finpow() * 200, e.finpow() * 200);
     }),
-    
+
     despawn = new Effect(120f, e -> {
         Lines.stroke(e.fout() * 6f);
         
@@ -99,7 +97,7 @@ public class YellowFx{
     }),
 
 
-    fireCircleEffect = new Effect(180f, e -> {
+    fireCircle = new Effect(180f, e -> {
         Draw.z(Layer.effect);
         Lines.stroke(e.fout() * 40);
 
@@ -116,8 +114,16 @@ public class YellowFx{
         });
     }),
 
-    permissionDenied = new Effect(240f, e -> {
-        Draw.z(Layer.endPixeled);
-        Fonts.def.draw("<< PERMISSION DENIED >>", e.x, e.y, Pal.remove, 1f, false, Align.center);
+    energySphereExplosion = new Effect(120f, e -> {
+        Draw.z(Layer.effect);
+        Draw.color(Pal.lancerLaser);
+
+        Lines.stroke(e.fout() * 10);
+        Lines.circle(e.x, e.y, e.finpow() * 8*15);
+
+        Angles.randLenVectors(e.id, 10, e.finpow() * 8*30, (x, y) -> {
+            Lines.line(e.x, e.y, e.x + x, e.y + y);
+            Fill.circle(e.x + x, e.y + y, e.fout() * 20);
+        });
     });
 }

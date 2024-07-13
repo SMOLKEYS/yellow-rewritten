@@ -1,6 +1,5 @@
 package yellow.util;
 
-import arc.struct.*;
 import mindustry.*;
 import mindustry.mod.*;
 import rhino.*;
@@ -9,8 +8,6 @@ import rhino.*;
 public class ModPackageBridger{
     static boolean loaded = false;
     static ImporterTopLevel scope = null;
-    static Seq<String> importedPackages = new Seq<>();
-    static Seq<Class<?>> importedClasses = new Seq<>();
 
     /** Imports a provided list of packages. Nonexistent packages are ignored.
      * @param packageNames The list of packages to import. */
@@ -20,13 +17,9 @@ public class ModPackageBridger{
         }
 
         for(var s: packageNames){
-            if(importedPackages.contains(s)) return;
-
             NativeJavaPackage pkg = new NativeJavaPackage(s, Vars.mods.mainLoader());
             pkg.setParentScope(scope);
             scope.importPackage(pkg);
-
-            if(!importedPackages.contains(s)) importedPackages.add(s);
         }
     }
 
@@ -46,12 +39,8 @@ public class ModPackageBridger{
     	}
 
     	for(var s: classes){
-    		if(importedClasses.contains(s)) return;
-
     		NativeJavaClass cls = new NativeJavaClass(scope, s);
     		scope.importClass(cls);
-
-    		if(!importedClasses.contains(s)) importedClasses.add(s);
     	}
     }
 }
