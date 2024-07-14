@@ -81,6 +81,8 @@ public class Autoupdater{
                                                 Fi tg = Yellow.configDir().child("jars").child(Strings.stripColors(assets[r2][0]).replace(".jar", "") + ver + ".jar");
                                                 tg.writeBytes(out);
 
+                                                Vars.mods.importMod(tg);
+
                                                 Vars.ui.loadfrag.hide();
                                             }, e -> Core.app.post(() -> {
                                                 Log.err(e);
