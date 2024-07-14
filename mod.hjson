@@ -1,10 +1,10 @@
-displayName: "Yellow"
+displayName: "MINDUSTRY: YELLOW"
 name: "yellow"
 author: "SMOLKEYS"
 main: "yellow.Yellow"
 description: '''
 When passion collides with the shitposter's mind.
 '''
-version: 2.4S
+version: 2.42S
 minGameVersion: 146
 java: true

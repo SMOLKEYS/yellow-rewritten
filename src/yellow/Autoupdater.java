@@ -1,8 +1,10 @@
 package yellow;
 
 import arc.*;
+import arc.files.*;
 import arc.scene.style.*;
 import arc.util.*;
+import arc.util.serialization.*;
 import java.util.*;
 import mindustry.*;
 import mindustry.gen.*;
@@ -10,16 +12,12 @@ import mindustry.graphics.*;
 import mindustry.mod.*;
 import yellow.util.*;
 
-//TODO absolutely broken, needs multiple revisions
 public class Autoupdater{
-
-    static boolean checked = false;
 
     public static void checkForUpdates(boolean manual){
         if(!Core.settings.getBool("yellow-check-for-updates", true) && !manual) return;
 
         Mods.ModMeta meta = Yellow.meta();
-        checked = false;
 
         if(!meta.version.endsWith("S") && !meta.version.endsWith("B")){
             YellowVars.ui.notifrag.showNotification("@yellow.ignorever");
@@ -38,19 +36,17 @@ public class Autoupdater{
                 }
             }, versions);
 
-            String lastEntry = versions[versions.length - 1];
+            String lastEntry = versions[0];
             int distance = Structsy.distance(versions, meta.version, lastEntry);
             int currentVerIndex = Structs.indexOf(versions, meta.version);
 
             if(!Structs.contains(versions, meta.version)){
-                checked = true;
                 YellowVars.ui.notifrag.showTintedNotification(((TextureRegionDrawable)Tex.whiteui).tint(Pal.gray.cpy().a(0.5f)), Icon.cancel, "@yellow.unknownver", 70, true, () -> {});
-            }else if(!Objects.equals(versions[currentVerIndex], lastEntry)){
-                checked = true;
+            }else if(!Objects.equals(meta.version, lastEntry)){
                 YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", distance), () -> {
                     String[][] availableVersions = new String[distance][1];
                     for(int i = 0; i < distance; i++){
-                        availableVersions[i][0] = versions[currentVerIndex + i];
+                        availableVersions[i][0] = versions[i];
                     }
 
                     Vars.ui.showMenu(
@@ -62,9 +58,37 @@ public class Autoupdater{
 
                                 String ver = availableVersions[r][0];
 
-                                Http.get(root.get(Structs.indexOf(versions, ver)).get("assets").get(0).getString("browser_download_url"), res -> {
-                                    Core.settings.getDataDirectory().child("yellow-" + ver + ".jar").writeBytes(res.getResult());
-                                });
+                                JsonValue mainAsset = root.get(Structs.indexOf(versions, ver)).get("assets");
+                                String[][] assets = new String[mainAsset.size][1];
+
+                                for(int i = 0; i < mainAsset.size; i++) assets[i][0] = mainAsset.get(i).getString("name", "bruh???").replace("yellow-rewritten.jar", "[accent]yellow-rewritten.jar[]");
+
+                                Vars.ui.showMenu(
+                                        "@yellow.newver-update",
+                                        Core.bundle.format("yellow.newver-select", ver),
+                                        assets,
+                                        r2 -> {
+                                            if(r2 == -1) return;
+
+                                            Vars.ui.loadfrag.show("[accent]Downloading...[]");
+
+                                            JsonValue mval = mainAsset.get(Structsy.indexOf(assets, Strings.stripColors(assets[r2][0])));
+
+                                            Http.get(mval.getString("browser_download_url"), res -> {
+                                                byte[] out = res.getResult();
+                                                Vars.ui.loadfrag.setProgress(out.length / mval.getFloat("size"));
+
+                                                Fi tg = Yellow.configDir().child("jars").child(Strings.stripColors(assets[r2][0]).replace(".jar", "") + ver + ".jar");
+                                                tg.writeBytes(out);
+
+                                                Vars.ui.loadfrag.hide();
+                                            }, e -> Core.app.post(() -> {
+                                                Log.err(e);
+                                                Vars.ui.showException("Could not download update " + ver + " jar", e);
+                                                Vars.ui.loadfrag.hide();
+                                            }));
+                                        }
+                                );
                             });
                 });
             }
