@@ -34,13 +34,13 @@ public class ModPackageBridger{
 
     /** Imports a provided list of classes. Rhino cannot directly access members of a normal Java class, so what this does is it converts it into a NativeJavaClass, in which Rhino can directly access the members of. */
     public static void importClass(Class<?>... classes){
-    	if(!loaded){
-    		scope = (ImporterTopLevel) Vars.mods.getScripts().scope;
-    	}
+        if(!loaded){
+            scope = (ImporterTopLevel) Vars.mods.getScripts().scope;
+        }
 
-    	for(var s: classes){
-    		NativeJavaClass cls = new NativeJavaClass(scope, s);
-    		scope.importClass(cls);
-    	}
+        for(var s: classes){
+            NativeJavaClass cls = new NativeJavaClass(scope, s);
+            scope.importClass(cls);
+        }
     }
 }

@@ -33,7 +33,7 @@ public class MultiUtils{
 
     //TODO starts being intrusive at 10 buttons, use scrollpane or pages
     /** Adds a button to the button group located at the top-left side of the HUD in mobile. Does nothing on desktop. */
-    public static void mobileHudButton(Drawable icon,  Runnable listener){
+    public static void mobileHudButton(Drawable icon, Runnable listener){
         if(!Vars.mobile) return;
         var but = Vars.ui.hudGroup.<Table>find("mobile buttons");
 

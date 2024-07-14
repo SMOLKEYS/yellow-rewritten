@@ -21,7 +21,7 @@ public class MagicSpecialistEntity extends MultiLifeUnitEntity implements Magicc
 
     @Override
     public MagicSpecialistUnitType type(){
-    	return (MagicSpecialistUnitType) super.type();
+        return (MagicSpecialistUnitType) super.type();
     }
 
     @Override

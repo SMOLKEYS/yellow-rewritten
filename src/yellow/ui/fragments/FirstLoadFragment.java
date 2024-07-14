@@ -107,7 +107,7 @@ public class FirstLoadFragment implements CommonFragment{
                 return "[cyan]Beta[]";
             }
             case "D" -> {
-            	return "[purple]Developer Build[]";
+                return "[purple]Developer Build[]";
             }
         }
 
