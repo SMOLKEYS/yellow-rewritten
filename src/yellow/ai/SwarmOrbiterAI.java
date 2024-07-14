@@ -45,7 +45,7 @@ public class SwarmOrbiterAI extends AIController{
 
         if(follow == null){
             follow = Groups.unit.find(e -> e.team == unit.team && targetUnit.get(e));
-        }else if(follow.team != unit.team || follow.dead()){
+        }else if(follow.team != unit.team || follow.dead() || !follow.isValid()){
             follow = null;
         }
 

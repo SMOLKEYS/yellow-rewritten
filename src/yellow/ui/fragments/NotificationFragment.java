@@ -2,6 +2,7 @@ package yellow.ui.fragments;
 
 import arc.*;
 import arc.func.*;
+import arc.input.*;
 import arc.math.*;
 import arc.scene.*;
 import arc.scene.actions.*;
@@ -129,7 +130,7 @@ public class NotificationFragment implements CommonFragment{
         float width = Math.max(tr.getMinWidth(), (Core.graphics.getWidth() * (SafeSettings.getInt("yellow-notification-length", 20, 20) / 100f)) / Scl.scl());
         tr.setTranslation(width, 0);
 
-        tr.clicked(() -> {
+        tr.clicked(KeyCode.mouseLeft, () -> {
             tr.hovered(() -> {});
             tr.exited(() -> {});
             tr.clicked(() -> {});
@@ -139,6 +140,18 @@ public class NotificationFragment implements CommonFragment{
                         table.getCells().remove(t);
                         clicked.run();
                     }),
+                    Actions.remove()
+            ));
+        });
+
+        //flick out notification
+        tr.clicked(KeyCode.mouseRight, () -> {
+            tr.hovered(() -> {});
+            tr.exited(() -> {});
+            tr.clicked(() -> {});
+            tr.actions(Actions.sequence(
+                    Actions.translateBy(width, 0, 0.2f, Interp.fastSlow),
+                    Actions.run(() -> table.getCells().remove(t)),
                     Actions.remove()
             ));
         });
@@ -185,9 +198,7 @@ public class NotificationFragment implements CommonFragment{
             tr.clicked(() -> {});
             tr.actions(Actions.sequence(
                     Actions.translateBy(width, 0, 1, Interp.pow3In),
-                    Actions.run(() -> {
-                        table.getCells().remove(t);
-                    }),
+                    Actions.run(() -> table.getCells().remove(t)),
                     Actions.remove()
             ));
         });

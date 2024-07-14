@@ -57,4 +57,21 @@ public class Stringy{
         for(int i = 0; i < amount; i++) c.append(random(collection, r));
         return c.toString();
     }
+
+    public static <T> String prettyPrint(T[] arr, boolean enclose){
+        if(arr.length == 0){
+            return enclose ? "[]" : "";
+        }
+
+        StringBuilder buffer = new StringBuilder(32);
+        if(enclose) buffer.append('[');
+        buffer.append(arr[0]);
+        for(int i = 1; i < arr.length; i++){
+            buffer.append(", ");
+            buffer.append(arr[i]);
+        }
+        if(enclose) buffer.append(']');
+
+        return buffer.toString();
+    }
 }

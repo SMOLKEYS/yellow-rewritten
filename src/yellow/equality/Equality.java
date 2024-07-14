@@ -35,7 +35,7 @@ public class Equality{
         return SafeSettings.getBool("yellow-equal-treatment", false, false);
     }
 
-    public static void annihilate(Entityc target, boolean removeRemnants, boolean showEffects, @Nullable Cons<Entityc> entityAfter, @Nullable Cons<Bullet> bulletAfter){
+    public static void annihilate(Entityc target, boolean removeRemnants, @Nullable Cons<Entityc> entityAfter, @Nullable Cons<Bullet> bulletAfter){
         target.remove();
         Groups.all.remove(target);
 
@@ -67,9 +67,7 @@ public class Equality{
 
             Structs.each(ed -> SafeReflect.invoke(eDamage, SafeReflect.get(eDamage, ed), "remove", new Unit[]{u}, Unit.class), eDamageEntries);
 
-            if(showEffects){
-                u.type.deathExplosionEffect.at(u.x, u.y, u.bounds() / 2f / 8f);
-            }
+            u.destroy();
         }
 
         if(target instanceof Drawc d) Groups.draw.remove(d);
@@ -85,8 +83,8 @@ public class Equality{
                 }
             });
             Groups.unit.each(e -> {
-                if(e instanceof UnitTetherc u && u.spawner() == target) annihilate(e, true, showEffects, entityAfter, bulletAfter);
-                if(e.controller() instanceof MissileAI a && a.shooter == target) annihilate(e, true, showEffects, entityAfter, bulletAfter);
+                if(e instanceof UnitTetherc u && u.spawner() == target) annihilate(e, true, entityAfter, bulletAfter);
+                if(e.controller() instanceof MissileAI a && a.shooter == target) annihilate(e, true, entityAfter, bulletAfter);
             });
         }
 

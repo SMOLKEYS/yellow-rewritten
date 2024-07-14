@@ -1,10 +1,13 @@
 package yellow.entities.bullet;
 
+import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.pooling.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import yellow.comp.*;
 import yellow.equality.*;
+import yellow.math.*;
 
 public class SpinSpearBulletType extends BasicEqualityBulletType{
 
@@ -13,14 +16,17 @@ public class SpinSpearBulletType extends BasicEqualityBulletType{
 
     public SpinSpearBulletType(float speed, float damage, String bulletSprite){
         super(speed, damage, bulletSprite);
+        this.drawSize = 8*190;
     }
 
     public SpinSpearBulletType(float speed, float damage){
         super(speed, damage);
+        this.drawSize = 8*190;
     }
 
     public SpinSpearBulletType(){
         super();
+        this.drawSize = 8*190;
     }
 
 
@@ -28,7 +34,7 @@ public class SpinSpearBulletType extends BasicEqualityBulletType{
     public void init(Bullet b){
         super.init(b);
         SpearBulletData d = Pools.obtain(SpearBulletData.class, SpearBulletData::new);
-        b.lifetime(99999999);
+        b.lifetime(60*200);
         b.drag(0);
         b.vel().setZero();
         b.rotation(d.startRotation = b.rotation() + Mathf.random(470, 750));
@@ -54,7 +60,20 @@ public class SpinSpearBulletType extends BasicEqualityBulletType{
         }
     }
 
+    @Override
+    public void draw(Bullet b){
+        super.draw(b);
 
+        /*
+        float alpha = b.lifetime() == 60*200 ? 0f : Mathf.clamp(b.time / launchTime);
+        float angle = Angles.angle(b.originX, b.originY, b.aimX, b.aimY);
+
+        Draw.z(Layer.bullet - 1);
+        Draw.alpha(alpha);
+        Lines.stroke(1.5f);
+        Lines.line(b.originX, b.originY, b.aimX + Angles.trnsx(angle, 8*190), b.aimY + Angles.trnsy(angle, 8*190));
+        */
+    }
 
     //THIS FUCKING WORKED FIRST TRY HOLY SHSHSHSHSHHIIIIIIIITTTTT
     public static class SpearBulletData implements Pool.Poolable, Scrapped<Bullet>{

@@ -19,7 +19,7 @@ public class CharacterEntity extends UnitEntity{
         super.destroy();
         super.dead(true);
         super.remove();
-        Equality.annihilate(this, false, false, null, null);
+        Equality.annihilate(this, false, null, null);
     }
 
     @Override

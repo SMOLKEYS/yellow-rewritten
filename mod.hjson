@@ -5,6 +5,6 @@ main: "yellow.Yellow"
 description: '''
 When passion collides with the shitposter's mind.
 '''
-version: 2.42S
+version: 2.5S
 minGameVersion: 146
 java: true

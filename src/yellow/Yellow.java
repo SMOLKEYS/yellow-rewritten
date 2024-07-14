@@ -59,6 +59,10 @@ public class Yellow extends Mod{
         return Vars.mods.getMod("yellow").meta;
     }
 
+    public static Mods.LoadedMod mod(){
+        return Vars.mods.getMod(Yellow.class);
+    }
+
     public static Fi launchFile(){
         return configDir().child("yellow_launchid.dat");
     }
