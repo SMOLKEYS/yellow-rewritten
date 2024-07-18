@@ -60,10 +60,10 @@ public class FirstLoadFragment implements CommonFragment{
                                         Actions.run(() -> {
                                             s.clearChildren();
                                             s.add(new FLabel("Good luck out there!"));
-                                            queue.each(e -> Core.app.post(e));
                                         }),
                                         Actions.delay(1),
                                         Actions.fadeOut(3),
+                                        Actions.run(() -> queue.each(e -> Core.app.post(e))),
                                         Actions.remove()
                                 ));
                             }else{

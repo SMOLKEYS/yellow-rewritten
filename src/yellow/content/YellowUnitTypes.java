@@ -22,6 +22,7 @@ public class YellowUnitTypes{
             mana = 5500;
             manaRecovery = 5f;
             lives = 5;
+            invFrames = 60*3f;
             flying = true;
             hideDetails = false;
             armor = 10f;

@@ -4,7 +4,6 @@ import arc.*;
 import arc.files.*;
 import arc.math.*;
 import arc.scene.style.*;
-import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
 import java.util.*;
@@ -39,9 +38,9 @@ public class Autoupdater{
             int id = Mathf.random(90000);
 
             if(!Structs.contains(versions, meta.version)){
-                YellowVars.ui.notifrag.showTintedNotification(((TextureRegionDrawable)Tex.whiteui).tint(Pal.gray.cpy().a(0.5f)), Icon.cancel, Core.bundle.format("yellow.unknownver", meta.version), 70, true, () -> {
-                    Vars.ui.showInfo(Core.bundle.format("yellow.unknownver-dialog", meta.version, YellowVars.getUpdateServer(), Stringy.prettyPrint(Structs.remove(versions, "Cancel"), false)));
-                });
+                YellowVars.ui.notifrag.showTintedNotification(((TextureRegionDrawable)Tex.whiteui).tint(Pal.gray.cpy().a(0.5f)), Icon.cancel, Core.bundle.format("yellow.unknownver", meta.version), 70, true,
+                        () -> Vars.ui.showInfo(Core.bundle.format("yellow.unknownver-dialog", meta.version, YellowVars.getUpdateServer(), Stringy.prettyPrint(Structs.remove(versions, "Cancel"), false)))
+                );
             }else if(!Objects.equals(meta.version, lastEntry)){
                 YellowVars.ui.notifrag.showPersistentNotification(Core.bundle.format("yellow.newver", distance), () -> showMenu(id, meta, versions, root, distance));
             }

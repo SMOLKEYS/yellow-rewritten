@@ -76,6 +76,10 @@ public class YellowSettings{
         });
     }
 
+    public static SettingsMenuDialog.SettingsTable table(){
+        return table;
+    }
+
     public static void addSection(String name, Cons<SettingsMenuDialog.SettingsTable> builder){
         seperatorPref(table, name);
         builder.get(table);

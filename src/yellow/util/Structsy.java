@@ -13,7 +13,7 @@ public class Structsy{
 
     /** Returns the distance between two elements in the specified array. */
     public static <T> int distance(T[] arr, T item1, T item2){
-        int i1 = -1, i2 = -2;
+        int i1 = -1, i2 = -1;
 
         for(int i = 0; i < arr.length; i++){
             T value = arr[i];

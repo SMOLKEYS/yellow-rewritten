@@ -131,9 +131,6 @@ public class NotificationFragment implements CommonFragment{
         tr.setTranslation(width, 0);
 
         tr.clicked(KeyCode.mouseLeft, () -> {
-            tr.hovered(() -> {});
-            tr.exited(() -> {});
-            tr.clicked(() -> {});
             tr.actions(Actions.sequence(
                     Actions.translateBy(width, 0, 1, Interp.pow3In),
                     Actions.run(() -> {
@@ -146,9 +143,14 @@ public class NotificationFragment implements CommonFragment{
 
         //flick out notification
         tr.clicked(KeyCode.mouseRight, () -> {
-            tr.hovered(() -> {});
-            tr.exited(() -> {});
-            tr.clicked(() -> {});
+            tr.actions(Actions.sequence(
+                    Actions.translateBy(width, 0, 0.2f, Interp.fastSlow),
+                    Actions.run(() -> table.getCells().remove(t)),
+                    Actions.remove()
+            ));
+        });
+
+        tr.dragged((dx, dy) -> {
             tr.actions(Actions.sequence(
                     Actions.translateBy(width, 0, 0.2f, Interp.fastSlow),
                     Actions.run(() -> table.getCells().remove(t)),

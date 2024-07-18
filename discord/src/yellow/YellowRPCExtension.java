@@ -12,7 +12,7 @@ import yellow.util.*;
 public class YellowRPCExtension extends YellowExtension{
 
     public static DiscordRPC.RichPresence presence = new DiscordRPC.RichPresence();
-    public static String[] arr = {
+    public static String[] arrYellow = {
             "This. Is. Yellow.",
             "A new look!",
             "*eating chips*",
@@ -95,7 +95,9 @@ public class YellowRPCExtension extends YellowExtension{
             "Level",
             "Wave",
             "Type",
-            "Map"
+            "Map",
+            "Session",
+            "Call"
     };
     public static String[] arrPlayers = {
             "Players",
@@ -103,6 +105,13 @@ public class YellowRPCExtension extends YellowExtension{
             "Apes",
             "Monkehs",
             "Goofy Ahhs"
+    };
+    public static String[] arrUnknownMaps = {
+            "Unknown Map",
+            "Knownn't Map",
+            "Known Map",
+            "Map",
+            "You aren't supposed to see this, but here you are."
     };
 
     public YellowRPCExtension(){
@@ -128,7 +137,7 @@ public class YellowRPCExtension extends YellowExtension{
     }
 
     public static void send(){
-        String mapww = "Somehow Unknown Map", gm = "", gps = "", state = "";
+        String mapww = Structs.random(arrUnknownMaps), gm = "", gps = "", state = "";
 
         try{
             if(Vars.state.isGame()){
@@ -157,7 +166,7 @@ public class YellowRPCExtension extends YellowExtension{
                 presence.details = mapww;
             }else{
                 presence.state = state;
-                presence.details = Structs.random(arr);
+                presence.details = Structs.random(arrYellow);
             }
 
             presence.largeImageText = "Version " + Yellow.meta().version + " (" + Strings.stripColors(FirstLoadFragment.processMeta(Yellow.meta())) + ")";

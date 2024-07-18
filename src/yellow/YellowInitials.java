@@ -25,6 +25,7 @@ final class YellowInitials{
         try{
             //try and load some of the mod assets into the internal file tree on import
             //needed for the freakshow that is the first fragment
+            //ref. Mods#buildFiles()
             ObjectSet<String> s = ObjectSet.with("bundles", "sprites", "sprites-override");
 
             boolean zipFolder = !mod.file.isDirectory() && mod.root.parent() != null;

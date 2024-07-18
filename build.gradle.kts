@@ -50,6 +50,9 @@ allprojects {
         compileOnly(arc(":arc-core"))
         compileOnly(mindustry(":core"))
 
+        //oh yeah
+        //implementation(arc(":box2d"))
+
         annotationProcessor("com.github.GlennFolker.EntityAnno:downgrader:$entVersion")
     }
 

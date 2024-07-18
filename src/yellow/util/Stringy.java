@@ -74,4 +74,18 @@ public class Stringy{
 
         return buffer.toString();
     }
+
+    public static <T> String prettyPrint(Iterable<T> iterator, boolean enclose){
+        StringBuilder buffer = new StringBuilder(32);
+        if(enclose) buffer.append('[');
+        int prog = 0;
+        for(T t: iterator){
+            if(prog != 0) buffer.append(", ");
+            buffer.append(t);
+            prog++;
+        }
+        if(enclose) buffer.append(']');
+
+        return buffer.toString();
+    }
 }

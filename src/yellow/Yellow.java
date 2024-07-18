@@ -20,7 +20,6 @@ public class Yellow extends Mod{
     static int foundExtensions, loadedExtensions, erroredExtensions;
     static Seq<ErroneousExtension> erroredExtensionList = new Seq<>();
 
-
     public Yellow(){
         Events.fire(new YellowPreInitializationEvent());
 
@@ -56,7 +55,7 @@ public class Yellow extends Mod{
     }
 
     public static Mods.ModMeta meta(){
-        return Vars.mods.getMod("yellow").meta;
+        return Vars.mods.getMod(Yellow.class).meta;
     }
 
     public static Mods.LoadedMod mod(){

@@ -5,9 +5,11 @@ import arc.input.*;
 import arc.math.geom.*;
 import mindustry.*;
 import mindustry.entities.*;
+import mindustry.gen.*;
 import yellow.*;
 import yellow.comp.*;
 import yellow.entities.units.entity.*;
+import yellow.graphics.*;
 import yellow.input.*;
 import yellow.util.*;
 import yellow.watchdog.*;
@@ -54,6 +56,11 @@ public class YellowLogic{
 
     public static void clientPost(){
         Events.run(Trigger.update, SaveIDAssigner::update);
+        Events.run(Trigger.draw, () -> {
+            UserFx.FxPair<Unit> pair = UserFx.getEntry(null);
+            pair.global.run();
+            if(Vars.player.unit() != null) pair.target.get(Vars.player.unit());
+        });
 
         //check for potentially broken spear bullets every 10 seconds and fix them if possible
         Timey.runLoop(Validation::validateSpearBullets, 10f);
