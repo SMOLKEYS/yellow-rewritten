@@ -151,7 +151,9 @@ public class NotificationFragment implements CommonFragment{
         });
 
         tr.dragged((dx, dy) -> {
-            tr.actions(Actions.sequence(
+            float len = Mathf.len(dx, dy);
+            //Log.info("len @, dx @, dy @", len, dx, dy);
+            if(len >= 10f) tr.actions(Actions.sequence(
                     Actions.translateBy(width, 0, 0.2f, Interp.fastSlow),
                     Actions.run(() -> table.getCells().remove(t)),
                     Actions.remove()
