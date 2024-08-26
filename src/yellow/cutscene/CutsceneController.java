@@ -4,7 +4,7 @@ import arc.func.*;
 import arc.math.*;
 import arc.util.pooling.*;
 
-/** The base class of all controllers. */
+/** The base class of all controllers. Has a suspiciously intricate amount of documentation.  */
 @SuppressWarnings("unused")
 public abstract class CutsceneController<T> implements Pool.Poolable{
     protected Pool<CutsceneController<?>> pool;
@@ -29,8 +29,8 @@ public abstract class CutsceneController<T> implements Pool.Poolable{
     public void onSkip(){}
 
     /** Provides this controller with data from the previous controller.
-     * @param provider The provided previous controller. Automatically {@link #reset() resets} once this controller finishes. */
-    public void provide(CutsceneController<?> provider){}
+     * @param previous The provided previous controller. Do NOT attempt to retain/cache or use in multithreaded code, as it is immediately reset once this method finishes. */
+    public void provide(CutsceneController<?> previous){}
 
     /** Updates this controller. */
     public void update(){}
@@ -38,9 +38,9 @@ public abstract class CutsceneController<T> implements Pool.Poolable{
     /** Called once this controller finishes. Is followed up by {@link #provide(CutsceneController)} and {@link #reset()}. */
     public void onFinish(){}
 
-    /** Returns true if this controller has finished whatever it was designed to do. */
+    /** Returns true if this controller has finished whatever it was designed to do. By default, checks if {@link #progress()} returns 1. */
     public boolean isFinished(){
-        return false;
+        return progress() == 1;
     }
 
     /** Returns specified data from this controller that can be used by followup controllers. */

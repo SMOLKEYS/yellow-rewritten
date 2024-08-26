@@ -2,13 +2,16 @@ package yellow;
 
 import arc.*;
 import arc.files.*;
+import arc.graphics.*;
 import arc.scene.event.*;
+import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import mindustry.*;
+import mindustry.gen.*;
 import mindustry.mod.*;
 import mindustry.ui.*;
 import yellow.ui.fragments.*;
@@ -16,6 +19,8 @@ import yellow.ui.fragments.*;
 import static mindustry.Vars.*;
 
 final class YellowInitials{
+
+    private static final TextureRegionDrawable whiteui = (TextureRegionDrawable) Tex.whiteui;
 
     public static void begin(){
         Mods.LoadedMod mod = mods.getMod(Yellow.class);
@@ -58,7 +63,7 @@ final class YellowInitials{
             //you can click behind the fragment so uh, lets prevent that.
             Dialog d = new Dialog();
 
-            d.setBackground(Styles.black);
+            d.setBackground(whiteui.tint(Color.clear));
 
             d.show().update(() -> {
                 if(multiGroup.<Table>find("first load") == null){

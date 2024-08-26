@@ -9,7 +9,7 @@ version = "1.0"
 val windows = System.getProperty("os.name").lowercase().contains("windows")
 
 val mindustryVersion = "v146"
-val entVersion = "v146.0.2"
+val entVersion = "v146.0.7"
 
 //project properties (used in androidCopy)
 val useBE = project.hasProperty("adb.useBE") && parseBoolean(project.property("adb.useBE").toString())
