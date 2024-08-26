@@ -2,6 +2,8 @@ package yellow;
 
 import arc.*;
 import arc.files.*;
+import arc.fx.*;
+import arc.graphics.*;
 import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
@@ -9,12 +11,15 @@ import java.util.*;
 import mindustry.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
+import mindustry.graphics.*;
+import yellow.content.*;
 import yellow.core.*;
 import yellow.debug.*;
 import yellow.game.*;
 import yellow.mods.*;
 import yellow.ui.*;
 import yellow.util.*;
+import yellow.watchdog.*;
 import yellow.world.meta.*;
 
 import static yellow.game.YellowEventType.*;
@@ -30,6 +35,21 @@ public class YellowVars{
     public static void init(){
         Events.fire(new YellowFirstStageInitializationEvent());
         ui = new YellowUI();
+
+        //let us try
+        LoadRenderer renderer = SafeReflect.get(ClientLauncher.class, Vars.platform, "loader");
+
+        Validation.nullPass(renderer, rnd -> {
+            FxProcessor fx = SafeReflect.get(rnd, "fx");
+            Color color = SafeReflect.get(rnd, "color"),
+            colorRed = SafeReflect.get(rnd, "colorRed");
+
+            //loading screen bloom is unbearable for me, remove it for now
+            Validation.nullPass(fx, FxProcessor::removeAllEffects);
+            //Validation.nullPass(color, col -> col.set(Pal.accent.cpy()));
+            //Validation.nullPass(colorRed, colr -> colr.set(Pal.breakInvalid.cpy()));
+        });
+
 
         Events.run(ClientLoadEvent.class, () -> {
             ui.init();
@@ -47,6 +67,7 @@ public class YellowVars{
 
             YellowTips.load();
             YellowSettings.load();
+            YellowAchievements.load();
             YellowSpecialNotifications.launchNotif();
 
             if(Core.settings.getBool("yellow-check-unassigned-save-ids", true) && !Vars.control.saves.getSaveSlots().isEmpty()){

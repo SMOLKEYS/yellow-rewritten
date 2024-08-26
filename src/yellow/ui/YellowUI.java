@@ -3,6 +3,8 @@ package yellow.ui;
 import arc.*;
 import arc.scene.event.*;
 import arc.scene.ui.layout.*;
+import mindustry.gen.*;
+import mindustry.ui.fragments.*;
 import yellow.ui.dialogs.*;
 import yellow.ui.fragments.*;
 
@@ -13,6 +15,7 @@ public class YellowUI{
     public WeaponManagerDialog weaponManager;
     public SpellManagerDialog spellManager;
     public ExtensionsDialog extensions;
+    public AchievementListDialog achievements;
 
     public WidgetGroup multiGroup;
 
@@ -20,29 +23,20 @@ public class YellowUI{
     public FirstLoadFragment firstfrag;
     public BlankFragment blankfrag;
     public ManagerFragment managefrag;
-
-    //interactions
-    public BackgroundFragment backfrag;
-    public CharacterDisplayFragment chdispfrag;
-    public CutsceneCurtainFragment curtfrag;
-    public DialogueBoxFragment boxfrag;
-    public InteractionBoxFragment iboxfrag;
+    public InteractionFragment intfrag;
 
     public void init(){
         weaponManager = new WeaponManagerDialog();
         spellManager = new SpellManagerDialog();
         extensions = new ExtensionsDialog();
+        achievements = new AchievementListDialog();
 
         notifrag = new NotificationFragment();
         firstfrag = new FirstLoadFragment();
         blankfrag = new BlankFragment();
         managefrag = new ManagerFragment();
 
-        backfrag = new BackgroundFragment();
-        chdispfrag = new CharacterDisplayFragment();
-        curtfrag = new CutsceneCurtainFragment();
-        boxfrag = new DialogueBoxFragment();
-        iboxfrag = new InteractionBoxFragment();
+        intfrag = new InteractionFragment();
 
         multiGroup = new WidgetGroup();
 
@@ -56,5 +50,18 @@ public class YellowUI{
         firstfrag.build(ui.menuGroup);
         blankfrag.build(multiGroup);
         managefrag.build(ui.hudGroup);
+
+
+        MenuFragment.MenuButton[] buttons = new MenuFragment.MenuButton[]{
+                new MenuFragment.MenuButton("@yellow.achievements", Icon.tree, achievements::show)
+        };
+
+        MenuFragment.MenuButton pcButton = new MenuFragment.MenuButton("@yellow", Tex.alphaaaa, () -> {}, buttons);
+
+        if(mobile){
+            for(MenuFragment.MenuButton b: buttons) ui.menufrag.addButton(b);
+        }else{
+            ui.menufrag.addButton(pcButton);
+        }
     }
 }

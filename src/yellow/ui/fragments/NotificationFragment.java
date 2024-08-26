@@ -120,7 +120,7 @@ public class NotificationFragment implements CommonFragment{
         showTintedNotification(error, icon, message, minHeight, true, clicked);
     }
 
-    public void showTintedNotification(@Nullable Drawable bg, Drawable icon, String message, float minHeight, boolean persist, Runnable clicked){
+    public void showTintedNotification(@Nullable Drawable bg, Drawable icon, String message, float minHeight, boolean persist, @Nullable Runnable clicked){
         Cell<Table> t = table.table(bg != null ? bg : Styles.black5).minHeight(minHeight).width((Core.graphics.getWidth() * (SafeSettings.getInt("yellow-notification-length", 20, 20) / 100f)) / Scl.scl());
         Table tr = t.get();
         t.right();
@@ -135,7 +135,7 @@ public class NotificationFragment implements CommonFragment{
                     Actions.translateBy(width, 0, 1, Interp.pow3In),
                     Actions.run(() -> {
                         table.getCells().remove(t);
-                        clicked.run();
+                        if(clicked != null) clicked.run();
                     }),
                     Actions.remove()
             ));

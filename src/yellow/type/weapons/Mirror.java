@@ -5,7 +5,7 @@ import arc.struct.*;
 import mindustry.type.*;
 
 /** Utility class for handling special mirror properties. */
-public class Mirrorer{
+public class Mirror{
     private static final ObjectMap<String, ToggleWeapon> mirrors = new ObjectMap<>();
 
     public static void apply(Seq<Weapon> target, ToggleWeapon... weapons){
@@ -13,7 +13,7 @@ public class Mirrorer{
             if(t == null) return; //ignore null entries
 
             if(t.willMirror){
-                target.add(t, Mirrorer.reflect(t, t.properties));
+                target.add(t, Mirror.reflect(t, t.properties));
             }else{
                 target.add(t);
             }

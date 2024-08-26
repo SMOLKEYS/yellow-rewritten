@@ -38,7 +38,7 @@ public class GameCharacter{
 
     /** The internal name of this character. */
     public String name;
-    public Color color;
+    public Color color = new Color();
 
     public GameCharacter(String name){
         this.name = name;

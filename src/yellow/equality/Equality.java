@@ -153,7 +153,7 @@ public class Equality{
                 if(hasEntry(entity, s)){
                     Float f = SafeReflect.<Float>get(entity, s);
 
-                    if(f != null && f > 0f) Log.info("found inv frames for target, zeroing.");
+                    //if(f != null && f > 0f) Log.info("found inv frames for target, zeroing.");
                     SafeReflect.set(entity, s, 0f);
                 }
             }, iframeEnt);

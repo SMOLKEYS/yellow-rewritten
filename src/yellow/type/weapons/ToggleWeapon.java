@@ -1,23 +1,24 @@
 package yellow.type.weapons;
 
+import arc.struct.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import yellow.entities.units.*;
 
-/** A weapon that can be toggled. Toggling a weapon allows you to effectively enable/disable it when needed, stopping it from functioning. Does NOT support regular mirroring, use {@link Mirrorer} for that. */
+/** A weapon that can be toggled. Toggling a weapon allows you to effectively enable/disable it when needed, stopping it from functioning. Does NOT support regular mirroring, use {@link Mirror} for that. */
 public class ToggleWeapon extends NamedWeapon{
 
     /** Whether this weapon is enabled by default. */
     public boolean enabledDefault = true;
-    /** The original weapon this one is sourced from. Null for root weapons. {@link Mirrorer} handles this. Do NOT modify! */
+    /** The original weapon this one is sourced from. Null for root weapons. {@link Mirror} handles this. Do NOT modify! */
     public ToggleWeapon original;
-    /** The mirror variant of this weapon. {@link Mirrorer} handles this. Do NOT modify! */
+    /** The mirror variant of this weapon. {@link Mirror} handles this. Do NOT modify! */
     public ToggleWeapon mirrored;
-    /** If true, {@link Mirrorer} will create a copy of this weapon. */
+    /** If true, {@link Mirror#apply(Seq, ToggleWeapon...)} will create a copy of this weapon. */
     public boolean willMirror = false;
     /** Special properties used if this weapon will be mirrored. */
-    public Mirrorer.ReflectProperty[] properties = {};
+    public Mirror.ReflectProperty[] properties = {};
 
     public ToggleWeapon(String name){
         super(name);

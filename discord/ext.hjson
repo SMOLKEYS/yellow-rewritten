@@ -2,3 +2,4 @@ name: yellow-discord-integration
 displayName: Discord Integration Extension
 main: yellow.YellowRPCExtension
 author: SMOLKEYS
+version: 1.0

@@ -18,15 +18,15 @@ public class YellowUnitTypes{
 
     public static void load(){
         yellow = new YellowUnitType(YellowCharacters.nihara, "yellow"){{
-            health = 23000;
-            mana = 5500;
+            health = 23000f;
+            mana = 5500f;
             manaRecovery = 5f;
             lives = 5;
             invFrames = 60*3f;
             flying = true;
             hideDetails = false;
-            armor = 10f;
-            speed = 3f;
+            armor = 17f;
+            speed = 4f;
             accel = 0.08f;
             drag = 0.03f;
             range = 8*70f;
@@ -50,7 +50,7 @@ public class YellowUnitTypes{
                     new ForceFieldAbility(8*3f, 0.55f, 1150f, 60 * 15f)
             );
 
-            Mirrorer.apply(weapons,
+            Mirror.apply(weapons,
                     YellowWeapons.laserBarrage,
                     YellowWeapons.bulletStorm,
                     YellowWeapons.homingFlares,
@@ -82,6 +82,15 @@ public class YellowUnitTypes{
             deathExplosionEffect = YellowFx.ghostDespawn3;
 
             controller = u -> new SwarmOrbiterAI(target -> target.type() == yellow); //target yellow by default
+        }};
+
+        //TODO stats not final
+        enverizence = new EnverizenceUnitType(YellowCharacters.enzie, "enverizence"){{
+            flying = true;
+            health = 475f;
+            armor = 13f;
+            speed = 4.5f;
+            drag = 0.02f;
         }};
     }
 }

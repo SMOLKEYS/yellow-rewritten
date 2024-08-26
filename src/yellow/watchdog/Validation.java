@@ -7,6 +7,7 @@ import arc.util.pooling.*;
 import mindustry.*;
 import mindustry.gen.*;
 import yellow.entities.bullet.*;
+import yellow.game.*;
 
 import static yellow.entities.bullet.SpinSpearBulletType.*;
 
@@ -36,4 +37,5 @@ public class Validation{
     public static <T> void nullPass(@Nullable T t, Cons<T> ifNotNull){
         if(t != null) ifNotNull.get(t);
     }
+
 }

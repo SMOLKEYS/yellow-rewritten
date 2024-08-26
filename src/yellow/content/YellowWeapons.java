@@ -391,8 +391,8 @@ public class YellowWeapons{
             ignoreRotation = true;
             predictTarget = false;
 
-            properties = new Mirrorer.ReflectProperty[]{
-                    Mirrorer.ReflectProperty.flipY
+            properties = new Mirror.ReflectProperty[]{
+                    Mirror.ReflectProperty.flipY
             };
 
             shootSound = Sounds.pulseBlast;

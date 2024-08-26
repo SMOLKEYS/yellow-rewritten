@@ -73,6 +73,10 @@ public class YellowSettings{
             t.checkPref("yellow-enable-extensions", true);
 
             buttonPref(t, "yellow-extension-list", () -> YellowVars.ui.extensions.show());
+
+            seperatorPref(t, "yellow-misc-section", Icon.admin, Icon.chat);
+
+            buttonPref(t, "yellow-achievements", () -> YellowVars.ui.achievements.show());
         });
     }
 

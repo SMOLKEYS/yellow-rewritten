@@ -13,8 +13,9 @@ import mindustry.graphics.*;
 import mindustry.mod.*;
 import yellow.util.*;
 
-public class Autoupdater{
+public final class Autoupdater{
 
+    /** @apiNote Holy. Shit. */
     public static void checkForUpdates(boolean manual){
         if(!Core.settings.getBool("yellow-check-for-updates", true) && !manual) return;
 
@@ -29,7 +30,7 @@ public class Autoupdater{
             Structsy.eachIndexed((s, i) -> {
                 if(s == null){
                     Log.warn("Autoupdater version collection found a null entry! Correcting...");
-                    versions[i] = "0N";
+                    versions[i] = "[red]<broken entry>[]";
                 }
             }, versions);
 

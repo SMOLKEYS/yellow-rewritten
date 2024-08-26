@@ -11,6 +11,14 @@ public class Structsy{
         for(int i = 0; i < arr.length; i++) cons.get(arr[i], i);
     }
 
+    public static <T> void eachIndexed(Cons2<T, Integer> cons, Iterable<T> iterator){
+        int i = 0;
+        for(T t: iterator){
+            cons.get(t, i);
+            i++;
+        }
+    }
+
     /** Returns the distance between two elements in the specified array. */
     public static <T> int distance(T[] arr, T item1, T item2){
         int i1 = -1, i2 = -1;

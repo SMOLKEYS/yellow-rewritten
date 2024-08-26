@@ -9,6 +9,7 @@ import mindustry.gen.*;
 import yellow.*;
 import yellow.comp.*;
 import yellow.entities.units.entity.*;
+import yellow.game.*;
 import yellow.graphics.*;
 import yellow.input.*;
 import yellow.util.*;
@@ -55,7 +56,11 @@ public class YellowLogic{
     }
 
     public static void clientPost(){
-        Events.run(Trigger.update, SaveIDAssigner::update);
+        Events.run(Trigger.update, () -> {
+            SaveIDAssigner.update();
+            YellowAchievement.instances.each(YellowAchievement::update);
+        });
+
         Events.run(Trigger.draw, () -> {
             UserFx.FxPair<Unit> pair = UserFx.getEntry(null);
             pair.global.run();
