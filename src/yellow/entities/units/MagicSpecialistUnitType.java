@@ -1,3 +1,4 @@
+package yellow.entities.units;
 
 import arc.struct.*;
 import mindustry.game.*;
