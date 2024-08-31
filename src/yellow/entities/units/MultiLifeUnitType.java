@@ -30,7 +30,12 @@ public class MultiLifeUnitType extends CharacterUnitType{
 
     @Override
     public Unit create(Team team){
-        MultiLifeUnitEntity unit = (MultiLifeUnitEntity) super.create(team);
+        MultiLifeUnitEntity unit = null;
+        try{
+            MultiLifeUnitEntity unit = (MultiLifeUnitEntity) super.create(team);
+        }catch(Exception e){
+            return super.create(team);
+        }
         unit.lives(lives);
         return unit;
     }

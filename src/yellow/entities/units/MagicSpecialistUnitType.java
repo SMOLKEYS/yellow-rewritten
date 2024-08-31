@@ -23,7 +23,12 @@ public class MagicSpecialistUnitType extends MultiLifeUnitType{
 
     @Override
     public Unit create(Team team){
-        MagicSpecialistEntity unit = (MagicSpecialistEntity) super.create(team);
+        MagicSpecialistEntity unit = null;
+        try{
+            MagicSpecialistEntity unit = (MagicSpecialistEntity) super.create(team);
+        }catch(Exception e){
+            return super.create(team);
+        }
         SpellEntry[] entries = new SpellEntry[spells.size];
         for(int i = 0; i < spells.size; i++){
             entries[i] = spells.get(i).spellType.get(spells.get(i));
