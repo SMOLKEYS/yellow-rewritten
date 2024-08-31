@@ -24,7 +24,14 @@ public class YellowCharacters{
             new RelationshipRank("close-friend-3", 8990),
             new RelationshipRank("very-close", 11000),
             new RelationshipRank("more-than-a-friend", 13500),
-            new RelationshipRank("lover", 15000)
+            new RelationshipRank("lover", 15000),
+            new RelationshipRank("lover-2", 18000),
+            new RelationshipRank("lover-3", 22000),
+            new RelationshipRank("lover-4", 25000),
+            new RelationshipRank("certified-lover", 30000),
+            new RelationshipRank("love-master", 50000),
+            //i applaud you and deem you insane
+            new RelationshipRank("thats-enough-my-friend", 100000)
     };
 
     public static void load(){

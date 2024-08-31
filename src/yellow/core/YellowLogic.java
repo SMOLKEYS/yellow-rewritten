@@ -29,7 +29,7 @@ public class YellowLogic{
 
             @Override
             public boolean tap(float x, float y, int count, KeyCode button){
-                if(Vars.mobile) return false; //do not register for mobile
+                if(Vars.mobile || Core.scene.hasDialog()) return false; //do not register for mobile
 
                 Vec2 c = Core.input.mouseWorld(x, y);
                 if(count == 2){
@@ -43,6 +43,8 @@ public class YellowLogic{
 
             @Override
             public boolean longPress(float x, float y){
+                if(Core.scene.hasDialog()) return false;
+                
                 Vec2 c = Core.input.mouseWorld(x, y);
 
                 Units.nearby(Vars.player.team(), c.x, c.y, 8 * 2, u -> {

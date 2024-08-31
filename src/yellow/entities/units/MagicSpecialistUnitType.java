@@ -1,4 +1,3 @@
-package yellow.entities.units;
 
 import arc.struct.*;
 import mindustry.game.*;
@@ -8,7 +7,6 @@ import yellow.type.*;
 import yellow.world.meta.*;
 
 public class MagicSpecialistUnitType extends MultiLifeUnitType{
-
 
     /** Maximum mana this unit can hold. */
     public float mana;

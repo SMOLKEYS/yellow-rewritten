@@ -21,7 +21,7 @@ import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.storage.*;
 
 //yep.
-public final class NullEntity extends Unit implements Unitc{
+public final class NullEntity extends UnitEntity{
 
     public static final NullEntity INST = new NullEntity();
 
