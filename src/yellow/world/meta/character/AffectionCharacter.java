@@ -1,5 +1,6 @@
 package yellow.world.meta.character;
 
+import arc.*;
 import yellow.world.meta.*;
 
 /** A character with special data related to affection. */
@@ -23,6 +24,10 @@ public class AffectionCharacter extends GameCharacter{
         public RelationshipRank(String name, int requiredAffinity){
             this.name = name;
             this.requiredAffinity = requiredAffinity;
+        }
+        
+        public String localized(){
+            return Core.bundle.get("rank." + name + ".name");
         }
     }
 }

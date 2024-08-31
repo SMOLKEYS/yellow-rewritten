@@ -40,7 +40,7 @@ public class YellowCharacters{
 
         enzie = new AffectionCharacter("enzie"){{
             finalAffinity = true;
-            startingAffinity = 4395;
+            startingAffinity = 7395;
             relationshipRanks = basicRanks;
         }};
 
