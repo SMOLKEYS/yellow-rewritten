@@ -6,6 +6,7 @@ import mindustry.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.type.*;
+import mindustry.content.*;
 import yellow.entities.units.entity.*;
 import yellow.world.meta.*;
 
