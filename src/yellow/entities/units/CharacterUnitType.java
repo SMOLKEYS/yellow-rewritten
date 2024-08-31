@@ -28,7 +28,7 @@ public class CharacterUnitType extends UnitType{
                 character.setLocation(team, Vars.state.rules.tags.get("yellow-save-id", "<none>"));
                 return super.spawn(team, x, y);
             }
-            return NullEntity.INST;
+            return UnitTypes.dagger.spawn(team, x, y);
         }
         return super.spawn(team, x, y);
     }
@@ -40,7 +40,7 @@ public class CharacterUnitType extends UnitType{
                 character.setLocation(team, Vars.state.rules.tags.get("yellow-save-id", "<none>"));
                 return super.create(team);
             }
-            return NullEntity.INST;
+            return UnitTypes.dagger.create(team);
         }
         return super.create(team);
     }
