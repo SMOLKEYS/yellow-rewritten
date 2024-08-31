@@ -23,7 +23,7 @@ fun kPlugin(module: String) = "org.jetbrains.kotlin.$module:org.jetbrains.kotlin
 
 plugins {
     java
-    kotlin-dsl
+    kotlin("jvm") version "1.9.20"
 }
 
 allprojects {

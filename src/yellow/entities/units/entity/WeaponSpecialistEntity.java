@@ -8,7 +8,7 @@ import yellow.io.*;
 public class WeaponSpecialistEntity extends CharacterEntity{
 
     private static final int mappingId = EntityMapping.register("weapon-specialist-unit", WeaponSpecialistEntity::new);
-public
+
     public WeaponSpecialistEntity(){
         super();
     }
