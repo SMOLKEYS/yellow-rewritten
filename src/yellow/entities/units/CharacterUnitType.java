@@ -17,6 +17,7 @@ public class CharacterUnitType extends UnitType{
         super(name);
         this.character = character;
         constructor = CharacterEntity::new;
+        allowedInPayloads = false;
     }
 
     @Override
@@ -41,6 +42,12 @@ public class CharacterUnitType extends UnitType{
             return NullEntity.INST;
         }
         return super.create(team);
+    }
+    
+    @Override
+    public void updatePayload(Unit unit, @Nullable Unit unitHolder, @Nullable Building buildingHolder){
+        if(unitHolder != null) unitHolder.destroy();
+        if(buildingHolder != null) buildingHolder.kill();
     }
 
     public boolean locationMatch(Team team){
