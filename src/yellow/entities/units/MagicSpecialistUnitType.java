@@ -25,7 +25,7 @@ public class MagicSpecialistUnitType extends MultiLifeUnitType{
     public Unit create(Team team){
         MagicSpecialistEntity unit = null;
         try{
-            MagicSpecialistEntity unit = (MagicSpecialistEntity) super.create(team);
+            unit = (MagicSpecialistEntity) super.create(team);
         }catch(Exception e){
             return super.create(team);
         }

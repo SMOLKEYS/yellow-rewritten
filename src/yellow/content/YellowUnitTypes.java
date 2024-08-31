@@ -91,6 +91,7 @@ public class YellowUnitTypes{
             armor = 13f;
             speed = 4.5f;
             drag = 0.02f;
+            hidden = true;
         }};
     }
 }
