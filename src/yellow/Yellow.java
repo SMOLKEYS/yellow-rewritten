@@ -15,15 +15,17 @@ import static yellow.mods.ExtensionCore.*;
 
 public class Yellow extends Mod{
 
-    static boolean debug = false, crashed = false;
+    static boolean debug = false, bypassFailsafe = false, crashed = false;
 
     static int foundExtensions, loadedExtensions, erroredExtensions;
     static Seq<ErroneousExtension> erroredExtensionList = new Seq<>();
 
     public Yellow(){
         Events.fire(new YellowPreInitializationEvent());
+        debug = YellowJVM.hasParameter("yellow-debug", s -> Log.infoTag("YellowJVM", "'" + s +"' parameter detected. Debug mode is now active."));
+        bypassFailsafe = YellowJVM.hasParameter("yellow-nofailsafe", s -> Log.infoTag("YellowJVM", "Yellow failsafe bypassed!"));
 
-        if(launchFile().exists() && Core.settings.getBool("yellow-enable-failsafe", true)){
+        if(launchFile().exists() && Core.settings.getBool("yellow-enable-failsafe", true) && !bypassFailsafe){
             crashed = true;
             launchFile().delete();
             Events.on(ClientLoadEvent.class, e -> Vars.ui.showInfo("@yellow.initfailed"));

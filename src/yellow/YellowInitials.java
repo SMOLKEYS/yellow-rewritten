@@ -13,7 +13,6 @@ import arc.util.io.*;
 import mindustry.*;
 import mindustry.gen.*;
 import mindustry.mod.*;
-import mindustry.ui.*;
 import yellow.ui.fragments.*;
 
 import static mindustry.Vars.*;
@@ -28,7 +27,7 @@ final class YellowInitials{
         boolean setup = Core.settings.getBoolOnce("yellow-setup-active");
 
         try{
-            //try and load some of the mod assets into the internal file tree on import
+            //try and early-load some of the mod assets into the internal file tree on import
             //needed for the freakshow that is the first fragment
             //ref. Mods#buildFiles()
             ObjectSet<String> s = ObjectSet.with("bundles", "sprites", "sprites-override");

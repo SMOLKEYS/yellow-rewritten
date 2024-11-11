@@ -22,10 +22,10 @@ public class Equality{
     public static String[] maxEnt = {"trueMaxHealth"};
     //flame.entities.MockGroup<T extends Entityc>
     public static String[] mockGEntries = {"all", "build", "bullet", "draw", "sync", "unit"};
-    //Seq<T extends Entityc>
-    public static String[] mockGOthers = {"added"};
     //Seq<Unit>
     public static String[] eDamageEntries = {"excludeSeq", "queueExcludeRemoval", "excludeReAdd"};
+    //Seq<T extends Entityc>
+    public static String mockGOther = "added";
 
     public static boolean hasEntry(Object obj, String field){
         return SafeReflect.get(obj, field) != null;
@@ -58,14 +58,16 @@ public class Equality{
                 if(hasEntry(target, s)) SafeReflect.set(target, s, 0f);
             }, iframeEnt);
 
+            //flameout handler
             //freaky ass code imna be 100.gov
             Class<?> eDamage = SafeReflect.clazz("flame.unit.empathy.EmpathyDamage");
             Class<?> mockGroup = SafeReflect.clazz("flame.entities.MockGroup");
 
             Structs.each(mg -> SafeReflect.invoke(EntityGroup.class, SafeReflect.get(mockGroup, mg), "remove", new Entityc[]{target}, Entityc.class), mockGEntries);
-            SafeReflect.invoke(SafeReflect.get(mockGroup, mockGOthers[0]), "remove", new Entityc[]{target}, Entityc.class);
+            SafeReflect.invoke(SafeReflect.get(mockGroup, mockGOther), "remove", new Entityc[]{target}, Entityc.class);
 
             Structs.each(ed -> SafeReflect.invoke(eDamage, SafeReflect.get(eDamage, ed), "remove", new Unit[]{u}, Unit.class), eDamageEntries);
+
 
             u.destroy();
         }
@@ -130,8 +132,11 @@ public class Equality{
             entity.damage(source.damage);
         }
 
+        //if entity health is more than the expected health, begin proper damage checking
         if(entity.health > expectedHealth){
+            //calculate unapplied damage
             float blockedDamage = entity.health - expectedHealth + (source.type.pierceArmor ? armorPierceExt : 0f);
+
             //float totalInitial = definitiveHealth - entity.health;
 
             /*
@@ -143,12 +148,16 @@ public class Equality{
             if(source.type.pierceArmor) Log.info("bullet ignores armor, added @ extra.", armorPierceExt);
             */
 
+            //write damage to known variable names
             Structs.each(s -> {
                 if(hasEntry(entity, s)) SafeReflect.set(entity, s, entity.health - blockedDamage);
             }, ent);
 
+            //apply damage to health too
             entity.health -= blockedDamage;
 
+            //check for invincibility frame variables
+            //if found, write zero to allow quick damaging
             Structs.each(s -> {
                 if(hasEntry(entity, s)){
                     Float f = SafeReflect.<Float>get(entity, s);
@@ -169,6 +178,7 @@ public class Equality{
 
         if(!wasDead && entity.dead){
             Events.fire(new EventType.UnitBulletDestroyEvent(entity, source));
+            annihilate(entity, false, null, null);
         }
 
         source.type.handlePierce(source, health, entity.x(), entity.y());

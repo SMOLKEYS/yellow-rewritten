@@ -24,6 +24,7 @@ public class YellowUI{
     public BlankFragment blankfrag;
     public ManagerFragment managefrag;
     public InteractionFragment intfrag;
+    public LivesFragment lifefrag;
 
     public void init(){
         weaponManager = new WeaponManagerDialog();
@@ -35,6 +36,7 @@ public class YellowUI{
         firstfrag = new FirstLoadFragment();
         blankfrag = new BlankFragment();
         managefrag = new ManagerFragment();
+        lifefrag = new LivesFragment();
 
         intfrag = new InteractionFragment();
 
@@ -50,6 +52,7 @@ public class YellowUI{
         firstfrag.build(ui.menuGroup);
         blankfrag.build(multiGroup);
         managefrag.build(ui.hudGroup);
+        lifefrag.build(ui.hudGroup);
 
 
         MenuFragment.MenuButton[] buttons = new MenuFragment.MenuButton[]{

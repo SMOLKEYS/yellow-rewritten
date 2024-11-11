@@ -3,12 +3,15 @@ package yellow;
 import arc.*;
 import arc.files.*;
 import arc.fx.*;
+import arc.fx.filters.*;
 import arc.graphics.*;
 import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.Timer;
 import java.util.*;
 import mindustry.*;
+import mindustry.core.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
 import mindustry.graphics.*;
@@ -43,11 +46,32 @@ public class YellowVars{
             FxProcessor fx = SafeReflect.get(rnd, "fx");
             Color color = SafeReflect.get(rnd, "color"),
             colorRed = SafeReflect.get(rnd, "colorRed");
+            StringBuilder text = SafeReflect.get(rnd, "assetText");
 
-            //loading screen bloom is unbearable for me, remove it for now
-            Validation.nullPass(fx, FxProcessor::removeAllEffects);
-            //Validation.nullPass(color, col -> col.set(Pal.accent.cpy()));
-            //Validation.nullPass(colorRed, colr -> colr.set(Pal.breakInvalid.cpy()));
+            boolean disableBloom = SafeSettings.getBool("yellow-disable-bloom", false, false);
+
+            if(disableBloom) Validation.nullPass(fx, FxProcessor::removeAllEffects);
+            //Validation.nullPass(color, Color::rand);
+            //Validation.nullPass(colorRed, colr -> colr.set(Color.red.cpy()));
+            Validation.nullPass(text, tx -> {
+                for(int i = 0; i < 5; i++){
+                    //int finalI = i;
+                    Timer.schedule(() -> {
+                        //Log.info("tx insert " + finalI + 1);
+                        tx.append("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                        tx.append("[yellow]yellow mod init[]").append("\n");
+                        tx.append("[green]installed at ").append(installTimeAsDate()).append("[]\n");
+                        tx.append("[cyan]loading ").append(Yellow.foundExtensions).append(" extension(s)[]").append("\n");
+                        if(disableBloom) tx.append("[orange]bloom disabled[]").append("\n");
+                        if(Yellow.debug) tx.append("[red]debug mode enabled[]").append("\n");
+                        if(Yellow.bypassFailsafe) tx.append("[red]yellow failsafe bypassed[]").append("\n");
+                        tx.append("[yellow]welcome to yellow![]").append("\n");
+                        tx.append("\n\n");
+                    }, (Vars.mobile ? 1 : 5) + i);
+                }
+
+
+            });
         });
 
 
@@ -69,6 +93,7 @@ public class YellowVars{
             YellowSettings.load();
             YellowAchievements.load();
             YellowSpecialNotifications.launchNotif();
+            Validation.initYellowChecker();
 
             if(Core.settings.getBool("yellow-check-unassigned-save-ids", true) && !Vars.control.saves.getSaveSlots().isEmpty()){
                 Vars.control.saves.getSaveSlots().each(s -> {

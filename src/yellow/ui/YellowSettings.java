@@ -1,6 +1,7 @@
 package yellow.ui;
 
 import arc.*;
+import arc.files.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.scene.event.*;
@@ -45,6 +46,8 @@ public class YellowSettings{
 
             t.checkPref("yellow-check-unassigned-save-ids", true);
 
+            t.checkPref("yellow-disable-bloom", false);
+
             seperatorPref(t, "yellow-updating-section", Icon.up, Icon.down);
 
             //labelPref(t, "yellow-update-wip", false, e -> "[gray]< UNAVAILABLE >[]");
@@ -67,6 +70,11 @@ public class YellowSettings{
                     })
             );
 
+            buttonPref(t, "yellow-clear-jar-cache", () -> {
+                Fi jars = Yellow.configDir().child("jars");
+                jars.mkdirs();
+                jars.emptyDirectory();
+            });
 
             seperatorPref(t, "yellow-extensions-section", Icon.file, Icon.file);
 
