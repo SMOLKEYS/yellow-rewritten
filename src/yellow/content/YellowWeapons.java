@@ -16,9 +16,11 @@ import yellow.type.weapons.*;
 public class YellowWeapons{
 
     public static ToggleWeapon
-
             laserBarrage, bulletStorm, homingFlares, antiMothSpray, decimation, disruptor, ghostCall, ghostRain, igneous,
             traversal, octa, energySpheres, spearCall;
+
+    public static ToggleWeapon
+            blasters, pandora;
 
     public static void load(){
         laserBarrage = new ToggleWeapon("laser-barrage"){{
@@ -98,7 +100,7 @@ public class YellowWeapons{
 
             bullet = new BasicEqualityBulletType(){{
                 speed = 3f;
-                damage = 350f;
+                damage = 80f;
                 lifetime = 280f;
                 width = height = 16;
                 shrinkX = shrinkY = 0;
@@ -110,7 +112,7 @@ public class YellowWeapons{
                 trailEffect = Fx.trailFade;
                 trailLength = 20;
 
-                splashDamage = 150f;
+                splashDamage = 100f;
                 splashDamageRadius = 8*3;
 
                 hitSound = Sounds.explosion;
@@ -411,6 +413,30 @@ public class YellowWeapons{
                 keepVelocity = false;
 
                 sprite = "flare";
+            }};
+        }};
+
+        blasters = new ToggleWeapon("blasters"){{
+            reload = 10f;
+            x = 4f;
+            y = 2.3f;
+            inaccuracy = 4f;
+            willMirror = true;
+            predictTarget = true;
+
+            shootSound = Sounds.bolt;
+
+            bullet = new BasicEqualityBulletType(){{
+                damage = 48f;
+                speed = 10f;
+                lifetime = 60f;
+
+                frontColor = Pal.turretHeat;
+                backColor = Pal.lancerLaser;
+
+                trailEffect = Fx.trailFade;
+                trailColor = Pal.lancerLaser;
+                trailLength = 7;
             }};
         }};
     }

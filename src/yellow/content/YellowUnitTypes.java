@@ -63,7 +63,8 @@ public class YellowUnitTypes{
                     YellowWeapons.traversal,
                     YellowWeapons.octa,
                     YellowWeapons.energySpheres,
-                    YellowWeapons.spearCall
+                    YellowWeapons.spearCall,
+                    YellowWeapons.blasters
             );
 
             spells.add(YellowSpells.missileInverter, YellowSpells.leftStrafe);
