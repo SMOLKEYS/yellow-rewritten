@@ -20,7 +20,7 @@ public class YellowWeapons{
             traversal, octa, energySpheres, spearCall;
 
     public static ToggleWeapon
-            blasters, pandora;
+            blasters;
 
     public static void load(){
         laserBarrage = new ToggleWeapon("laser-barrage"){{
