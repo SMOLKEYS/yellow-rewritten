@@ -3,10 +3,10 @@ package yellow.entities.units;
 import arc.util.*;
 import java.util.*;
 import mindustry.*;
+import mindustry.content.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.type.*;
-import mindustry.content.*;
 import yellow.entities.units.entity.*;
 import yellow.world.meta.*;
 

@@ -35,7 +35,6 @@ public class Spell{
     }
 
     public void addStats(){
-        stats.add(YellowStats.name, displayName);
         stats.add(YellowStats.cooldown, cooldown/60, StatUnit.seconds);
         stats.add(YellowStats.manaCost, manaCost, YellowStatUnits.manaPoints);
     }
@@ -43,6 +42,7 @@ public class Spell{
     public void handleStats(Table t){
         addStats();
 
+        t.add("[lightgray]" + YellowStats.name.localized() + ": [accent]" + displayName + "[]").row();
 
         //a minute amount of code grabby
         //ContentInfoDialog line 66-89
@@ -66,7 +66,7 @@ public class Spell{
                         inset.add().size(10f);
                     }
 
-                }).fillX().padLeft(10);
+                }).fillX().padLeft(1);
                 t.row();
             }
         }

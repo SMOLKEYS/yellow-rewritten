@@ -14,7 +14,7 @@ public class YellowStatValues{
                 Spell spell = spells.get(i);
 
                 table.table(Styles.grayPanel, s -> {
-                    s.left().top().defaults().padRight(3).left();
+                    s.left().top().defaults().padRight(1).left();
                     s.row();
 
                     spell.handleStats(s);

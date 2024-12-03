@@ -3,15 +3,13 @@ package yellow;
 import arc.*;
 import arc.files.*;
 import arc.fx.*;
-import arc.fx.filters.*;
 import arc.graphics.*;
 import arc.math.*;
 import arc.struct.*;
-import arc.util.*;
 import arc.util.Timer;
+import arc.util.*;
 import java.util.*;
 import mindustry.*;
-import mindustry.core.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
 import mindustry.graphics.*;
@@ -56,6 +54,9 @@ public class YellowVars{
             Validation.nullPass(text, tx -> {
                 for(int i = 0; i < 5; i++){
                     //int finalI = i;
+
+                    //this only works like 30% of the time but eh whatever
+
                     Timer.schedule(() -> {
                         //Log.info("tx insert " + finalI + 1);
                         tx.append("\n\n\n\n\n\n\n\n\n\n\n\n\n");

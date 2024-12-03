@@ -1,13 +1,10 @@
 package yellow.entities.bullet;
 
-import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.pooling.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
 import yellow.comp.*;
 import yellow.equality.*;
-import yellow.math.*;
 
 public class SpinSpearBulletType extends BasicEqualityBulletType{
 

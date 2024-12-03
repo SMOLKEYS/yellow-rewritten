@@ -6,9 +6,7 @@ import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.pooling.*;
-import java.util.*;
 import mindustry.*;
-import mindustry.entities.*;
 import mindustry.entities.abilities.*;
 import mindustry.entities.units.*;
 import mindustry.game.*;
@@ -17,7 +15,6 @@ import yellow.entities.bullet.*;
 import yellow.entities.units.*;
 import yellow.entities.units.entity.*;
 import yellow.equality.*;
-import yellow.util.*;
 
 import static yellow.entities.bullet.SpinSpearBulletType.*;
 
@@ -41,6 +38,11 @@ public class Validation{
             inMenu = false;
 
             TeamIndex.entries.each((t, e) -> {
+                if(e != null && e.team != t){
+                    TeamIndex.entries.put(e.team, e);
+                    TeamIndex.entries.put(t, null);
+                }
+
                 if(e == null){
                     try{
                         TeamIndex.entries.put(t, (YellowUnitEntity) Groups.unit.find(ex -> ex instanceof YellowUnitEntity && ex.team() == t));
@@ -82,21 +84,22 @@ public class Validation{
                         Equality.annihilate(e, false, null, null);
 
                         //entity substitution; good luck caching the original instance
-                        YellowUnitEntity ent = (YellowUnitEntity) e.type().spawn(e.team(), e.x, e.y);
-                        ent.vel(e.vel());
-                        ent.lives(lives);
-                        ent.mounts(mounts);
-                        ent.abilities(abilities);
-                        ent.spells(spells);
-                        ent.mana(mana);
-                        ent.invFrames = invFrames;
-                        //edge case
-                        if(controller != null) ent.controller(controller);
+                        if(e.type().spawn(e.team(), e.x, e.y) instanceof YellowUnitEntity ent){
+                            ent.vel(e.vel());
+                            ent.lives(lives);
+                            ent.mounts(mounts);
+                            ent.abilities(abilities);
+                            ent.spells(spells);
+                            ent.mana(mana);
+                            ent.invFrames = invFrames;
+                            //edge case
+                            if(controller != null) ent.controller(controller);
 
-                        //clear life
-                        ent.kill();
+                            //clear life
+                            ent.kill();
 
-                        Log.info("@ of team @ has inherited data from @!", ent, t, e);
+                            Log.info("@ of team @ has inherited data from @!", ent, t, e);
+                        }
                     }
                 }
             });

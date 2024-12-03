@@ -3,7 +3,6 @@ package yellow.dialogue;
 import arc.scene.*;
 import arc.struct.*;
 import arc.util.*;
-import arc.util.pooling.*;
 import yellow.world.meta.*;
 
 //TODO
