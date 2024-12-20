@@ -13,7 +13,7 @@ import yellow.world.meta.*;
 public class TeleportAbility extends DeathStopAbility{
 
     /** Minimum/maximum teleport distance away from the death coordinates. */
-    public float minTeleportDistance = 8*5, maxTeleportDistance = 8*10;
+    public float minTeleportDistance, maxTeleportDistance;
     /** Visual effect when teleporting. The effect is provided {@link Position} data and the rotation of the unit. */
     public Effect effect = Fx.none;
 

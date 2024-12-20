@@ -5,12 +5,14 @@ import arc.graphics.*;
 import arc.math.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
+import mindustry.entities.effect.*;
 import mindustry.entities.part.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import yellow.entities.bullet.*;
 import yellow.equality.*;
+import yellow.math.*;
 import yellow.type.weapons.*;
 
 public class YellowWeapons{
@@ -21,6 +23,9 @@ public class YellowWeapons{
 
     public static ToggleWeapon
             blasters;
+
+    public static ToggleWeapon
+            gethsemane, utnapishtim, eden, atrahasis;
 
     public static void load(){
         laserBarrage = new ToggleWeapon("laser-barrage"){{
@@ -42,6 +47,11 @@ public class YellowWeapons{
                 drag = 0.04f;
                 length = 200f;
                 lifetime = 60*3.5f;
+                anchor = false;
+                shrink = true;
+                shrinkDelay = 60*2.5f;
+                shrinkTime = 60f;
+                shrinkInterp = Interp.pow2In;
                 hitEffect = Fx.hitMeltdown;
                 hitColor = Pal.meltdownHit;
                 status = StatusEffects.melting;
@@ -145,24 +155,63 @@ public class YellowWeapons{
         decimation = new ToggleWeapon("decimation"){{
             reload = 300f;
             x = 48f;
-            shoot.shots = 8;
-            inaccuracy = 35f;
+            minWarmup = 0.99f;
+            shootWarmupSpeed = 0.05f;
             willMirror = true;
-
             shootSound = Sounds.artillery;
+
+            shoot = new ShootSpread(8, 5){{
+                shotDelay = 10f;
+            }};
+
+            parts.addAll(new HaloPart(){{
+                shapes = 6;
+                sides = 4;
+                tri = true;
+                triLength = 1f;
+                triLengthTo = 13f;
+                radius = 0f;
+                radiusTo = 10f;
+                haloRadius = 10f;
+                haloRadiusTo = 35f;
+                haloRotateSpeed = 0.5f;
+                shapeMoveRot = 360f;
+                color = Color.white;
+                colorTo = Color.yellow;
+                layer = Layer.bullet;
+
+                progress = p -> Interp.pow2In.apply(p.warmup);
+            }}, new ShapePart(){{
+                hollow = true;
+                sides = 6;
+                radius = 0f;
+                radiusTo = 22.5f;
+                stroke = 0f;
+                strokeTo = 4f;
+                rotateSpeed = -2f;
+                moveRot = 360f;
+                color = Color.white;
+                colorTo = Color.yellow;
+                layer = Layer.bullet;
+
+                //hmm
+                InterpStack stack = new InterpStack(Interp.smooth, Interp.pow10In, Interp.pow10In);
+
+                progress = p -> stack.apply(p.warmup);
+            }});
 
             bullet = new BasicEqualityBulletType(){{
                 damage = 2400f;
                 splashDamage = 1540f;
                 splashDamageRadius = 192f;
                 lifetime = 420f;
-                velocityRnd = 0.5f;
                 speed = 3f;
                 width = 16f;
                 height = 16f;
                 hitEffect = YellowFx.decimatorPortalExplosion;
                 despawnEffect = YellowFx.decimatorPortalExplosion;
                 pierceArmor = true;
+                keepVelocity = false;
 
                 trailEffect = Fx.coreBurn;
                 trailChance = 0.5f;
@@ -317,16 +366,23 @@ public class YellowWeapons{
         }};
 
         octa = new ToggleWeapon("octa"){{
-            reload = 60*8f;
+            reload = 60*14f;
             x = y = 0f;
 
             shoot = new ShootSpread(8, 22.5f);
 
             shootSound = Sounds.laserblast;
 
-            bullet = new RotatingAnchoredContinuousLaserBulletType(120f){{
+            bullet = new RotatingContinuousLaserBulletType(120f){{
                 length = 530f;
-                lifetime = 60*5f;
+                grow = true;
+                growTime = 60f;
+                growDelay = 15f;
+                interp = Interp.pow3Out;
+                shrink = true;
+                shrinkTime = 60*4f;
+                shrinkDelay = 60*5.5f;
+                lifetime = 60*10f;
                 hitEffect = Fx.hitMeltdown;
                 hitColor = Pal.meltdownHit;
                 status = StatusEffects.melting;
@@ -437,6 +493,78 @@ public class YellowWeapons{
                 trailEffect = Fx.trailFade;
                 trailColor = Pal.lancerLaser;
                 trailLength = 7;
+            }};
+        }};
+
+        //the fuck is this?
+        gethsemane = new ToggleWeapon("gethsemane"){{
+            reload = 60*60f;
+            x = y = 0f;
+            shootY = -8*1000f;
+            shootCone = 5f;
+
+            shootSound = Sounds.cannon;
+
+            bullet = new BasicEqualityBulletType(){{
+                speed = 40f;
+                damage = splashDamage = 9500000f;
+                splashDamageRadius = 8*80f;
+                width = 8*45f;
+                height = 8*85f;
+                lifetime = 60*5f;
+                keepVelocity = false;
+                scaleLife = true;
+
+                despawnSound = Sounds.largeExplosion;
+
+                despawnEffect = new ExplosionEffect(){{
+                    lifetime = 60*6;
+                    smokes = 100;
+                    sparks = 140;
+                    sparkRad = 8*150;
+                    sparkLen = 8*23;
+                    sparkStroke = 8*6;
+                    smokeRad = 8*140;
+                    smokeSize = 8*23;
+                    waveLife = 90;
+                    waveRad = 8*170;
+                    waveStroke = 8*25;
+                }};
+
+                trailEffect = Fx.trailFade;
+                trailLength = 180;
+                trailWidth = 8*13f;
+
+                fragBullets = 10;
+                fragBullet = new BasicEqualityBulletType(){{
+                    speed = 7f;
+                    damage = splashDamage = 450000f;
+                    splashDamageRadius = 8*40f;
+                    width = 8*25f;
+                    height = 8*45f;
+                    lifetime = 60*3f;
+                    keepVelocity = false;
+
+                    trailEffect = Fx.trailFade;
+                    trailLength = 60;
+                    trailWidth = 8*4f;
+
+                    despawnSound = Sounds.largeExplosion;
+
+                    despawnEffect = new ExplosionEffect(){{
+                        lifetime = 60*4;
+                        smokes = 50;
+                        sparks = 80;
+                        sparkRad = 8*90;
+                        sparkLen = 8*15;
+                        sparkStroke = 8*4;
+                        smokeRad = 8*100;
+                        smokeSize = 8*17;
+                        waveLife = 60;
+                        waveRad = 8*120;
+                        waveStroke = 8*20;
+                    }};
+                }};
             }};
         }};
     }

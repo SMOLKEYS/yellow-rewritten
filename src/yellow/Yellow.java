@@ -8,7 +8,9 @@ import mindustry.*;
 import mindustry.game.EventType.*;
 import mindustry.mod.*;
 import yellow.content.*;
+import yellow.input.*;
 import yellow.mods.*;
+import yellow.util.*;
 
 import static yellow.game.YellowEventType.*;
 import static yellow.mods.ExtensionCore.*;
@@ -41,13 +43,15 @@ public class Yellow extends Mod{
 
         YellowVars.extensionDir.mkdirs();
         YellowVars.extensionDir.walk(f -> {
+            Log.info("Registration: @", f.name());
             foundExtensions++;
 
             try{
-                ExtensionCore.load(f);
+                ExtensionMeta ext = ExtensionCore.load(f);
+                Log.info("Construction: @ (@)", ext.displayName, f.name());
                 loadedExtensions++;
             }catch(Exception e){
-                Log.err(e);
+                Log.err(new Exception("Constructor for extension " + f.name() + " failed to load.", e));
                 erroredExtensionList.add(new ErroneousExtension(f, e));
                 erroredExtensions++;
             }
@@ -77,25 +81,44 @@ public class Yellow extends Mod{
     @Override
     public void init(){
         extensions.each(s -> {
-            if(s.meta.enabled()) s.main.init();
+            if(s.meta.enabled()){
+                Log.info("Initialization: @", s.meta.displayName);
+                s.main.init();
+            }
         });
     }
 
     @Override
     public void loadContent(){
         if(crashed) return;
+        YellowDebug.info("Loading Yellow...");
         YellowWeapons.load();
         YellowSpells.load();
         YellowCharacters.load();
         YellowUnitTypes.load();
         YellowWeapons.afterLoad();
+
+        KeyBinds.KeyBind[] kbArr = Core.keybinds.getKeybinds();
+        KeyBinds.KeyBind[] okbArr = new KeyBinds.KeyBind[SpellBinding.inited.size];
+
+        for(int i = 0; i < okbArr.length; i++){
+            okbArr[i] = SpellBinding.inited.get(i);
+        };
+
+        Core.keybinds.setDefaults(Structsy.mergeArray(KeyBinds.KeyBind.class, kbArr, okbArr));
+
         extensions.each(s -> {
             try{
-                if(s.meta.enabled()) s.main.loadContent();
+                if(s.meta.enabled()){
+                    Log.info("Content Load: @", s.meta.displayName);
+                    s.main.loadContent();
+                }
             }catch(Exception e){
                 throw new RuntimeException("Extension " + s.name + " contains content that failed to load.", e);
             }
         });
+
         Events.fire(new YellowContentInitEvent());
+        YellowDebug.info("Yellow loaded!");
     }
 }

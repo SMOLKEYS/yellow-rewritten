@@ -1,10 +1,9 @@
 package yellow.entities.units.entity;
 
 import mindustry.gen.*;
-import yellow.comp.*;
 import yellow.entities.units.*;
 
-public class YellowUnitEntity extends MagicSpecialistEntity implements Soulc{
+public class YellowUnitEntity extends MagicSpecialistEntity{
 
     private static final int mappingId = EntityMapping.register("yellow-unit", YellowUnitEntity::new);
 

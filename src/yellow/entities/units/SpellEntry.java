@@ -17,6 +17,10 @@ public class SpellEntry implements Savec{
         return cooldown <= 0 && user.mana() >= spell.manaCost;
     }
 
+    public void use(Magicc user){
+        spell.use(user, this);
+    }
+
     public void update(){
         cooldown -= Time.delta;
     }

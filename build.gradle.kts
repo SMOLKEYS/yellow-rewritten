@@ -9,7 +9,7 @@ version = "1.0"
 val windows = System.getProperty("os.name").lowercase().contains("windows")
 
 val mindustryVersion = "v146"
-val entVersion = "v146.0.7"
+val entVersion = "v146.0.10"
 
 //project properties (used in androidCopy)
 val useBE = project.hasProperty("adb.useBE") && parseBoolean(project.property("adb.useBE").toString())
@@ -34,6 +34,7 @@ allprojects {
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
         maven("https://oss.sonatype.org/content/repositories/releases/")
         maven("https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository")
+        maven("https://raw.githubusercontent.com/GlennFolker/EntityAnnoMaven/main")
         maven("https://www.jitpack.io")
     }
 
@@ -305,12 +306,22 @@ task("copy") {
     dependsOn("jar")
 
     val dir = if(windows) "${System.getenv("APPDATA")}\\Mindustry\\mods" else "${System.getenv("HOME")}/.local/share/Mindustry/mods"
+    val dirC = if(project.hasProperty("copy.target")) project.property("copy.target").toString() else null
 
     doLast {
         println("Copying mod...")
+
+        val fDir = if(project.hasProperty("copy.target")) dirC else dir
+
+        if(!fDir?.let {File(it).exists()}!!){
+            println("WARN: Target copy directory ($fDir) does not exist. Skipping copy operation.")
+            if(dirC == null) println("If you use a custom data directory, you may specify '-Pcopy.target=<path-to-mods-dir>'.")
+            return@doLast
+        }
+
         copy {
             from("${layout.buildDirectory.get()}/libs")
-            into(dir)
+            into(fDir)
             include("${project.name}Desktop.jar")
         }
     }

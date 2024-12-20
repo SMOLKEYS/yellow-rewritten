@@ -16,7 +16,7 @@ public class ExtensionCore{
     public static Seq<LoadedExtension> extensions = new Seq<>();
     public static JsonReader reader = new JsonReader();
 
-    public static void load(Fi extension) throws Exception{
+    public static ExtensionMeta load(Fi extension) throws Exception{
         //android 14
         if(!extension.file().setReadOnly()) Log.warn("Could not make @ read-only.", extension.name());
 
@@ -30,6 +30,7 @@ public class ExtensionCore{
         ((ModClassLoader) Vars.mods.mainLoader()).addChild(cl);
         LoadedExtension ext = new LoadedExtension(meta.name, extension, cl, meta.enabled() ? (YellowExtension) cl.loadClass(meta.main).getConstructor().newInstance() : null, meta);
         extensions.add(ext);
+        return meta;
     }
 
     public static LoadedExtension getExtension(String name){

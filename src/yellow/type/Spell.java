@@ -2,14 +2,19 @@ package yellow.type;
 
 import arc.*;
 import arc.func.*;
+import arc.input.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
+import mindustry.*;
 import mindustry.content.*;
 import mindustry.entities.*;
+import mindustry.game.*;
 import mindustry.graphics.*;
 import mindustry.world.meta.*;
 import yellow.comp.*;
+import yellow.core.*;
 import yellow.entities.units.*;
+import yellow.input.*;
 import yellow.world.meta.*;
 
 public class Spell{
@@ -26,12 +31,43 @@ public class Spell{
     /** Various other stats this spell has. */
     public Stats stats = new Stats();
     /** Persistent keybind associated with this spell. */
-    protected KeyBinds.KeyBind keyBind;
+    public final KeyBinds.KeyBind keyBind;
+    public final SpellBinding binder;
 
     public Spell(String name){
         this.name = name;
         this.displayName = Core.bundle.get("spell." + name + ".name");
         this.description = Core.bundle.get("spell." + name + ".description");
+
+        this.keyBind = new KeyBinds.KeyBind(){
+            @Override
+            public String name(){
+                return "yellow-spell";
+            }
+
+            @Override
+            public KeyBinds.KeybindValue defaultValue(InputDevice.DeviceType type){
+                return KeyCode.unset;
+            }
+        };
+
+        binder = new SpellBinding(keyBind.defaultValue(InputDevice.DeviceType.keyboard), this);
+
+        YellowContent.spells.add(this);
+    }
+
+    public static void loadListener(){
+        Events.run(EventType.Trigger.update, () -> {
+            if(Vars.player.unit() instanceof Magicc m){
+                for(SpellEntry s : m.spells()){
+                    if(s.spell.getKeyBind() instanceof KeyCode k && Core.input.keyTap(k)) s.use(m);
+                }
+            }
+        });
+    }
+
+    public KeyBinds.KeybindValue getKeyBind(){
+        return binder.defaultValue(InputDevice.DeviceType.keyboard);
     }
 
     public void addStats(){
@@ -73,6 +109,16 @@ public class Spell{
     }
 
     public void use(Magicc user, SpellEntry spell){
+        useConsume(user, spell);
+        spawnEffects(user, spell);
+    }
 
+    public void useConsume(Magicc user, SpellEntry spell){
+        spell.cooldown = cooldown;
+        user.consume(manaCost);
+    }
+
+    public void spawnEffects(Magicc user, SpellEntry spell){
+        castEffect.at(user);
     }
 }

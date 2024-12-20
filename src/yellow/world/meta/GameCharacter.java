@@ -3,6 +3,7 @@ package yellow.world.meta;
 import arc.*;
 import arc.graphics.*;
 import mindustry.game.*;
+import yellow.core.*;
 
 /** The base class for characters. Comes with basic values, like location and location locking. */
 public class GameCharacter{
@@ -42,6 +43,7 @@ public class GameCharacter{
 
     public GameCharacter(String name){
         this.name = name;
+        YellowContent.characters.add(this);
     }
 
     /** Returns the special ID of the save this character was last found in. */

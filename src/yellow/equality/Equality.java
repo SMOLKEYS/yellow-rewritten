@@ -3,11 +3,14 @@ package yellow.equality;
 import arc.*;
 import arc.func.*;
 import arc.util.*;
+import arc.util.pooling.*;
 import mindustry.*;
 import mindustry.ai.types.*;
 import mindustry.entities.*;
 import mindustry.game.*;
 import mindustry.gen.*;
+import yellow.*;
+import yellow.comp.*;
 import yellow.entities.units.entity.*;
 import yellow.util.*;
 
@@ -35,14 +38,15 @@ public class Equality{
         return SafeSettings.getBool("yellow-equal-treatment", false, false);
     }
 
-    public static void annihilate(Entityc target, boolean removeRemnants, @Nullable Cons<Entityc> entityAfter, @Nullable Cons<Bullet> bulletAfter){
+    /** Attempts to completely erase an entity. VERY aggressive. */
+    public static void annihilate(Entityc target, boolean removeRemnants, boolean showDeathEffect, @Nullable Cons<Entityc> entityAfter, @Nullable Cons<Bullet> bulletAfter){
         target.remove();
         Groups.all.remove(target);
 
         if(target instanceof Unit u){
             Groups.unit.remove(u);
             u.health = u.maxHealth = u.shield = u.armor = 0f;
-            if(u instanceof YellowUnitEntity y) y.lives = 0;
+            if(u instanceof MultiLifeUnitEntity m) m.lives = 0;
             if(u instanceof TimedKillUnit tk) tk.lifetime = 0f;
             if(u instanceof GhostEntity g) g.lifetime = 0f;
 
@@ -85,12 +89,14 @@ public class Equality{
                 }
             });
             Groups.unit.each(e -> {
-                if(e instanceof UnitTetherc u && u.spawner() == target) annihilate(e, true, entityAfter, bulletAfter);
-                if(e.controller() instanceof MissileAI a && a.shooter == target) annihilate(e, true, entityAfter, bulletAfter);
+                if(e instanceof UnitTetherc u && u.spawner() == target) annihilate(e, true, showDeathEffect, entityAfter, bulletAfter);
+                if(e.controller() instanceof MissileAI a && a.shooter == target) annihilate(e, true, showDeathEffect, entityAfter, bulletAfter);
             });
         }
 
         if(entityAfter != null) entityAfter.get(target);
+
+        if(showDeathEffect && target instanceof Unitc u && u.type() != null) u.type().deathExplosionEffect.at(u.x(), u.y(), u.bounds() / 2f / 8f);
     }
 
     public static void theSpeedOfA(float speed){
@@ -137,20 +143,23 @@ public class Equality{
             //calculate unapplied damage
             float blockedDamage = entity.health - expectedHealth + (source.type.pierceArmor ? armorPierceExt : 0f);
 
-            //float totalInitial = definitiveHealth - entity.health;
+            float totalInitial = definitiveHealth - entity.health;
 
-            /*
-            Log.info(
-                    "origin @, expected @, got @ (@ less),\napplying @ extra dmg to approximate\n@ (@ + @).",
+
+            YellowDebug.info(
+                    "Original @, expected @, but got @ instead (@ less)\nApplying @ extra dmg to approximate\n@ (@ + @).",
                     definitiveHealth, expectedHealth, entity.health, totalInitial, blockedDamage, source.damage, totalInitial, blockedDamage
             );
 
-            if(source.type.pierceArmor) Log.info("bullet ignores armor, added @ extra.", armorPierceExt);
-            */
+            if(source.type.pierceArmor) YellowDebug.info("Bullet ignores armor, added @ extra.", armorPierceExt);
+
 
             //write damage to known variable names
             Structs.each(s -> {
-                if(hasEntry(entity, s)) SafeReflect.set(entity, s, entity.health - blockedDamage);
+                if(hasEntry(entity, s)){
+                    YellowDebug.info("Entity @ has @. Writing to that value...", entity, s);
+                    SafeReflect.set(entity, s, entity.health - blockedDamage);
+                }
             }, ent);
 
             //apply damage to health too
@@ -162,7 +171,7 @@ public class Equality{
                 if(hasEntry(entity, s)){
                     Float f = SafeReflect.<Float>get(entity, s);
 
-                    //if(f != null && f > 0f) Log.info("found inv frames for target, zeroing.");
+                    if(f != null && f > 0f) YellowDebug.info("Found inv frame variable (@) for target (@), zeroing...", s, entity);
                     SafeReflect.set(entity, s, 0f);
                 }
             }, iframeEnt);
@@ -178,9 +187,14 @@ public class Equality{
 
         if(!wasDead && entity.dead){
             Events.fire(new EventType.UnitBulletDestroyEvent(entity, source));
-            annihilate(entity, false, null, null);
+            YellowDebug.info("Entity @ is marked as dead! Requesting immediate annihilation...", entity);
+            annihilate(entity, false, true, null, null);
         }
 
         source.type.handlePierce(source, health, entity.x(), entity.y());
+    }
+
+    public static void handleSplashDamage(){
+
     }
 }

@@ -26,7 +26,7 @@ public class CutsceneTester{
         }else if(!queue.isEmpty()){
             active = queue.removeFirst();
             active.init();
-            active.provide(prev);
+            active.receive(prev);
         }
     }
 

@@ -72,9 +72,6 @@ public class MagicSpecialistEntity extends MultiLifeUnitEntity implements Magicc
     public void useSpell(SpellEntry spell){
         if(spell.ready(this) && Structs.contains(spells, spell)){
             spell.spell.use(this, spell);
-            spell.spell.castEffect.at(this);
-            spell.cooldown = spell.spell.cooldown;
-            mana -= spell.spell.manaCost;
         }
     }
 

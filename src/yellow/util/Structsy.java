@@ -38,4 +38,11 @@ public class Structsy{
         for(int i = 0; i < arr.length; i++) if(Objects.equals(arr[i], value)) return i;
         return -1;
     }
+
+    public static <T> T[] mergeArray(Class<T> clazz, T[] first, T[] second){
+        T[] arr = Reflect.newArray(clazz, first.length + second.length);
+        System.arraycopy(first, 0, arr, 0, first.length);
+        System.arraycopy(second, 0, arr, first.length, second.length);
+        return arr;
+    }
 }

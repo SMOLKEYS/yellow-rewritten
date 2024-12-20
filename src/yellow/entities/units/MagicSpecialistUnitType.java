@@ -23,7 +23,7 @@ public class MagicSpecialistUnitType extends MultiLifeUnitType{
 
     @Override
     public Unit create(Team team){
-        MagicSpecialistEntity unit = null;
+        MagicSpecialistEntity unit;
         try{
             unit = (MagicSpecialistEntity) super.create(team);
         }catch(Exception e){

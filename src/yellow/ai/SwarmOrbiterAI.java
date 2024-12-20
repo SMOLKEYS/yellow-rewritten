@@ -20,6 +20,7 @@ public class SwarmOrbiterAI extends AIController{
     /** The target core building to orbit. */
     protected CoreBlock.CoreBuild core;
     protected float dst = 80f, maxDst = 680f;
+    /** If specified, the AI will orbit in reverse. */
     protected boolean useOpposite;
     protected float peakSpeedRD = 6f;
 
@@ -37,7 +38,7 @@ public class SwarmOrbiterAI extends AIController{
     public void init(){
         //hurricane
         dst = dst + Mathf.random(maxDst);
-        useOpposite = Mathf.chance(0.5);
+        if(!useOpposite) useOpposite = Mathf.chance(0.5);
     }
 
     @Override

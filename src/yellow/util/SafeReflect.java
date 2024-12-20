@@ -4,6 +4,7 @@ import arc.util.*;
 import java.lang.reflect.*;
 import mindustry.*;
 
+@SuppressWarnings("UnusedReturnValue")
 public class SafeReflect{
 
     public static <T> T get(Field field){
@@ -49,7 +50,7 @@ public class SafeReflect{
     public static void set(Class<?> type, Object object, String name, Object value){
         try{
             Reflect.set(type, object, name, value);
-        }catch(Exception e){
+        }catch(Exception ignored){
 
         }
     }
@@ -57,15 +58,15 @@ public class SafeReflect{
     public static void set(Object object, Field field, Object value){
         try{
             Reflect.set(object, field, value);
-        }catch(Exception e){
-            throw new RuntimeException(e);
+        }catch(Exception ignored){
+
         }
     }
 
     public static void set(Object object, String name, Object value){
         try{
             Reflect.set(object, name, value);
-        }catch(Exception e){
+        }catch(Exception ignored){
 
         }
     }
@@ -73,7 +74,7 @@ public class SafeReflect{
     public static void set(Class<?> type, String name, Object value){
         try{
             Reflect.set(type, name, value);
-        }catch(Exception e){
+        }catch(Exception ignored){
 
         }
     }

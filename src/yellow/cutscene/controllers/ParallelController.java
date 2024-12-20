@@ -44,8 +44,8 @@ public class ParallelController extends CutsceneController<ParallelController>{
     }
 
     @Override
-    public void provide(CutsceneController<?> provider){
-        for(int i = 0; i < controllers.size; i++) controllers.get(i).provide(provider);
+    public void receive(CutsceneController<?> sender){
+        for(int i = 0; i < controllers.size; i++) controllers.get(i).receive(sender);
     }
 
     @Override

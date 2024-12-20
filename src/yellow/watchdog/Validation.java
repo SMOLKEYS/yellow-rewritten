@@ -11,6 +11,7 @@ import mindustry.entities.abilities.*;
 import mindustry.entities.units.*;
 import mindustry.game.*;
 import mindustry.gen.*;
+import yellow.*;
 import yellow.entities.bullet.*;
 import yellow.entities.units.*;
 import yellow.entities.units.entity.*;
@@ -51,7 +52,7 @@ public class Validation{
                     TeamIndex.entries.put(t, null);
                 }else if(e.type().locationMatch(t)){
                     if(!e.isValid() && !e.isAdded() && e.lives > 0){
-                        Log.info("Fixer, go! (@ of team @)", e, t);
+                        YellowDebug.info("Fixer, go! (@ of team @)", e, t);
 
                         /*
                         Class<?> eDamage = SafeReflect.clazz("flame.unit.empathy.EmpathyDamage");
@@ -81,7 +82,7 @@ public class Validation{
                         float invFrames = e.invFrames;
                         UnitController controller = e.controller();
 
-                        Equality.annihilate(e, false, null, null);
+                        Equality.annihilate(e, false, false, null, null);
 
                         //entity substitution; good luck caching the original instance
                         if(e.type().spawn(e.team(), e.x, e.y) instanceof YellowUnitEntity ent){
@@ -98,7 +99,7 @@ public class Validation{
                             //clear life
                             ent.kill();
 
-                            Log.info("@ of team @ has inherited data from @!", ent, t, e);
+                            YellowDebug.info("@ of team @ has inherited data from @!", ent, t, e);
                         }
                     }
                 }

@@ -6,6 +6,7 @@ import yellow.equality.*;
 
 public class RotatingContinuousLaserBulletType extends ContinuousEqualityLaserBulletType{
 
+    /** Speed that the bullet rotates at. */
     public float rotateSpeed = 1f;
 
     public RotatingContinuousLaserBulletType(float damage){

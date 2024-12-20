@@ -28,14 +28,14 @@ public abstract class CutsceneController<T> implements Pool.Poolable{
     /** Called if the dialogue this controller is part of gets skipped. */
     public void onSkip(){}
 
-    /** Provides this controller with data from the previous controller.
-     * @param previous The provided previous controller. Do NOT attempt to retain/cache or use in multithreaded code, as it is immediately reset once this method finishes. */
-    public void provide(CutsceneController<?> previous){}
+    /** When invoked, this controller can receive data from a provided sender.
+     * @param sender The provided sender with data this controller can use. Do NOT attempt to retain/cache or use in multithreaded code, as it is immediately reset once this method finishes. */
+    public void receive(CutsceneController<?> sender){}
 
     /** Updates this controller. */
     public void update(){}
 
-    /** Called once this controller finishes. Is followed up by {@link #provide(CutsceneController)} and {@link #reset()}. */
+    /** Called once this controller finishes. Is followed up by {@link #receive(CutsceneController)} and {@link #reset()}. */
     public void onFinish(){}
 
     /** Returns true if this controller has finished whatever it was designed to do. By default, checks if {@link #progress()} returns 1. */

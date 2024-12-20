@@ -37,6 +37,7 @@ public class ReversibleQueue<T> extends Queue<T>{
 
     /** Moves the last removed object from the backing queue back to the head of this queue.
      * @return last removed object or the first object of this queue if the backing queue is empty */
+    @SuppressWarnings("UnusedReturnValue")
     public T revert(){
         if(removedValues.isEmpty()) return first();
         T elem = removedValues.removeLast();

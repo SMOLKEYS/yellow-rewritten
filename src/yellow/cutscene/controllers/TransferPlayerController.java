@@ -22,9 +22,9 @@ public class TransferPlayerController extends CutsceneController<TransferPlayerC
     }
 
     @Override
-    public void provide(CutsceneController<?> provider){
-        if(provider != null && target == null){
-            Object ob = provider.data();
+    public void receive(CutsceneController<?> sender){
+        if(sender != null && target == null){
+            Object ob = sender.data();
             if(ob instanceof Unit u) target = u;
         }
     }

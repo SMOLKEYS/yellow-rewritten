@@ -64,7 +64,8 @@ public class YellowUnitTypes{
                     YellowWeapons.octa,
                     YellowWeapons.energySpheres,
                     YellowWeapons.spearCall,
-                    YellowWeapons.blasters
+                    YellowWeapons.blasters,
+                    YellowWeapons.gethsemane
             );
 
             spells.add(YellowSpells.missileInverter, YellowSpells.leftStrafe);
@@ -83,16 +84,6 @@ public class YellowUnitTypes{
             deathExplosionEffect = YellowFx.ghostDespawn3;
 
             controller = u -> new SwarmOrbiterAI(target -> target.type() == yellow); //target yellow by default
-        }};
-
-        //TODO stats not final
-        enverizence = new EnverizenceUnitType(YellowCharacters.enzie, "enverizence"){{
-            flying = true;
-            health = 475f;
-            armor = 13f;
-            speed = 4.5f;
-            drag = 0.02f;
-            hidden = true;
         }};
     }
 }

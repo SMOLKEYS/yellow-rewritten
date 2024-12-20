@@ -7,11 +7,11 @@ import mindustry.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
 import yellow.*;
-import yellow.comp.*;
 import yellow.entities.units.entity.*;
 import yellow.game.*;
 import yellow.graphics.*;
 import yellow.input.*;
+import yellow.type.*;
 import yellow.util.*;
 import yellow.watchdog.*;
 import yellow.world.meta.*;
@@ -21,11 +21,9 @@ import static mindustry.game.EventType.*;
 public class YellowLogic{
 
     public static void load(){
-        Events.on(UnitDestroyEvent.class, s -> {
-            if(s.unit instanceof Soulc ss) ss.onDeath();
-        });
-
         Events.on(ClientLoadEvent.class, s -> {
+            Spell.loadListener();
+
             Core.input.addProcessor(new GestureDetector(new UnabstractedGestureListener(){
 
                 @Override
@@ -56,8 +54,23 @@ public class YellowLogic{
                 }
 
             }));
-        });
 
+
+            /*Core.input.addProcessor(new InputProcessor(){
+                @Override
+                public boolean keyDown(KeyCode keycode){
+                    Groups.unit.each(u -> {
+                        if(u instanceof MagicSpecialistEntity m){
+                            for(SpellEntry e: m.spells()){
+                                if(e.spell.)
+                            }
+                        }
+                    });
+
+                    return false;
+                }
+            });*/
+        });
     }
 
     public static void clientPost(){

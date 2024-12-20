@@ -28,7 +28,7 @@ public class ThrowBulletType extends BasicEqualityBulletType{
     public void update(Bullet b){
         super.update(b);
         
-        if((b.vel().len() <= peakMinSpeed || speed == peakMinSpeed) && b.fdata > 0f) b.fdata -= Time.delta;
+        if((b.vel().isZero(peakMinSpeed) || speed == peakMinSpeed) && b.fdata > 0f) b.fdata -= Time.delta;
         
         if(b.fdata <= 0f && b.drag != 0f){
             if(throwEffect != null) throwEffect.at(b.x, b.y);
