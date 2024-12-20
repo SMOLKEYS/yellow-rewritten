@@ -51,7 +51,7 @@ public class Yellow extends Mod{
                 Log.info("Construction: @ (@)", ext.displayName, f.name());
                 loadedExtensions++;
             }catch(Exception e){
-                Log.err(new Exception("Constructor for extension " + f.name() + " failed to load.", e));
+                Log.err("Constructor for extension " + f.name() + " failed to load.", e);
                 erroredExtensionList.add(new ErroneousExtension(f, e));
                 erroredExtensions++;
             }
@@ -103,7 +103,7 @@ public class Yellow extends Mod{
 
         for(int i = 0; i < okbArr.length; i++){
             okbArr[i] = SpellBinding.inited.get(i);
-        };
+        }
 
         Core.keybinds.setDefaults(Structsy.mergeArray(KeyBinds.KeyBind.class, kbArr, okbArr));
 
