@@ -3,6 +3,8 @@ package yellow;
 import arc.func.*;
 import mindustry.*;
 
+import java.util.*;
+
 @SuppressWarnings("SameParameterValue")
 final class YellowJVM{
 
@@ -15,6 +17,10 @@ final class YellowJVM{
 
     static boolean hasParameter(String argument){
         if(Vars.mobile) return false; //ah, mobile
+
+        //ah, java
+        if(Objects.equals(System.getProperty(source, "none"), "none")) return false;
+
         return System.getProperty(source).contains("--" + argument);
     }
 

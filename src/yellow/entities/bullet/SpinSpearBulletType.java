@@ -54,8 +54,6 @@ public class SpinSpearBulletType extends BasicEqualityBulletType{
                 b.drag(drag);
                 s.scrap(b);
             }
-        }else{
-            b.remove();
         }
     }
 
