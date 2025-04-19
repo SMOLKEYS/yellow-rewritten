@@ -14,4 +14,4 @@ minGameVersion: 146
 java: true
 
 # get the fuck OUT-
-hidden: true
+hideBrowser: true
